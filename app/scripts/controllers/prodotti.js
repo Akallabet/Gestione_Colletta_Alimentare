@@ -73,6 +73,12 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, ProductsFac
                     }
                 }
             }
+            var tmp= [];
+            for(var i in $scope.prodottiCarichi)
+            {
+                tmp.push({carico: parseInt(i), prodotti: $scope.prodottiCarichi[i]});
+            }
+            $scope.prodottiCarichi= tmp;
             prodotti= $scope.prodottiCarichi;
         });
     }
@@ -91,6 +97,8 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, ProductsFac
         });
     }
     
+    $scope.isNaN= isNaN;
+    $scope.parseInt= parseInt;
     /*
     $scope.getCarichiByIdSupermercato= function()
     {
