@@ -1,0 +1,12 @@
+/* Will be compiled down to a single stylesheet with your sass files */
+
+.center-container{}
+
+.table-container{}
+
+.pagination-no-margin{margin: 0 0;}
+
+.cursor-pointer{cursor: pointer;}
+
+.fsize12{font-size: 12px;}
+.fsize10{font-size: 10px;}
