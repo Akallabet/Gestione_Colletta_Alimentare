@@ -52,7 +52,7 @@ collettaApp.service('ComuniMapper', function()
                                        
                                        /*START FACTORIES*/
 collettaApp.factory('LoginFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var LoginFactory = $resource(ServerAddress.getServerAddress()+'/login/:username/:password', {username: '@username', password: '@password'});
+    var LoginFactory = $resource(ServerAddress.getServerAddress()+'/login', {});
     return LoginFactory;
 }]);
 

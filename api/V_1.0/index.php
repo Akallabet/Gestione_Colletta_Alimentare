@@ -6,7 +6,10 @@ $app = new \Slim\Slim();
 
 session_start();
 
-$app->post('/login/:username/:password', function($username, $password){
+$app->post('/login', function() use($app){
+    $req= json_decode($app->request()->getBody());
+    $username= $req->username;
+    $password= $req->password;
 	require_once("./models/users.php");
 	$obj= new Users();
 	$ret= $obj->login($username, sha1($password));

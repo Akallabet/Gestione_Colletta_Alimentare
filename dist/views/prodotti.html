@@ -1,0 +1,48 @@
+<div ng-include="'views/menu.html'"></div>
+<div ng-controller="SupermercatiCtrl">
+    <div class="hero-unit">
+        <h1>Gestione prodotti</h1>
+        <h2>{{supermercati[0].nome}}, {{supermercati[0].indirizzo}}</h2>
+    </div>
+    <div class="container center-container" ng-controller="ProdottiCtrl">
+        <div class="row-fluid">
+            <div class="alert span6 offset3" ng-show="prodottiLength==0">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Attenzione!</strong> Non hai insetrito nessun carico in questo supermercato!
+            </div>
+        </div>
+        <div class="row-fluid">
+            <form class="form-inline">
+                <label>Inserisci un nuovo carico</label>
+                <button class="btn btn-primary" ng-click="newCarico()">Vai</button>
+            </form>
+        </div>
+        <table class="table table-bordered table-striped table-hover table-container table-condensed">
+        <thead>
+            <tr>
+                <th><div class="text-center fsize12">N°</div></th>
+                <th colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo" style="width: 8%">
+                    <div class="text-center fsize12">{{prod.tipo}}</div>
+                </th>
+            </tr>
+            <tr>
+                <th></th>
+                <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12]" class="fsize10">
+                    <span class="pull-left">kg</span>
+                    <span class="pull-right">scatole</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="cursor-pointer" ng-click="" ng-repeat="row in prodottiCarichi | orderBy:carico" rel="{{carico}}">
+                <td><div class="text-center fsize12">{{row.carico}}</div></td>
+                <td colspan="2" ng-repeat="pr in row.prodotti | orderBy:tipo">
+                    <span class="pull-left">{{pr.kg}}</span>
+                    <span class="pull-right">{{pr.scatole}}</span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot></tfoot>
+        </table>
+    </div>
+</div>
