@@ -35,7 +35,7 @@
         </thead>
         <tbody>
             <tr class="cursor-pointer" ng-click="" ng-repeat="row in prodottiCarichi | orderBy:carico" rel="{{carico}}">
-                <th><div class="text-center fsize12">{{row.carico}}</div></th>
+                <td><div class="text-center fsize12">{{row.carico}}</div></td>
                 <td colspan="2" ng-repeat="pr in row.prodotti | orderBy:tipo">
                     <span class="pull-left">{{pr.kg}}</span>
                     <span class="pull-right">{{pr.scatole}}</span>
