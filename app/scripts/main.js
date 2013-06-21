@@ -25,7 +25,7 @@ collettaApp.config(function($routeProvider) {
                                         /*START SERVICES*/
 collettaApp.service('ServerAddress', function()
 {
-    var s= '../api/V_1.0/index.php';
+    var s= '../api/index.php';
     return{
         getServerAddress: function(){return s;}
     }
