@@ -4,8 +4,10 @@ var SupermercatiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetIn
 function($scope, $resource, $location, $routeParams, GetInfoFactory)
 {
     $scope.supermercati= [];
+    $scope.pages= 1;
     $scope.columns=[];
     $scope.getComuneById= getComuneById;
+    $scope.chosenSuperm= 2;
     
     $scope.rowsNumber= 15;
     $scope.currentPage=1;
@@ -20,7 +22,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory)
         $scope.currentPage=p;
     }
     
-    var comuni= GetInfoFactory.get({
+    var comuniService= GetInfoFactory.get({
         token: $routeParams.token,
         property: 'comuni',
         method: 'all',
@@ -28,6 +30,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory)
         limit_end: ''
     },function()
     {
+        comuni= comuniService.comuni;
         if(typeof $routeParams.idSupermercato!='undefined') $scope.getSupermercatiById();
         else $scope.getAllSupermercati(); 
     });
@@ -45,8 +48,10 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory)
         function(){
             for(var i in superm.supermercati)
             {
-                $scope.supermercati.push(angular.extend({index: i+1},superm.supermercati[i]));
+                $scope.supermercati.push(angular.extend({index: i+1, selected: false},superm.supermercati[i]));
             }
+            $scope.chosenSuperm= $scope.supermercati[0].id;
+            $scope.pages= $scope.totalPages();
         });
     }
     
@@ -71,6 +76,13 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory)
     $scope.openDetails= function(id)
     {
         $location.path('/prodotti/'+$routeParams.token+'/'+id);
+    }
+    
+    $scope.filterFirst= {
+        initSelection : function (element, callback) {
+            console.log(element);
+          callback($(element).data('$ngModelController').$modelValue);
+        }
     }
 }];
 

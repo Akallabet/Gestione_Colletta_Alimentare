@@ -1,5 +1,5 @@
 'use strict';
-var collettaApp= angular.module('collettaApp', ['ngResource','ui.bootstrap']);
+var collettaApp= angular.module('collettaApp', ['ngResource']);
 
 collettaApp.config(function($routeProvider) {
     $routeProvider
@@ -86,21 +86,3 @@ collettaApp.factory('ProductsFactory', ['$resource', 'ServerAddress', function($
 }]);
 
                                        /*END FACTORIES*/
-                                      
-                                        /*START COMMON FUNCTIONS*/
-function getComuneById(comuni, id_comune)
-{
-    var ret= null;
-    for(var i in comuni)
-    {
-        if(comuni[i].id==id_comune)
-        {
-            ret= angular.extend({}, comuni[i]);
-            break;
-        }
-    }
-    return ret;
-}
-
-
-                                        /*END COMMON FUNCTIONS*/

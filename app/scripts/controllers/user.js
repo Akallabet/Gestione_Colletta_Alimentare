@@ -42,7 +42,7 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
                 case 1:
                     $scope.pages=['supermercati','magazzini','utenti'];
                     break;
-                case 4:
+                default:
                     $scope.pages=['supermercati'];
                     break;
             }

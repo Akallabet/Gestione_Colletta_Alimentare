@@ -71,7 +71,7 @@ $app->get('/:token/get/:property/all/:limit_start/:limit_end', function ($token,
 			break;
 		case 'comuni':
 			require_once("./models/comuni.php");
-			if(checkPermissions($token,1))
+			if(checkPermissions($token,4))
 				$obj= new Comuni();
 			break;
 		default:
@@ -106,7 +106,7 @@ $app->get('/:token/get/:property/all', function ($token, $property) {
             break;
         case 'comuni':
             require_once("./models/comuni.php");
-            if(checkPermissions($token,1))
+            if(checkPermissions($token,4))
                 $obj= new Comuni();
             break;
         default:
