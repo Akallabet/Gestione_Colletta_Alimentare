@@ -5,14 +5,7 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
 {
     $scope.activePage= $routeParams.page;
     $scope.token= $routeParams.token;
-    $scope.nome= null;
-    $scope.cognome= null;
-    $scope.email= null;
-    $scope.privilegi= null;
-    $scope.ruolo= null;
-    $scope.telefono= null;
-    $scope.username= null;
-    $scope.pages= [];
+    $scope.user= UserInfoService.user;
     
     $scope.logout= function()
     {
@@ -29,10 +22,26 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
         }
         else
         {
+            angular.extend($scope.user, usr.user);
+            
+            switch(parseInt($scope.user.privilegi))
+            {
+                case 1:
+                $scope.user.pages=[
+                    {url: 'gestione/supermercati', label: 'Gestione'},
+                    {url: 'supermercati', label: 'Carichi'}
+                ];
+                break;
+                default:
+                    $scope.user.pages=[{url: 'supermercati', label: 'Gestione carichi'}];
+                break;
+            }
+            /*
+            usr.user.privilegi= parseInt(usr.user.privilegi);
             $scope.nome= usr.user.nome;
             $scope.cognome= usr.user.cognome;
             $scope.email= usr.user.email;
-            $scope.privilegi= parseInt(usr.user.privilegi);
+            $scope.privilegi= usr.user.privilegi;
             $scope.ruolo= usr.user.ruolo;
             $scope.telefono= usr.user.telefono;
             $scope.username= usr.user.username;
@@ -40,13 +49,18 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
             switch($scope.privilegi)
             {
                 case 1:
-                    $scope.pages=['supermercati','magazzini','utenti'];
-                    break;
+                $scope.pages=[
+                    {url: 'gestione/supermercati', label: 'Gestione supermercati'},
+                    {url: 'supermercati', label: 'Gestione carichi'},
+                    {url: 'magazzini', label: 'gestione magazzini'},
+                    {url: 'utenti', label: 'gestione utenti'}
+                ];
+                break;
                 default:
-                    $scope.pages=['supermercati'];
-                    break;
+                    $scope.pages=[{url: 'supermercati', label: 'Gestione carichi'}];
+                break;
             }
-            UserInfoService.addInfo(usr.user);
+            UserInfoService.addInfo(usr.user);*/
         }
     });
 }]

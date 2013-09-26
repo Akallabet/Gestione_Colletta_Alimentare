@@ -50,6 +50,32 @@ class Model
 		else return array('result'=>false, 'error'=>mysqli_error());
 	}
 	
+	function get($values, $limit_from=null, $limit_to=null)
+	{
+		$values= $this->sanitize(get_object_vars($values));
+		$str= "SELECT * FROM {$this->table}";
+		if(count($values)>0)
+		{
+			$par= Array();
+			foreach ($values as $key => $value) {
+				if(is_object($value))
+				{
+					$value= get_object_vars($value);
+					$keys= array_keys($value);
+					if($keys[0]=='IN')
+					{
+						$par[]= "{$key} IN (".implode(', ', $value[$keys[0]]).")";
+					}
+				}
+				else
+					$par[]= "{$key} = {$value}";
+			}
+			$str= "SELECT * FROM {$this->table} WHERE ".implode(" AND ", $par);
+		}
+		$res= $this->executeStandardQuery($str);
+		return $res;
+	}
+
 	function getAll($limit_from=null, $limit_to=null)
 	{
 		$sql= "SELECT * FROM {$this->table}";
@@ -108,10 +134,12 @@ class Model
 	
 	public function sanitize($p)
 	{
+		if(is_object($p)) $p= get_object_vars($p);
 		if(is_array($p))
 		{
 			foreach ($p as $key => $value) {
-				$p[$key]= mysql_real_escape_string($value);
+				if(!is_object($value) && !is_array($value))
+					$p[$key]= mysql_real_escape_string($value);
 			}
 		}
 		else $p= mysql_real_escape_string($p);

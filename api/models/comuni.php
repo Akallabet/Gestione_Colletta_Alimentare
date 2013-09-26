@@ -30,12 +30,40 @@ class Comuni extends Model
 			);
 	}
 	
+	function get($values, $limit_from=null, $limit_to=null)
+	{
+		$values= $this->sanitize(get_object_vars($values));
+		$str= "SELECT {$this->select_statement} FROM {$this->table} A {$this->join_statement}";
+		if(count($values)>0)
+		{
+			$par= Array();
+			foreach ($values as $key => $value) {
+				if(is_object($value))
+				{
+					$value= get_object_vars($value);
+					$keys= array_keys($value);
+					if($keys[0]=='IN')
+					{
+						$par[]= "{$key} IN (".implode(', ', $value[$keys[0]]).")";
+					}
+				}
+				else
+					$par[]= "A.{$key} = {$value}";
+			}
+			$str= "SELECT * FROM {$this->table} WHERE ".implode(" AND ", $par);
+		}
+		$res= $this->executeStandardQuery($str);
+		return $res;
+	}
+
 	function getAll($limit_from=null, $limit_to=null, $json=false)
 	{
+		/*
 	    if($json)
         {
             $string = file_get_contents("resources/comuni.json");
-            $tmp=json_decode($string,true);
+            $tmp=json_decode($string);
+            
             if($limit_from)
             {
                 $i=$limit_from;
@@ -44,16 +72,17 @@ class Comuni extends Model
                     $i++;
                 }
             }
-            else $res= $tmp; 
+            else $res= $tmp;*
         }
-        else {
+        else {*/
             $sql= $this->statements["GET_ALL"];
             if($limit_from!=null)
                 $sql.=" LIMIT {$limit_from}";
             if($limit_to!=null)
                 $sql.=", {$limit_to}";
             $res= $this->executeStandardQuery($sql);
-        }
+        //}
+
 		return $res;
 	}
 	

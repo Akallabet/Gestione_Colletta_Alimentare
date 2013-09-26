@@ -1,23 +1,30 @@
 'use strict';
-var collettaApp= angular.module('collettaApp', ['ngResource']);
+var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2']);
 
 collettaApp.config(function($routeProvider) {
     $routeProvider
         .when('/', {
             controller: LoginCtrl,
-            templateUrl:'views/intro.html'
+            templateUrl:'views/login.html'
         })
-        .when('/supermercati/:token', {
-            templateUrl:'views/supermercati.html'
+        .when('/:token/home', {
+            controller: LoginCtrl,
+            templateUrl:'views/home.html'
         })
-        .when('/utenti/:token', {
-            templateUrl:'views/utenti.html'
+        .when('/:token/gestione/supermercati', {
+            templateUrl:'views/admin/supermercati.html'
         })
-        .when('/magazzini/:token', {
-            templateUrl:'views/magazzini.html'
+        .when('/:token/gestione/utenti', {
+            templateUrl:'views/admin/utenti.html'
         })
-        .when('/prodotti/:token/:idSupermercato', {
-            templateUrl:'views/prodotti.html'
+        .when('/:token/gestione/magazzini', {
+            templateUrl:'views/admin/magazzini.html'
+        })
+        .when('/:token/supermercati', {
+            templateUrl:'views/user/supermercati.html'
+        })
+        .when('/:token/prodotti/:idSupermercato', {
+            templateUrl:'views/user/prodotti.html'
         })
         .otherwise({redirectTo:'/'});
 });
@@ -31,23 +38,100 @@ collettaApp.service('ServerAddress', function()
     }
 });
 
-collettaApp.service('UserInfoService', function()
+collettaApp.service('AdminPagesService', function()
 {
-    var info= '';
     return{
-        getInfo: function(){return info;},
-        addInfo: function(i){info= i;}
+        sections: [],
+        section: ''
     }
 });
 
-collettaApp.service('ComuniMapper', function()
+collettaApp.service('UserInfoService', ['$q',function($q)
 {
-    var comuni= '';
+    function User(obj){
+        return $.extend({}, {
+            nome: null,
+            cognome: null,
+            email: null,
+            privilegi: null,
+            ruolo: null,
+            telefono: null,
+            username: null,
+            pages: [],
+        }, obj);
+    }
+
     return{
-        getComuni: function(){return comuni;},
-        addComuni: function(c){comuni= c;}
+        user: {
+            nome: null,
+            cognome: null,
+            email: null,
+            privilegi: null,
+            ruolo: null,
+            telefono: null,
+            username: null,
+            pages: [],
+        },
+        userObj: function(obj){
+            return new User(obj);
+        }
+    }
+}]);
+
+collettaApp.service('ComuniService', function()
+{
+    return{
+        comuni: []
     }
 });
+
+collettaApp.service('CateneService', function()
+{
+    return{
+        catene: []
+    }
+});
+
+collettaApp.service('CapiEquipeService', function()
+{
+    return{
+        capi_equipe: []
+    }
+});
+
+collettaApp.service('SupermercatiService', ['$q', function($q){
+    function Supermercato(obj){
+        return $.extend({}, {
+            index: null,
+            selected: false,
+            id: null,
+            id_supermercato: null,
+            id_colletta: null,
+            colletta:null,
+            id_catena: null,
+            catena: null,
+            nome: null,
+            id_magazzino: null,
+            id_area: null,
+            id_comune: null,
+            provincia: null,
+            comune: null,
+            confemrato: null,
+            confermato: null,
+            indirizzo: null,
+            id_diocesi: null,
+            capi_equipe: []
+        }, obj);
+    }
+
+    return{
+        supermercato: function(obj){
+            return new Supermercato(obj);
+        },
+        supermercati: []
+    }
+}]);
+
                                         /*END SERVICES*/
                                        
                                        /*START FACTORIES*/
@@ -67,12 +151,10 @@ collettaApp.factory('UserInfoFactory', ['$resource', 'ServerAddress', function($
 }]);
 
 collettaApp.factory('GetInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var GetInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/get/:property/:method/:par/:limit_start/:limit_end',
+    var GetInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/get/:property/:limit_start/:limit_end',
         {
             token: '@token',
             property: '@property',
-            method: '@method',
-            par: '@par',
             limit_start: '@limit_start',
             limit_end: '@limit_end'
         }
@@ -86,3 +168,7 @@ collettaApp.factory('ProductsFactory', ['$resource', 'ServerAddress', function($
 }]);
 
                                        /*END FACTORIES*/
+                                       /*START DIRECTIVES*/
+
+
+                                       /*END DIRECTIVES*/

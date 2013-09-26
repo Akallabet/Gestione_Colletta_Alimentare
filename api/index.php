@@ -50,43 +50,10 @@ $app->get('/:token/get/user', function ($token) {
     echo json_encode(array('user'=>$ret,'error'=>$error));
 });
 
-//All with limits
-$app->get('/:token/get/:property/all/:limit_start/:limit_end', function ($token, $property, $l_start, $l_end) {
-	$obj= null;
-	switch ($property) {
-		case 'carichi':
-            require_once("./models/carichi.php");
-            if(checkPermissions($token,4))
-                $obj= new Carichi();
-            break;
-		case 'prodotti':
-			require_once("./models/prodotti.php");
-			if(checkPermissions($token,4))
-				$obj= new Prodotti();
-			break;
-		case 'supermercati':
-			require_once("./models/supermercati_colletta.php");
-			if(checkPermissions($token,4))
-				$obj= new SupermercatiColletta();
-			break;
-		case 'comuni':
-			require_once("./models/comuni.php");
-			if(checkPermissions($token,4))
-				$obj= new Comuni();
-			break;
-		default:
-			
-			break;
-		}
-		$ret= array();
-		if($obj instanceof Model)
-			$ret= call_user_func_array(array($obj, 'getAll'), array($l_start, $l_end, true));
-		else $ret= array('error'=>'Non hai i permessi disponibili per questa azione!');
-		echo json_encode(array($property=>$ret));
-});
-
-//All without limits
-$app->get('/:token/get/:property/all', function ($token, $property) {
+function doAction($token, $method, $property, $l_start, $l_end, $values)
+{
+    $ret= array();
+    
     $obj= null;
     switch ($property) {
         case 'carichi':
@@ -109,77 +76,53 @@ $app->get('/:token/get/:property/all', function ($token, $property) {
             if(checkPermissions($token,4))
                 $obj= new Comuni();
             break;
-        default:
-            
-            break;
-        }
-        $ret= array();
-        if($obj instanceof Model)
-            $ret= call_user_func_array(array($obj, 'getAll'), array(null, null, true));
-        else $ret= array('error'=>'Non hai i permessi disponibili per questa azione!');
-        echo json_encode(array($property=>$ret));
-});
-
-//Get by property with limits
-$app->get('/:token/get/:property/:method/:par/:limit_start/:limit_end', function ($token, $property, $method, $par, $l_start, $l_end) {
-	$obj= null;
-    if($method=='IdArea') $par= $_SESSION['user']['id_area'];
-	switch ($property) {
-		case 'prodotti':
-			require_once("./models/prodotti.php");
-			if(checkPermissions($token,4))
-				$obj= new Prodotti();
-			break;
-		case 'supermercati':
-			require_once("./models/supermercati_colletta.php");
-			if(checkPermissions($token,4))
-				$obj= new SupermercatiColletta();
-			break;
-		case 'comuni':
-			require_once("./models/comuni.php");
-			if(checkPermissions($token,1))
-				$obj= new Comuni();
-			break;
-		default:
-			
-			break;
-	}
-	$ret= array();
-	if($obj instanceof Model)
-		$ret= call_user_func_array(array($obj, 'getBy'.$method), array($par, $l_start, $l_end));
-	else $ret= array('error'=>'Non hai i permessi disponibili per questa azione!');
-	echo json_encode(array($property=>$ret));
-});
-
-//Get by property without limits
-$app->get('/:token/get/:property/:method/:par', function ($token, $property, $method, $par) {
-    $obj= null;
-    if($method=='IdArea') $par= $_SESSION['user']['id_area'];
-    switch ($property) {
-        case 'prodotti':
-            require_once("./models/prodotti.php");
+        case 'catene':
+            require_once("./models/catene.php");
             if(checkPermissions($token,4))
-                $obj= new Prodotti();
+                $obj= new Catene();
             break;
-        case 'supermercati':
-            require_once("./models/supermercati_colletta.php");
+        case 'capi_equipe':
+            require_once("./models/capi_equipe.php");
             if(checkPermissions($token,4))
-                $obj= new SupermercatiColletta();
-            break;
-        case 'comuni':
-            require_once("./models/comuni.php");
-            if(checkPermissions($token,1))
-                $obj= new Comuni();
+                $obj= new CapiEquipe();
             break;
         default:
             
             break;
     }
-    $ret= array();
+    
     if($obj instanceof Model)
-        $ret= call_user_func_array(array($obj, 'getBy'.$method), array($par, null, null));
+    {
+        $ret= call_user_func_array(array($obj, $method), array($values, $l_start, $l_end));
+        /*
+        if($method!=null)
+        {
+            $ret= call_user_func_array(array($obj, 'getBy'.$method), array($par, $l_start, $l_end));
+        }
+        else
+        {
+            $ret= call_user_func_array(array($obj, 'getAll'), array($l_start, $l_end, true));
+        }*/
+    }
     else $ret= array('error'=>'Non hai i permessi disponibili per questa azione!');
+    
     echo json_encode(array($property=>$ret));
+}
+
+//Get with limits
+$app->post('/:token/get/:property/:limit_start/:limit_end', function($token, $property, $l_start, $l_end) use($app){
+    $req= json_decode($app->request()->getBody());
+    doAction($token, 'get', $property, $l_start, $l_end, $$req);
+});
+
+$app->post('/:token/get/:property', function($token, $property) use($app){
+    $req= json_decode($app->request()->getBody());
+    doAction($token, 'get', $property, null, null, $req);
+});
+
+$app->post('/:token/update/:property', function($token, $property) use($app){
+    $req= json_decode($app->request()->getBody());
+    doAction($token, 'update', $property, null, null, $req);
 });
 
 $app->post('/save/prodotti', function() use($app){

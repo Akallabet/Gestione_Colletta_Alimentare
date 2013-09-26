@@ -11,6 +11,7 @@ class TableSupermercatoColletta
 	public $id_magazzino;
 	public $id_area;
 	public $id_comune;
+	public $confemrato;
 	
 	public function __construct()
 	{
@@ -23,10 +24,10 @@ class SupermercatiColletta extends Model
 	public function __construct()
 	{
 		parent::__construct();
-		$this->table= 'supermercati_colletta';
+		$this->table= 'supermercati';
 		$this->table_model= "TableSupermercatoColletta";
 		$this->join_statement= " JOIN supermercati_anagrafica B ON A.id_supermercato=B.id";
-		$this->select_statement= "A.id, A.id_supermercato, A.id_colletta, A.id_catena, A.nome, A.id_magazzino, A.id_area, B.id_comune, B.id_diocesi";
+		$this->select_statement= "A.id, A.id_supermercato, A.id_colletta, A.id_catena, A.confermato, A.nome, A.id_magazzino, A.id_area, B.id_comune, B.id_diocesi, C.nome";
 		$this->statements= array(
 			"GET_ALL"=>"SELECT * FROM {$this->table} A {$this->join_statement}",
 			"GET_BY_ID"=>"SELECT * FROM {$this->table} A {$this->join_statement} WHERE A.id=?",
@@ -113,7 +114,6 @@ class SupermercatiColletta extends Model
         else
         {
             $statement= $this->connector->connection->prepare($this->statements['GET_BY_ID_AREA_NO_LIMITS']);
-            
             $statement->bind_param("s",$id_area);
             $res= $this->executePreparedQuery($statement);
         }

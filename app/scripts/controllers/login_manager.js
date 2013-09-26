@@ -18,7 +18,7 @@ function($scope, $resource, $location, LoginFactory)
                 if(!arguments[0].error)
                 {
                     $scope.alerts=[];
-                    $location.path('/supermercati/'+arguments[0].token);
+                    $location.path(arguments[0].token+'/home/');
                 }
                 else
                     $scope.alerts.push({type:"error",disabled: false, msg: 'Nome utente o password errati, riprova!'});
