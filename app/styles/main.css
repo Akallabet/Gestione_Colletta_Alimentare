@@ -24,9 +24,7 @@ tr{position: relative;}
 .modal-header {padding: 5px 15px!important;}
 .modal-footer {padding: 10px 15px 10px!important;}
 
-.modal-body {
-max-height: 348px!important;
-}
+.modal-body {max-height: 348px!important;}
 
 .modal-body table tbody tr{height: 20px;}
-.modal-body table tbody tr input[type="number"]{margin-bottom: 0;}
+.modal-body table tbody tr input[type="number"]{margin-bottom: 0; line-height: 15px; height: 15px;}
