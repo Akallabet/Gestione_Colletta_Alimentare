@@ -13,8 +13,7 @@
         </div>
         <div class="row-fluid">
             <form class="form-inline">
-                <label>Inserisci un nuovo carico</label>
-                <button class="btn btn-primary" ng-click="newCarico()">Vai</button>
+                <button class="btn btn-primary" ng-click="open()">Inserisci un nuovo carico</button>
             </form>
         </div>
         <table class="table table-bordered table-striped table-hover table-container table-condensed">
@@ -45,4 +44,38 @@
         <tfoot></tfoot>
         </table>
     </div>
+    <script type="text/ng-template" id="myModalContent.html">
+        <form>
+            <div class="modal-header">
+                <h3>Nuovo carico</h3>
+            </div>
+            <div class="modal-body new_carico_modal">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kili</th>
+                            <th>Scatole</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="cursor-pointer" ng-repeat="pr in carico | orderBy:tipo">
+                            <td class="">{{pr.tipo}}</td>
+                            <td>
+                                <input type="number" class="span1" ng-model="pr.kg" required/>
+                            </td>
+                            <td>
+                                <input type="number" class="span1" ng-model="pr.scatole" required/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+    </script>
 </div>

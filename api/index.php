@@ -133,8 +133,7 @@ $app->post('/:token/set/:property', function($token, $property) use($app){
     doAction($token, 'update', $property, null, null, $req);
 });
 
-$app->post('/save/prodotti', function() use($app){
-    
+$app->post('/:token/save/prodotti', function() use($app){
     $req= json_decode($app->request()->getBody());
     require_once("./models/prodotti.php");
     $prodottiManager= new Prodotti();

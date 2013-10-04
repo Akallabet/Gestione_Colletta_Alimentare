@@ -131,6 +131,41 @@ collettaApp.service('SupermercatiService', ['$q', function($q){
     }
 }]);
 
+collettaApp.service('CaricoService', ['$q',function($q)
+{
+    return{
+        prodottiNomi: [
+            {tipo:'OLIO'},
+            {tipo:'OMOGENIZZATI'},
+            {tipo:'ALIMENTI INFANZIA'},
+            {tipo:'TONNO'},
+            {tipo:'CARNE IN SCATOLA'},
+            {tipo:'PELATI'},
+            {tipo:'LEGUMI'},
+            {tipo:'PASTA'},
+            {tipo:'RISO'},
+            {tipo:'ZUCCHERO'},
+            {tipo:'LATTE'},
+            {tipo:'VARIE'}
+        ],
+        carico: [
+            {tipo:'OLIO', kg: 0, scatole: 0},
+            {tipo:'OMOGENIZZATI', kg: 0, scatole: 0},
+            {tipo:'ALIMENTI INFANZIA', kg: 0, scatole: 0},
+            {tipo:'TONNO', kg: 0, scatole: 0},
+            {tipo:'CARNE IN SCATOLA', kg: 0, scatole: 0},
+            {tipo:'PELATI', kg: 0, scatole: 0},
+            {tipo:'LEGUMI', kg: 0, scatole: 0},
+            {tipo:'PASTA', kg: 0, scatole: 0},
+            {tipo:'RISO', kg: 0, scatole: 0},
+            {tipo:'ZUCCHERO', kg: 0, scatole: 0},
+            {tipo:'LATTE', kg: 0, scatole: 0},
+            {tipo:'VARIE', kg: 0, scatole: 0}
+        ],
+        lastId: null
+    }
+}]);
+
                                         /*END SERVICES*/
                                        
                                        /*START FACTORIES*/
@@ -171,8 +206,20 @@ collettaApp.factory('SetInfoFactory', ['$resource', 'ServerAddress', function($r
     return SetInfoFactory;
 }]);
 
+collettaApp.factory('InsertInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
+    var InsertInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/insert/:property',
+        {
+            token: '@token',
+            property: '@property'
+        }
+    );
+    return InsertInfoFactory;
+}]);
+
 collettaApp.factory('ProductsFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var ProductsFactory = $resource(ServerAddress.getServerAddress()+'/save/prodotti',{});
+    var ProductsFactory = $resource(ServerAddress.getServerAddress()+'/:token/save/prodotti',{
+        token: '@token'
+    });
     return ProductsFactory;
 }]);
 

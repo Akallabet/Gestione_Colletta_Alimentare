@@ -1,25 +1,13 @@
 'use strict';
 var prodotti=[];
 
-var ProdottiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'ProductsFactory', 'ComuniService', 'CateneService', 'CapiEquipeService',
-function($scope, $resource, $location, $routeParams, GetInfoFactory, ProductsFactory, ComuniService, CateneService, CapiEquipeService)
+var ProdottiCtrl=['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'ProductsFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService',
+function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, ProductsFactory, ComuniService, CateneService, CapiEquipeService, CaricoService)
 {
     $scope.supermercato= null;
-    $scope.prodottiNomi=[
-        {tipo:'OLIO'},
-        {tipo:'OMOGENIZZATI'},
-        {tipo:'ALIMENTI INFANZIA'},
-        {tipo:'TONNO'},
-        {tipo:'CARNE IN SCATOLA'},
-        {tipo:'PELATI'},
-        {tipo:'LEGUMI'},
-        {tipo:'PASTA'},
-        {tipo:'RISO'},
-        {tipo:'ZUCCHERO'},
-        {tipo:'LATTE'},
-        {tipo:'VARIE'}
-    ];
-    
+    $scope.prodottiNomi= CaricoService.prodottiNomi;
+    $scope.caricoTmpl= CaricoService.carico;
+
     $scope.prodottiCarichi={};
     $scope.prodottiLength=0;
     $scope.lastCarico=1;
@@ -36,7 +24,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, ProductsFac
                 id_supermercato: $routeParams.idSupermercato
             }
         );
-
+        
         ret.$save({
             token: $routeParams.token,
             property: 'prodotti'
@@ -46,95 +34,50 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, ProductsFac
             {
                 $scope.prodotti= _.groupBy(ret.prodotti, function(prod){ return parseInt(prod.carico)});
                 $scope.prodottiLength= Object.keys($scope.prodotti).length;
-
-                /*
-                $scope.prodottiCarichi={};
-                $scope.prodottiLength=0;
-                for(var i in ret.prodotti)
-                {
-                    if(typeof $scope.prodottiCarichi[parseInt(ret.prodotti[i].carico)]=='undefined')
-                    {
-                        $scope.prodottiCarichi[parseInt(ret.prodotti[i].carico)]=[];
-                        if(ret.prodotti[i].carico>=$scope.lastCarico) $scope.lastCarico= ret.prodotti[i].carico+1;
-                    }
-                    $scope.prodottiCarichi[parseInt(ret.prodotti[i].carico)].push(ret.prodotti[i]);
-                    $scope.prodottiLength++;
-                }
-                
-                for(var i in $scope.prodottiCarichi)
-                {
-                    for(var x in $scope.prodottiNomi)
-                    {
-                        var found=false;
-                        for(var j in $scope.prodottiCarichi[i])
-                        {
-                            if($scope.prodottiCarichi[i][j].prodotto==$scope.prodottiNomi[x].tipo)
-                            {
-                                found=true;
-                                break;
-                            }
-                        }
-                        if(!found)
-                        {
-                            $scope.prodottiCarichi[i].push({
-                                carico: i,
-                                id: null,
-                                id_supermercato: $routeParams.idSupermercato,
-                                id_user: null,
-                                kg: 0,
-                                prodotto: $scope.prodottiNomi[x].tipo,
-                                scatole: 0,
-                                ultima_modifica: ''
-                            });
-                        }
-                    }
-                }
-                var tmp= [];
-                for(var i in $scope.prodottiCarichi)
-                {
-                    tmp.push({carico: parseInt(i), prodotti: $scope.prodottiCarichi[i]});
-                }
-                $scope.prodottiCarichi= tmp;
-                prodotti= $scope.prodottiCarichi;
-                */
-                console.log($scope.prodottiCarichi);
+                CaricoService.lastId= ($scope.prodottiLength>0) ? Object.keys($scope.prodotti)[Object.keys($scope.prodotti).length-1] : 0;
             }
         });
     }
     
-    $scope.getCarichiByIdSupermercato();
-    $scope.getSupermercatoById();
-    
-    $scope.newCarico= function()
-    {
-        var pr= new ProductsFactory({
-            token: $routeParams.token,
-            id_supermercato: $routeParams.idSupermercato,
-            carico: $scope.lastCarico
-        });
-        var newCarico= pr.$save(function(){
-            $scope.getCarichiByIdSupermercato();
-        });
-    }
+    $scope.$on("refresh", function(){
+        $scope.getCarichiByIdSupermercato();
+        $scope.getSupermercatoById();
+    });
+
+    $scope.$emit("refresh");
     
     $scope.isNaN= isNaN;
     $scope.parseInt= parseInt;
-    /*
-    $scope.getCarichiByIdSupermercato= function()
-    {
-        var car= GetInfoService.get({
-            token: $routeParams.token,
-            property: 'carichi',
-            method: 'IdSupermercato',
-            par: $routeParams.idSupermercato,
-        },
-        function(){
-            for(var i in car.carichi)
-            {
-                console.log(car.carichi[i]);
-                //$scope.supermercati.push(angular.extend({index: i+1},superm.supermercati[i]));
+
+    $scope.open = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'myModalContent.html',
+            controller: CaricoCtrl,
+            resolve: {
+                
             }
         });
+
+        modalInstance.result.then(function (selectedItem) {  
+            newCarico();
+        },function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
     }
-    $scope.getCarichiByIdSupermercato();*/
+
+    function newCarico()
+    {
+        console.log($scope.caricoTmpl);
+        /*
+        var newCarico= new InsertInfoFactory({
+            id_supermercato: $routeParams.idSupermercato,
+            carico: $scope.lastCarico+1
+        });
+        var inewCarico= pr.$save({
+            token: $routeParams.token
+        },
+        function(){
+            //$scope.getCarichiByIdSupermercato();
+        });*/
+    }
 }];
