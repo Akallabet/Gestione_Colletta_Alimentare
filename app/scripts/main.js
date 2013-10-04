@@ -103,7 +103,7 @@ collettaApp.service('SupermercatiService', ['$q', function($q){
     function Supermercato(obj){
         return $.extend({}, {
             index: null,
-            selected: false,
+            checked: false,
             id: null,
             id_supermercato: null,
             id_colletta: null,
@@ -116,7 +116,6 @@ collettaApp.service('SupermercatiService', ['$q', function($q){
             id_comune: null,
             provincia: null,
             comune: null,
-            confemrato: null,
             confermato: null,
             indirizzo: null,
             id_diocesi: null,
@@ -162,6 +161,16 @@ collettaApp.factory('GetInfoFactory', ['$resource', 'ServerAddress', function($r
     return GetInfoFactory;
 }]);
 
+collettaApp.factory('SetInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
+    var SetInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/set/:property',
+        {
+            token: '@token',
+            property: '@property'
+        }
+    );
+    return SetInfoFactory;
+}]);
+
 collettaApp.factory('ProductsFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
     var ProductsFactory = $resource(ServerAddress.getServerAddress()+'/save/prodotti',{});
     return ProductsFactory;
@@ -169,6 +178,14 @@ collettaApp.factory('ProductsFactory', ['$resource', 'ServerAddress', function($
 
                                        /*END FACTORIES*/
                                        /*START DIRECTIVES*/
-
+collettaApp.directive('toggleAll', function(){
+    return {
+        link: function(scope, element, attrs) {
+            $(element).on('change', function(){
+                $('tbody input[type="checkbox"]').trigger('click');
+            });
+        }
+    }
+});
 
                                        /*END DIRECTIVES*/

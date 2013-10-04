@@ -58,6 +58,7 @@ class Comuni extends Model
 
 	function getAll($limit_from=null, $limit_to=null, $json=false)
 	{
+
 		/*
 	    if($json)
         {

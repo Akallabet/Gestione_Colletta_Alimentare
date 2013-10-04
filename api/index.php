@@ -68,6 +68,14 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             break;
         case 'supermercati':
             require_once("./models/supermercati_colletta.php");
+
+            if($method=='get')
+            {
+                if($_SESSION['user']['privilegi']>1)
+                {
+                    $values->id_area= $_SESSION['user']['id_area'];
+                }
+            }
             if(checkPermissions($token,4))
                 $obj= new SupermercatiColletta();
             break;
@@ -120,7 +128,7 @@ $app->post('/:token/get/:property', function($token, $property) use($app){
     doAction($token, 'get', $property, null, null, $req);
 });
 
-$app->post('/:token/update/:property', function($token, $property) use($app){
+$app->post('/:token/set/:property', function($token, $property) use($app){
     $req= json_decode($app->request()->getBody());
     doAction($token, 'update', $property, null, null, $req);
 });

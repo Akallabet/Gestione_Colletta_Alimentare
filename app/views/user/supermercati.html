@@ -4,19 +4,16 @@
          <h2>Supermercati</h2>
     </div>
     <div class="container center-container" >
-        <form class="form-inline" ng-show="search.visible" ng-submit="getSupermercati()">
-            <select ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
+         <form class="form-inline" ng-show="search.visible" ng-submit="getSupermercati(comuneSearch, provinciaSearch, catenaSearch)">
+            <select ui-select2="{ allowClear: true}" ng-model="provinciaSearch" placeholder="Provincia">
                 <option></option>
                 <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
             </select>
-            <span>{{search.provincia}}</span>
-            <select ui-select2="{ allowClear: true}" ng-model="search.comune" placeholder="Comune">
+            <select ui-select2="{ allowClear: true}" ng-model="comuneSearch" placeholder="Comune">
                 <option></option>
-                <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia:search.provincia}">
-                    {{comune.nome}}
-                </option>
+                <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
             </select>
-            <select ui-select2="{ allowClear: true}" ng-model="search.catena" placeholder="Catena">
+            <select ui-select2="{ allowClear: true}" ng-model="catenaSearch" placeholder="Catena">
                 <option></option>
                 <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
             </select>
@@ -56,12 +53,10 @@
             </div>
             <table class="table table-bordered table-striped table-hover table-container table-condensed">
                 <thead>
-                    <!--<th>OK</th>-->
-                   <th>ID</th> <th>Nome</th><th>Indirizzo</th><th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
+                   <th>Nome</th><th>Indirizzo</th><th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
                 </thead>
                 <tbody>
                     <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input | range:((rowsNumber*(currentPage-1))):(rowsNumber*currentPage)" rel="{{supermercato.index}}">
-                        <td ng-click="openDetails(supermercato.id)">{{supermercato.id}}</td>
                         <td ng-click="openDetails(supermercato.id)">{{supermercato.nome}}</td>
                         <td ng-click="openDetails(supermercato.id)">{{supermercato.indirizzo}}</td>
                         <td ng-click="openDetails(supermercato.id)">{{supermercato.provincia}}</td>

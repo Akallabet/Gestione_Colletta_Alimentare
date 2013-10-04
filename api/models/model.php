@@ -36,9 +36,36 @@ class Model
 		else return array('result'=>false, 'error'=>mysqli_error());
 	}
 	
-	function update()
+	function update($parameters)
 	{
-		
+		$str="UPDATE  {} SET  `confermato` =  '0' WHERE  `supermercati`.`id` =1;";
+
+		$values= $this->sanitize(get_object_vars($parameters->values));
+		$set= $this->sanitize(get_object_vars($parameters->set));
+		/*
+		$str= "SELECT * FROM {$this->table}";
+		if(count($values)>0)
+		{
+			$par= Array();
+			foreach ($values as $key => $value) {
+				if(is_object($value))
+				{
+					$value= get_object_vars($value);
+					$keys= array_keys($value);
+					if($keys[0]=='IN')
+					{
+						$par[]= "{$key} IN (".implode(', ', $value[$keys[0]]).")";
+					}
+				}
+				else
+					$par[]= "{$key} = {$value}";
+			}
+			$str= "SELECT * FROM {$this->table} WHERE ".implode(" AND ", $par);
+		}
+		$res= $this->executeStandardQuery($str);
+		return $res;*/
+
+		print_r($values);
 	}
 	
 	function delete($id)
@@ -50,7 +77,7 @@ class Model
 		else return array('result'=>false, 'error'=>mysqli_error());
 	}
 	
-	function get($values, $limit_from=null, $limit_to=null)
+	public function get($values, $limit_from=null, $limit_to=null)
 	{
 		$values= $this->sanitize(get_object_vars($values));
 		$str= "SELECT * FROM {$this->table}";

@@ -1,11 +1,11 @@
 'use strict';
 var catene=[];
-var SupermercatiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService',
-function($scope, $resource, $location, $routeParams, GetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService)
+var SupermercatiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService',
+function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService)
 {
     AdminPagesService.section='supermercati';
     $scope.supermercati= SupermercatiService.supermercati=[];
-    $scope.supermercati_filtered=10;
+    $scope.checkedAll= 0;
     $scope.pages= 1;
     $scope.columns=[];
     $scope.getComuneById= getComuneById;
@@ -41,7 +41,6 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, Supermercat
             function()
             {
                 $scope.comuni= comuniFactory.comuni;
-                //console.log($scope.comuni.filter(function(c){return c.nome==null}))
                 $scope.provincie= _.uniq($scope.comuni.map(function(c){ return {id: c.id_provincia, nome: c.provincia}}), 'id');
 
                 for(var i=0; i<$scope.supermercati.length; i++)
@@ -125,10 +124,10 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, Supermercat
 
     $scope.getSupermercati= function(id)
     {
-        var query= {id_area:1};
-        if($scope.search.comune!=null && $scope.search.comune!='') query.id_comune= comune;
-        if($scope.search.provincia!=null && $scope.search.provincia!='') query.id_provincia= provincia;
-        if($scope.search.catena!=null && $scope.search.catena!='') query.id_catena= catena;
+        var query= {};
+        if($scope.search.comune!=null && $scope.search.comune!='') query.id_comune= $scope.search.comune;
+        if($scope.search.provincia!=null && $scope.search.provincia!='') query.id_provincia= $scope.search.provincia;
+        if($scope.search.catena!=null && $scope.search.catena!='') query.id_catena= $scope.search.catena;
 
         var superm= new GetInfoFactory(
             query
@@ -136,7 +135,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, Supermercat
         
         superm.$save({
             token: $routeParams.token,
-            property: 'supermercati'
+                property: 'supermercati'
             },
             function(){
             for(var i in superm.supermercati)
@@ -150,6 +149,28 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, Supermercat
             $scope.pages= $scope.totalPages();
             $scope.$emit("capi_equipe");
             $scope.search.visible= false;
+        });
+    }
+
+    $scope.setToggledSupermercati= function(bool)
+    {
+        //console.log($scope.getAllSupermercatiIds({checked: true}))
+        var set= new SetInfoFactory({
+            values: {
+                id_supermercato:{'IN' : $scope.getAllSupermercatiIds({checked: 1})}
+            },
+            set:{
+                confermato: bool
+            }
+        });
+        
+        set.$save({
+            token: $routeParams.token,
+            property: 'supermercati'
+        },
+        function()
+        {
+
         });
     }
 
@@ -182,15 +203,34 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, Supermercat
 
     $scope.openDetails= function(id)
     {
-        $location.path('/prodotti/'+$routeParams.token+'/'+id);
+        localStorage.supermercato= JSON.stringify($scope.supermercati.filter(function(sup){return sup.id==id;})[0]);
+        $location.path('/'+$routeParams.token+'/prodotti/'+id);
     }
     
-    $scope.getAllSupermercatiIds= function()
+    $scope.getAllSupermercatiIds= function(property)
     {
         var ret=[];
         for(var i=0; i<$scope.supermercati.length; i++)
         {
-            ret.push($scope.supermercati[i].id);
+            if(property!='undefined')
+            {
+                var match= true;
+                for(var p in property)
+                {
+                    if($scope.supermercati[i][p]!= property[p])
+                    {
+                        match= false;
+                        break;
+                    }
+                }
+                
+                if(match)
+                {
+                    ret.push($scope.supermercati[i].id);
+                }
+            }
+            else
+                ret.push($scope.supermercati[i].id);
         }
         return ret;
     }
@@ -199,6 +239,23 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, Supermercat
         initSelection : function (element, callback) {
           callback($(element).data('$ngModelController').$modelValue);
         }
+    }
+
+    $scope.toggleSelected= function(supermercato)
+    {
+        //console.log('lalala');
+        //console.log(supermercato);
+        //$scope.supermercati.map(function(s){});
+    }
+
+    $scope.enableChecked= function()
+    {
+
+    }
+
+    $scope.disableChecked= function()
+    {
+        
     }
 }];
 

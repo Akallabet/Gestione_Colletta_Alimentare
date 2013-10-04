@@ -1,10 +1,10 @@
-<div ng-include="'views/menu.html'"></div>
-<div  ng-controller="SupermercatiCtrl">
+<div ng-include="'views/common/menu.html'"></div>
+<div  ng-controller="ProdottiCtrl">
     <div class="hero-unit">
-        <h1>Gestione prodotti</h1>
-        <h2>{{supermercati[0].nome}}, {{supermercati[0].indirizzo}}</h2>
+        <h2>Gestione prodotti</h2>
+        <h3>{{supermercato.nome}}, {{supermercato.indirizzo}}</h3>
     </div>
-    <div class="container center-container" ng-controller="ProdottiCtrl">
+    <div class="container center-container">
         <div class="row-fluid">
             <div class="alert span6 offset3" ng-show="prodottiLength==0">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -34,9 +34,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="cursor-pointer" ng-click="" ng-repeat="row in prodottiCarichi | orderBy:carico" rel="{{carico}}">
-                <td><div class="text-center fsize12">{{row.carico}}</div></td>
-                <td colspan="2" ng-repeat="pr in row.prodotti | orderBy:tipo">
+            <tr class="cursor-pointer" ng-click="" ng-repeat="(key, carico) in prodotti">
+                <td><div class="text-center fsize12">{{key}}</div></td>
+                <td colspan="2" ng-repeat="pr in carico | orderBy:tipo">
                     <span class="pull-left">{{pr.kg}}</span>
                     <span class="pull-right">{{pr.scatole}}</span>
                 </td>
