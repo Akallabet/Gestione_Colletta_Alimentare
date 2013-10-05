@@ -156,12 +156,12 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
     {
         //console.log($scope.getAllSupermercatiIds({checked: true}))
         var set= new SetInfoFactory({
-            values: {
+            values: [{
                 id_supermercato:{'IN' : $scope.getAllSupermercatiIds({checked: 1})}
-            },
-            set:{
+            }],
+            set:[{
                 confermato: bool
-            }
+            }]
         });
         
         set.$save({

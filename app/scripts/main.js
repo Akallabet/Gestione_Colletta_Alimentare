@@ -148,19 +148,33 @@ collettaApp.service('CaricoService', ['$q',function($q)
             {tipo:'LATTE'},
             {tipo:'VARIE'}
         ],
-        carico: [
-            {tipo:'OLIO', kg: 0, scatole: 0},
-            {tipo:'OMOGENIZZATI', kg: 0, scatole: 0},
-            {tipo:'ALIMENTI INFANZIA', kg: 0, scatole: 0},
-            {tipo:'TONNO', kg: 0, scatole: 0},
-            {tipo:'CARNE IN SCATOLA', kg: 0, scatole: 0},
-            {tipo:'PELATI', kg: 0, scatole: 0},
-            {tipo:'LEGUMI', kg: 0, scatole: 0},
-            {tipo:'PASTA', kg: 0, scatole: 0},
-            {tipo:'RISO', kg: 0, scatole: 0},
-            {tipo:'ZUCCHERO', kg: 0, scatole: 0},
-            {tipo:'LATTE', kg: 0, scatole: 0},
-            {tipo:'VARIE', kg: 0, scatole: 0}
+        newCarico: [
+            {prodotto:'OLIO', kg: 0, scatole: 0},
+            {prodotto:'OMOGENIZZATI', kg: 0, scatole: 0},
+            {prodotto:'ALIMENTI INFANZIA', kg: 0, scatole: 0},
+            {prodotto:'TONNO', kg: 0, scatole: 0},
+            {prodotto:'CARNE IN SCATOLA', kg: 0, scatole: 0},
+            {prodotto:'PELATI', kg: 0, scatole: 0},
+            {prodotto:'LEGUMI', kg: 0, scatole: 0},
+            {prodotto:'PASTA', kg: 0, scatole: 0},
+            {prodotto:'RISO', kg: 0, scatole: 0},
+            {prodotto:'ZUCCHERO', kg: 0, scatole: 0},
+            {prodotto:'LATTE', kg: 0, scatole: 0},
+            {prodotto:'VARIE', kg: 0, scatole: 0}
+        ],
+        caricoTmpl: [
+            {prodotto:'OLIO', kg: 0, scatole: 0},
+            {prodotto:'OMOGENIZZATI', kg: 0, scatole: 0},
+            {prodotto:'ALIMENTI INFANZIA', kg: 0, scatole: 0},
+            {prodotto:'TONNO', kg: 0, scatole: 0},
+            {prodotto:'CARNE IN SCATOLA', kg: 0, scatole: 0},
+            {prodotto:'PELATI', kg: 0, scatole: 0},
+            {prodotto:'LEGUMI', kg: 0, scatole: 0},
+            {prodotto:'PASTA', kg: 0, scatole: 0},
+            {prodotto:'RISO', kg: 0, scatole: 0},
+            {prodotto:'ZUCCHERO', kg: 0, scatole: 0},
+            {prodotto:'LATTE', kg: 0, scatole: 0},
+            {prodotto:'VARIE', kg: 0, scatole: 0}
         ],
         lastId: null
     }
@@ -207,20 +221,10 @@ collettaApp.factory('SetInfoFactory', ['$resource', 'ServerAddress', function($r
 }]);
 
 collettaApp.factory('InsertInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var InsertInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/insert/:property',
-        {
-            token: '@token',
-            property: '@property'
-        }
-    );
-    return InsertInfoFactory;
-}]);
-
-collettaApp.factory('ProductsFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var ProductsFactory = $resource(ServerAddress.getServerAddress()+'/:token/save/prodotti',{
+    var InsertInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/save/prodotti',{
         token: '@token'
     });
-    return ProductsFactory;
+    return InsertInfoFactory;
 }]);
 
                                        /*END FACTORIES*/

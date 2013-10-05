@@ -23,14 +23,37 @@ class Model
 								"GET_BY_ID"=>"SELECT * FROM {$this->table} WHERE id=?");
 	}
 	
-	function insert($arr)
+	/*
+	INSERT INTO  `colletta_alimentare`.`prodotti` (
+	`id` ,
+	`id_supermercato` ,
+	`prodotto` ,
+	`kg` ,
+	`scatole` ,
+	`carico` ,
+	`id_user` ,
+	`ultima_modifica`
+	)
+	VALUES (
+	NULL ,  '1',  'OLIO',  '0',  '0',  '1',  '1', 
+	CURRENT_TIMESTAMP
+	), (
+	NULL ,  '1',  'OMOGENIZZATI',  '10',  '10',  '1',  '1', 
+	CURRENT_TIMESTAMP
+	);
+	*/
+
+
+	function insert($parameters)
 	{
-		$arr= $this->sanitize($arr);
-		foreach ($arr as $key => $value) {
-			$arr[$key]= "'{$value}'";
+		$parameters->values= $this->sanitize($parameters->values);
+		$values= array();
+		foreach ($parameters->values as $key => $value) {
+			$parameters->values[$key]= get_object_vars($value);
+			$values[]= "(".implode(", ", $parameters->values[$key]).")";
 		}
-		$query="INSERT INTO {$this->table} (".implode(', ',array_keys($arr)).") VALUES (".implode(", ", $arr).")";
-		
+		$query="INSERT INTO {$this->table} (".implode(', ',array_keys($parameters->values[0])).") VALUES ".implode(",", $values);
+
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true);
 		else return array('result'=>false, 'error'=>mysqli_error());
@@ -38,10 +61,25 @@ class Model
 	
 	function update($parameters)
 	{
-		$str="UPDATE  {} SET  `confermato` =  '0' WHERE  `supermercati`.`id` =1;";
+		foreach ($parameters->values as $key => $value) {
+			$setValues= array();
+			foreach ($value as $column => $val) {
+				$setValues[]= " {$column} = '{$val}' ";
+			}
+			$str= "UPDATE  {$this->table} SET ";
+			$str.= implode(", ", $setValues);
+			$str.= " WHERE  ";
+			$parameters->set[$key]= get_object_vars($parameters->set[$key]);
+			//print_r(array_keys($parameters->set[$key]));
 
-		$values= $this->sanitize(get_object_vars($parameters->values));
-		$set= $this->sanitize(get_object_vars($parameters->set));
+			//$res= $this->executeStandardQuery($str);
+		}
+		if($res) return array('result'=>true);
+		else return array('result'=>false, 'error'=>mysql_error());
+
+		//$values= $this->sanitize(get_object_vars($parameters->values));
+		//$set= $this->sanitize(get_object_vars($parameters->set));
+
 		/*
 		$str= "SELECT * FROM {$this->table}";
 		if(count($values)>0)
@@ -64,8 +102,6 @@ class Model
 		}
 		$res= $this->executeStandardQuery($str);
 		return $res;*/
-
-		print_r($values);
 	}
 	
 	function delete($id)

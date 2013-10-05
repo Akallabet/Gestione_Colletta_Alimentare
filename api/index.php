@@ -63,6 +63,12 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             break;
         case 'prodotti':
             require_once("./models/prodotti.php");
+            if($method=='insert')
+            {
+                foreach ($values->values as $key => $value) {
+                    $values->values[$key]->id_user= $_SESSION['id_user'];
+                }
+            }
             if(checkPermissions($token,4))
                 $obj= new Prodotti();
             break;
@@ -133,11 +139,9 @@ $app->post('/:token/set/:property', function($token, $property) use($app){
     doAction($token, 'update', $property, null, null, $req);
 });
 
-$app->post('/:token/save/prodotti', function() use($app){
+$app->post('/:token/save/:property', function($token, $property) use($app){
     $req= json_decode($app->request()->getBody());
-    require_once("./models/prodotti.php");
-    $prodottiManager= new Prodotti();
-    echo json_encode(array('result'=>$prodottiManager->addNewCarico($req->id_supermercato, $req->carico, $_SESSION['id_user'])));
+    doAction($token, 'insert', $property, null, null, $req);
 });
 
 $app->run();
