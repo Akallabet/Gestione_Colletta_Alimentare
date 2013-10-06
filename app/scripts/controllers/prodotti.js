@@ -92,13 +92,16 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
     function saveNewCarico()
     {
         var tmpCarico= $scope.caricoTmpl.map(function(c){ 
-            return $.extend(c, {
+            return $.extend({}, {
                 id_supermercato: $routeParams.idSupermercato,
                 id_user: '',
                 prodotto:"'"+c.prodotto+"'",
+                kg: c.kg,
+                scatole: c.scatole,
                 carico: parseInt(CaricoService.lastId)+1
             });
         });
+        console.log(tmpCarico);
         var newCarico= new InsertInfoFactory({
             values: tmpCarico
         });
