@@ -7,7 +7,8 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, CaricoServi
 	$scope.columns= CaricoService.prodottiNomi;
 	$scope.carico = CaricoService.caricoTmpl;
 	$scope.lastId = CaricoService.lastId;
-	
+	$scope.modalTitle= CaricoService.modalTitle;
+
 	$scope.ok = function () {
 		$modalInstance.close();
 	}

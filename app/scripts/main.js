@@ -148,6 +148,10 @@ collettaApp.service('CaricoService', ['$q',function($q)
             {tipo:'LATTE'},
             {tipo:'VARIE'}
         ],
+        modalOptions: {
+            title: 'Nuovo Carico',
+            buttons: 'Nuovo Carico'
+        },
         newCarico: [
             {prodotto:'OLIO', kg: 0, scatole: 0},
             {prodotto:'OMOGENIZZATI', kg: 0, scatole: 0},

@@ -54,6 +54,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
     $scope.parseInt= parseInt;
 
     $scope.openNewCarico = function () {
+        CaricoService.modalTitle= "Nuovo Carico";
         $scope.caricoTmpl.map(function(c, i){return $.extend(c, CaricoService.newCarico[i])});
         var modalInstance = $modal.open({
             templateUrl: 'myModalContent.html',
@@ -71,7 +72,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
     }
 
     $scope.openSetCarico = function (carico) {
-
+        CaricoService.modalTitle= "Modifica Carico";
         $scope.caricoTmpl.map(function(c, i){return $.extend(c, carico[i])});
         
         var modalInstance = $modal.open({
