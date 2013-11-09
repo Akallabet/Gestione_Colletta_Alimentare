@@ -32,10 +32,10 @@ class Model
 			$values[]= "(".implode(", ", $parameters->values[$key]).")";
 		}
 		$query="INSERT INTO {$this->table} (".implode(', ',array_keys($parameters->values[0])).") VALUES ".implode(",", $values);
-
+		
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true);
-		else return array('result'=>false, 'error'=>mysqli_error());
+		else return array('result'=>false, 'error'=>$this->connector->connection->error);
 	}
 	
 	function update($parameters)
@@ -56,7 +56,7 @@ class Model
 			$res= $this->executeStandardQuery($str);
 		}
 		if($res) return array('result'=>true);
-		else return array('result'=>false, 'error'=>mysql_error());
+		else return array('result'=>false, 'error'=>$this->connector->connection->error);
 	}
 	
 	function delete($id)
@@ -65,7 +65,7 @@ class Model
 		$query= "DELETE FROM {$this->table} WHERE id='{$id}'";
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true);
-		else return array('result'=>false, 'error'=>mysqli_error());
+		else return array('result'=>false, 'error'=>$this->connector->connection->error);
 	}
 	
 	public function get($values, $limit_from=null, $limit_to=null)
@@ -157,10 +157,10 @@ class Model
 		{
 			foreach ($p as $key => $value) {
 				if(!is_object($value) && !is_array($value))
-					$p[$key]= mysql_real_escape_string($value);
+					$p[$key]= $this->connector->connection->real_escape_string($value);
 			}
 		}
-		else $p= mysql_real_escape_string($p);
+		else $p= $this->connector->connection->real_escape_string($p);
 		return $p;
 	}
 }

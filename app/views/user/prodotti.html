@@ -1,5 +1,5 @@
-<div ng-include="'views/common/menu.html'"></div>
-<div  ng-controller="ProdottiCtrl">
+<div ng-controller="ProdottiCtrl">
+    <div ng-include="'views/common/menu.html?version={{version}}'"></div>
     <div class="hero-unit">
         <h3>Gestione prodotti - {{supermercato.nome}}, {{supermercato.indirizzo}}</h3>
     </div>
@@ -32,9 +32,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="cursor-pointer" ng-click="" ng-repeat="(key, carico) in prodotti">
-                <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{key}}</div></td>
-                <td colspan="2" ng-repeat="pr in carico | orderBy:tipo" ng-click="openSetCarico(carico)">
+            <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
+                <td ng-click="openSetCarico(carico.objects)"><div class="text-center fsize12">{{carico.order}}</div></td>
+                <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico.objects)">
                     <span class="pull-left">{{pr.kg}}</span>
                     <span class="pull-right">{{pr.scatole}}</span>
                 </td>

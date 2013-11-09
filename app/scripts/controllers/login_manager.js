@@ -1,8 +1,9 @@
 'use strict';
 
-var LoginCtrl=['$scope', '$resource','$location','LoginFactory',
-function($scope, $resource, $location, LoginFactory)
+var LoginCtrl=['$scope', '$resource','$location','LoginFactory', 'VersionService',
+function($scope, $resource, $location, LoginFactory, VersionService)
 {
+    $scope.version= VersionService.version;
     $scope.alerts= [];
     $scope.closeAlerts= function(){
         $scope.alerts= [];

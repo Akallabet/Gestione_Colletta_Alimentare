@@ -1,8 +1,9 @@
 'use strict';
 
-var AdminCtrl=['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'AdminPagesService', 'LogoutFactory',
-function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFactory, AdminPagesService,  LogoutFactory)
+var AdminCtrl=['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'AdminPagesService', 'LogoutFactory', 'VersionService',
+function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFactory, AdminPagesService,  LogoutFactory, VersionService)
 {
+	$scope.version= VersionService.version;
 	$scope.token= $routeParams.token;
     $scope.sections= AdminPagesService.sections;
     $scope.section= AdminPagesService.section;

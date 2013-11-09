@@ -1,0 +1,17 @@
+<div class="hero-unit">
+    <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlerts()">{{alert.msg}}</alert>
+    <div id="login-wraper">
+        <form class="form login-form">
+            <legend>Login <span class="blue">Gestione Colletta Alimentare</span></legend>
+            <div class="body">
+                <label>Username</label>
+                <input type="text" name="loginUsername" ng-model="username" required="">
+                <label>Password</label>
+                <input type="password" name="loginPassword" ng-model="password" required="">
+            </div>
+            <div class="footer">
+                <button type="submit" class="btn btn-success" ng-click="login()">Login</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -11,24 +11,32 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     
-    <link rel="stylesheet" href="styles/18cefc5c.main.css">
+    <link rel="stylesheet" href="styles/80abac8a.main.css">
   </head>
   <body ng-app="collettaApp" class="index" id="top">
     <!--[if lt IE 9]>
       <script src="components/es5-shim/es5-shim.js"></script>
       <script src="components/json3/lib/json3.min.js"></script>
     <![endif]-->
-     <script src="scripts/4c40056f.scripts.js"></script>
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="lib/lodash.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+
+    <script src="scripts/2b98a324.plugins.js"></script>
+
+    <script src="scripts/767b3b66.scripts.js"></script>
     
     <!-- Add your site or application content here -->
     <div ng-view=""></div>
     
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!--
     <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
       (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
       g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
       s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
+-->
   </body>
 </html>

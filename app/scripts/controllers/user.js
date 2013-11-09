@@ -1,8 +1,9 @@
 'use strict';
 
-var UserCtrl=['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory',
-function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFactory, LogoutFactory)
+var UserCtrl=['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService',
+function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFactory, LogoutFactory, VersionService)
 {
+    $scope.version= VersionService.version;
     $scope.activePage= $routeParams.page;
     $scope.token= $routeParams.token;
     $scope.user= UserInfoService.user;

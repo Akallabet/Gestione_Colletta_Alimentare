@@ -104,10 +104,32 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             
             break;
     }
-    
+    $mtime= ((3600)*1)*1000;
+
     if($obj instanceof Model)
     {
-        $ret= call_user_func_array(array($obj, $method), array($values, $l_start, $l_end));
+        //Cache control
+        if($method=='get' && 
+            ($property=='supermercati' ||
+             $property=='comuni' ||
+             $property=='provincie' || 
+             $property=='catene' ||
+             $property=='regioni')
+        )
+        {
+            $filename= 'resources/'.md5("{$token}{$property}{$l_start}{$l_end}".".js");
+
+            if (file_exists($filename) && (filemtime($filename)-time())<$mtime) {
+                $ret= json_decode(file_get_contents($filename));
+            } else {
+                $ret= call_user_func_array(array($obj, $method), array($values, $l_start, $l_end));
+            }
+            $fp = fopen($filename, 'w');
+            fwrite($fp, json_encode($ret, true));
+            fclose($fp);
+        }
+        else
+            $ret= call_user_func_array(array($obj, $method), array($values, $l_start, $l_end));
         /*
         if($method!=null)
         {

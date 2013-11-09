@@ -1,5 +1,5 @@
-<div ng-include="'views/common/menu.html'"></div>
 <div  ng-controller="SupermercatiCtrl" >
+    <div ng-include="'views/common/menu.html?version={{version}}'"></div>
     <div class="hero-unit">
          <h2>Supermercati</h2>
     </div>
@@ -39,16 +39,16 @@
                                 <a>{{pag.label}}</a>
                             </li>
                         </ul>
-                    </div>
-                    <!--
-                    <pagination class="pagination-small pagination-no-margin text-right"
-                        total-items="(supermercati | filter: filter_input).length"
-                        items-per-page="rowsNumber"
-                        current-page="currentPage"
+                    </div>-->
+                    
+                    <div pagination class="pagination-small pagination-no-margin text-right"
+                        total-items="100"
+                        items-per-page="15"
+                        current-page="1"
                         previous-text="Precedento"
                         next-text="Successivo">
-                    </pagination>
-                -->
+                    </div>
+                
                 </div>
             </div>
             <table class="table table-bordered table-striped table-hover table-container table-condensed">

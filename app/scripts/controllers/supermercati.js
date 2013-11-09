@@ -1,9 +1,10 @@
 'use strict';
 var catene=[];
-var SupermercatiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService',
-function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService)
+var SupermercatiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService',
+function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService)
 {
     AdminPagesService.section='supermercati';
+    $scope.version= VersionService.version;
     $scope.supermercati= SupermercatiService.supermercati=[];
     $scope.checkedAll= 0;
     $scope.pages= 1;

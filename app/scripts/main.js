@@ -1,40 +1,48 @@
 'use strict';
+var versionTmpl= '1.1';
+
 var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2']);
 
-collettaApp.config(function($routeProvider) {
+collettaApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
             controller: LoginCtrl,
-            templateUrl:'views/login.html'
+            templateUrl:'views/login.html?version='+versionTmpl
         })
         .when('/:token/home', {
             controller: LoginCtrl,
-            templateUrl:'views/home.html'
+            templateUrl:'views/home.html?version='+versionTmpl
         })
         .when('/:token/gestione/supermercati', {
-            templateUrl:'views/admin/supermercati.html'
+            templateUrl:'views/admin/supermercati.html?version='+versionTmpl
         })
         .when('/:token/gestione/utenti', {
-            templateUrl:'views/admin/utenti.html'
+            templateUrl:'views/admin/utenti.html?version='+versionTmpl
         })
         .when('/:token/gestione/magazzini', {
-            templateUrl:'views/admin/magazzini.html'
+            templateUrl:'views/admin/magazzini.html?version='+versionTmpl
         })
         .when('/:token/supermercati', {
-            templateUrl:'views/user/supermercati.html'
+            templateUrl:'views/user/supermercati.html?version='+versionTmpl
         })
         .when('/:token/prodotti/:idSupermercato', {
-            templateUrl:'views/user/prodotti.html'
+            templateUrl:'views/user/prodotti.html?version='+versionTmpl
         })
         .otherwise({redirectTo:'/'});
-});
+}]);
 
                                         /*START SERVICES*/
 collettaApp.service('ServerAddress', function()
 {
-    var s= '../api/index.php';
+    var s= '../api/index.php/';
     return{
         getServerAddress: function(){return s;}
+    }
+});
+
+collettaApp.service('VersionService', function(){
+    return{
+        version: versionTmpl
     }
 });
 
@@ -188,22 +196,22 @@ collettaApp.service('CaricoService', ['$q',function($q)
                                        
                                        /*START FACTORIES*/
 collettaApp.factory('LoginFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var LoginFactory = $resource(ServerAddress.getServerAddress()+'/login', {});
+    var LoginFactory = $resource(ServerAddress.getServerAddress()+'login', {});
     return LoginFactory;
 }]);
 
 collettaApp.factory('LogoutFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var LogoutFactory = $resource(ServerAddress.getServerAddress()+'/logout', {});
+    var LogoutFactory = $resource(ServerAddress.getServerAddress()+'logout', {});
     return LogoutFactory;
 }]);
 
 collettaApp.factory('UserInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var UserInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/get/user', {token: '@token'});
+    var UserInfoFactory = $resource(ServerAddress.getServerAddress()+':token/get/user', {token: '@token'});
     return UserInfoFactory;
 }]);
 
 collettaApp.factory('GetInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var GetInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/get/:property/:limit_start/:limit_end',
+    var GetInfoFactory = $resource(ServerAddress.getServerAddress()+':token/get/:property/:limit_start/:limit_end',
         {
             token: '@token',
             property: '@property',
@@ -215,7 +223,7 @@ collettaApp.factory('GetInfoFactory', ['$resource', 'ServerAddress', function($r
 }]);
 
 collettaApp.factory('SetInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var SetInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/set/:property',
+    var SetInfoFactory = $resource(ServerAddress.getServerAddress()+':token/set/:property',
         {
             token: '@token',
             property: '@property'
@@ -225,7 +233,7 @@ collettaApp.factory('SetInfoFactory', ['$resource', 'ServerAddress', function($r
 }]);
 
 collettaApp.factory('InsertInfoFactory', ['$resource', 'ServerAddress', function($resource, ServerAddress){
-    var InsertInfoFactory = $resource(ServerAddress.getServerAddress()+'/:token/save/prodotti',{
+    var InsertInfoFactory = $resource(ServerAddress.getServerAddress()+':token/save/prodotti',{
         token: '@token'
     });
     return InsertInfoFactory;
