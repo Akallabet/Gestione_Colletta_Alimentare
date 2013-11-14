@@ -82,6 +82,13 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                     $values->id_area= $_SESSION['user']['id_area'];
                 }
             }
+            else if($method=='set')
+            {
+                if($_SESSION['user']['privilegi']==1)
+                {
+                    deleteCache();
+                }
+            }
             if(checkPermissions($token,4))
                 $obj= new SupermercatiColletta();
             break;
@@ -100,6 +107,18 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             if(checkPermissions($token,4))
                 $obj= new CapiEquipe();
             break;
+        case 'colletta':
+            require_once("./models/colletta.php");
+            if(checkPermissions($token,4))
+                $obj= new Colletta();
+            if($method=='set')
+            {
+                if($_SESSION['user']['privilegi']==1)
+                {
+                    deleteCache();
+                }
+            }
+            break;
         default:
             
             break;
@@ -117,7 +136,9 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
              $property=='regioni')
         )
         {
-            $filename= 'resources/'.md5("{$token}{$property}{$l_start}{$l_end}".".js");
+            $strin=stringify($values);
+
+            $filename= 'resources/'.md5("{$token}{$property}{{$strin}}{$l_start}{$l_end}".".js");
 
             if (file_exists($filename) && (filemtime($filename)-time())<$mtime) {
                 $ret= json_decode(file_get_contents($filename));
@@ -130,15 +151,6 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
         }
         else
             $ret= call_user_func_array(array($obj, $method), array($values, $l_start, $l_end));
-        /*
-        if($method!=null)
-        {
-            $ret= call_user_func_array(array($obj, 'getBy'.$method), array($par, $l_start, $l_end));
-        }
-        else
-        {
-            $ret= call_user_func_array(array($obj, 'getAll'), array($l_start, $l_end, true));
-        }*/
     }
     else $ret= array('error'=>'Non hai i permessi disponibili per questa azione!');
     
@@ -166,6 +178,15 @@ $app->post('/:token/save/:property', function($token, $property) use($app){
     doAction($token, 'insert', $property, null, null, $req);
 });
 
+$app->post('/:token/upload/supermercati/:id_colletta', function($token, $id_colletta) use($app){
+    $req= json_decode($app->request()->getBody());
+    //doAction($token, 'insert', $property, null, null, $req);
+});
+
+$app->get('/:token/files/:year', function($token, $year){
+    
+});
+
 $app->run();
 
 function checkPermissions($token,$level=100)
@@ -178,5 +199,24 @@ function checkPermissions($token,$level=100)
 	}
 	else $ret=false;
 	return $ret;
+}
+
+function stringify($inJSON)
+{
+    $ret='';
+    foreach ($inJSON as $key => $value) {
+        $ret.= $key."=>".$value;
+    }
+    
+    return $ret;
+}
+
+function deleteCache()
+{
+    $files = glob('resources/*'); // get all file names
+    foreach($files as $file){ // iterate files
+      if(is_file($file))
+        unlink($file); // delete file
+    }
 }
 ?>

@@ -4,101 +4,107 @@
          <h2>Gestione Supermercati</h2>
     </div>
     <div class="container center-container" >
-        <div class="row">
-            <div class="span3 bs-docs-sidebar" ng-include="'views/admin/sidebar.html?version={{version}}'">
-            </div>
-            <div class="span9 main-content">
-                <form class="form-inline" ng-show="search.visible" ng-submit="getSupermercati()">
-                    <select ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
-                        <option></option>
-                        <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
-                    </select>
-                    <select ui-select2="{ allowClear: true}" ng-model="search.comune" placeholder="Comune">
-                        <option></option>
-                        <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
-                    </select>
-                    <select ui-select2="{ allowClear: true}" ng-model="search.catena" placeholder="Catena">
-                        <option></option>
-                        <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
-                    </select>
-                    <button type="submit" class="btn">Cerca</button>
-                </form>
-                <form>
-                    <button class="btn" ng-show="!search.visible" ng-click="search.visible=true">Nuova ricerca</button>
-                </form>
-                <div  ng-show="supermercati.length>0">
-                    <div class="row">
-                        <div class="input-append span3">
-                            <input class="span2" id="appendedInputButton" type="text" ng-model="filter_input">
-                            <button class="btn" type="button">Filtra</button>
-                        </div>
-                        <div class="span2" ng-show="pages>1">
-                            <p>{{(supermercati | filter: filter_input).length}} elementi</p>
-                        </div>
-                        <div class="span7 pull-right" ng-show="pages>1">
-                            <!--
-                            <div class="pagination pagination-small pagination-no-margin text-right" ng-if="supermercati.length>0">
-                                <ul>
-                                    <li class="" ng-repeat="pag in getPagesNumber(((supermercati | filter: filter_input).length/rowsNumber | number: 0))" >
-                                        <a>{{pag.label}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--
-                            <pagination class="pagination-small pagination-no-margin text-right"
-                                total-items="(supermercati | filter: filter_input).length"
-                                items-per-page="rowsNumber"
-                                current-page="currentPage"
-                                previous-text="Precedento"
-                                next-text="Successivo">
-                            </pagination>
-                        -->
-                        </div>
+        <form class="form-inline" ng-submit="getSupermercati()">
+            <div class="btn-group">
+            <button type="button" class="btn btn-primary" 
+                ng-repeat="c in colletta"
+                ng-model="c.attiva"
+                btn-checkbox
+                ng-change="changeCollettaActive(c)">
+                {{c.anno}}
+            </button>
+            <button class="btn">Upload file</button>
+        </div>
+        </form>
+        <form class="form-inline" ng-show="search.visible" ng-submit="getSupermercati()">
+            <select ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
+                <option></option>
+                <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
+            </select>
+            <select ui-select2="{ allowClear: true}" ng-model="search.comune" placeholder="Comune">
+                <option></option>
+                <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
+            </select>
+            <select ui-select2="{ allowClear: true}" ng-model="search.catena" placeholder="Catena">
+                <option></option>
+                <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
+            </select>
+            <button type="submit" class="btn">Cerca</button>
+        </form>
+        <form>
+            <button class="btn" ng-show="!search.visible" ng-click="search.visible=true">Nuova ricerca</button>
+        </form>
+        <div  ng-show="supermercati.length>0">
+            <div class="row">
+                <div class="input-append span3">
+                    <input class="span2" id="appendedInputButton" type="text" ng-model="filter_input">
+                    <button class="btn" type="button">Filtra</button>
+                </div>
+                <div class="span2" ng-show="pages>1">
+                    <p>{{(supermercati | filter: filter_input).length}} elementi</p>
+                </div>
+                <div class="span7 pull-right" ng-show="pages>1">
+                    <!--
+                    <div class="pagination pagination-small pagination-no-margin text-right" ng-if="supermercati.length>0">
+                        <ul>
+                            <li class="" ng-repeat="pag in getPagesNumber(((supermercati | filter: filter_input).length/rowsNumber | number: 0))" >
+                                <a>{{pag.label}}</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="row">
-                        <form class="form-inline span3">
-                            <span>Se selezionati: </span>
-                            <button class="btn" ng-click="setToggledSupermercati(1)">Abilita</button>
-                            <button class="btn" ng-click="setToggledSupermercati(0)">Disabilita</button>
-                        </form>
-                    </div>
-                    <table class="table table-bordered table-striped table-hover table-container table-condensed">
-                        <thead>
-                           <th>
-                            <input type="checkbox"
-                                ng-model="checkedAll"
-                                ng-checked="checkedAll"
-                                toggle:all/>
-                            </th>
-                            <th>ID</th><th>ok</th><th>Nome</th><th>Indirizzo</th>
-                           <th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
-                        </thead>
-                        <tbody> 
-                            <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input | range:((rowsNumber*(currentPage-1))):(rowsNumber*currentPage)" rel="{{supermercato.index}}">
-                                <td ng-click="">
-                                    <input 
-                                        type="checkbox"
-                                        ng-model="supermercato.checked"
-                                        ng-true-value="1"
-                                        ng-false-value="0"
-                                    />
-                                </td>
-                                <td ng-click="">{{supermercato.id}}</td>
-                                <td ng-click="">{{supermercato.confermato}}</td>
-                                <td ng-click="">{{supermercato.nome}}</td>
-                                <td ng-click="">{{supermercato.indirizzo}}</td>
-                                <td ng-click="">{{supermercato.provincia}}</td>
-                                <td ng-click="">{{supermercato.comune}}</td>
-                                <td ng-click="">{{supermercato.catena}}</td>
-                                <td>
-                                    <p ng-repeat="capo_equipe in supermercato.capi_equipe">{{capo_equipe.nome}} {{capo_equipe.cognome}}</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot></tfoot>
-                    </table>
+                    <!--
+                    <pagination class="pagination-small pagination-no-margin text-right"
+                        total-items="(supermercati | filter: filter_input).length"
+                        items-per-page="rowsNumber"
+                        current-page="currentPage"
+                        previous-text="Precedento"
+                        next-text="Successivo">
+                    </pagination>
+                -->
                 </div>
             </div>
+            <div class="row">
+                <form class="form-inline span3">
+                    <span>Se selezionati: </span>
+                    <button class="btn" ng-click="setToggledSupermercati(1)">Abilita</button>
+                    <button class="btn" ng-click="setToggledSupermercati(0)">Disabilita</button>
+                </form>
+            </div>
+            <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                <thead>
+                   <th>
+                    <input type="checkbox"
+                        ng-model="checkedAll"
+                        ng-checked="checkedAll"
+                        toggle:all/>
+                    </th>
+                    <th>ID</th><th>ok</th><th>Nome</th><th>Indirizzo</th>
+                   <th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
+                </thead>
+                <tbody> 
+                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input | range:((rowsNumber*(currentPage-1))):(rowsNumber*currentPage)" rel="{{supermercato.index}}">
+                        <td ng-click="">
+                            <input 
+                                type="checkbox"
+                                ng-model="supermercato.checked"
+                                ng-true-value="1"
+                                ng-false-value="0"
+                            />
+                        </td>
+                        <td ng-click="">{{supermercato.id}}</td>
+                        <td ng-click="">{{supermercato.confermato}}</td>
+                        <td ng-click="">{{supermercato.nome}}</td>
+                        <td ng-click="">{{supermercato.indirizzo}}</td>
+                        <td ng-click="">{{supermercato.provincia}}</td>
+                        <td ng-click="">{{supermercato.comune}}</td>
+                        <td ng-click="">{{supermercato.catena}}</td>
+                        <td>
+                            <p ng-repeat="capo_equipe in supermercato.capi_equipe">{{capo_equipe.nome}} {{capo_equipe.cognome}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
         </div>
     </div>
 </div>

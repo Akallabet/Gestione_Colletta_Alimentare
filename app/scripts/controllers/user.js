@@ -1,12 +1,13 @@
 'use strict';
 
-var UserCtrl=['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService',
-function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFactory, LogoutFactory, VersionService)
+var UserCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService', 'CollettaService',
+function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, UserInfoService, UserInfoFactory, LogoutFactory, VersionService, CollettaService)
 {
     $scope.version= VersionService.version;
     $scope.activePage= $routeParams.page;
     $scope.token= $routeParams.token;
     $scope.user= UserInfoService.user;
+    $scope.colletta= CollettaService.colletta;
     
     $scope.logout= function()
     {
@@ -16,6 +17,24 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
         });
     }
     
+    var collettaFactory= new GetInfoFactory();
+    collettaFactory.$save({
+        token: $routeParams.token,
+        property: 'colletta'
+    },function()
+    {
+        console.log(collettaFactory);
+        for(var i=0; i<collettaFactory.colletta.length; i++)
+        {
+            $scope.colletta.push($.extend(
+                collettaFactory.colletta[i],
+                {
+                    attiva: (collettaFactory.colletta[i].attiva==1) ? true : false
+                }
+            ));
+        }
+    });
+
     var usr= UserInfoFactory.get({token: $scope.token}, function(){
         if(usr.error)
         {
@@ -29,8 +48,12 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
             {
                 case 1:
                 $scope.user.pages=[
-                    {url: 'gestione/supermercati', label: 'Gestione'},
-                    {url: 'supermercati', label: 'Carichi'}
+                    {url: 'gestione_catene', label: 'Catene'},
+                    {url: 'gestione_supermercati', label: 'Supermercati'},
+                    {url: 'gestione_magazzini', label: 'Magazzini'},
+                    {url: 'gestione_utenti', label: 'Utenti'},
+                    {url: 'supermercati', label: 'Carichi'},
+                    {url: 'gestione_files', label: 'Upload'}
                 ];
                 break;
                 default:

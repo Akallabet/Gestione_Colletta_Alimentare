@@ -1,7 +1,7 @@
 'use strict';
 var versionTmpl= '1.1';
 
-var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2']);
+var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2','blueimp.fileupload']);
 
 collettaApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
@@ -13,14 +13,20 @@ collettaApp.config(['$routeProvider', function($routeProvider) {
             controller: LoginCtrl,
             templateUrl:'views/home.html?version='+versionTmpl
         })
-        .when('/:token/gestione/supermercati', {
+        .when('/:token/gestione_supermercati', {
             templateUrl:'views/admin/supermercati.html?version='+versionTmpl
         })
-        .when('/:token/gestione/utenti', {
+        .when('/:token/gestione_utenti', {
             templateUrl:'views/admin/utenti.html?version='+versionTmpl
         })
-        .when('/:token/gestione/magazzini', {
+        .when('/:token/gestione_magazzini', {
             templateUrl:'views/admin/magazzini.html?version='+versionTmpl
+        })
+        .when('/:token/gestione_catene', {
+            templateUrl:'views/admin/catene.html?version='+versionTmpl
+        })
+        .when('/:token/gestione_files', {
+            templateUrl:'views/admin/files.html?version='+versionTmpl
         })
         .when('/:token/supermercati', {
             templateUrl:'views/user/supermercati.html?version='+versionTmpl
@@ -85,6 +91,13 @@ collettaApp.service('UserInfoService', ['$q',function($q)
         }
     }
 }]);
+
+collettaApp.service('CollettaService', function()
+{
+    return{
+        colletta: []
+    }
+});
 
 collettaApp.service('ComuniService', function()
 {
