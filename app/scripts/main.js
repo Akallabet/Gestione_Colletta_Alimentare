@@ -1,16 +1,14 @@
 'use strict';
 var versionTmpl= '1.1';
 
-var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2','blueimp.fileupload']);
+var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2']);
 
 collettaApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
-            controller: LoginCtrl,
             templateUrl:'views/login.html?version='+versionTmpl
         })
         .when('/:token/home', {
-            controller: LoginCtrl,
             templateUrl:'views/home.html?version='+versionTmpl
         })
         .when('/:token/gestione_supermercati', {
@@ -91,13 +89,6 @@ collettaApp.service('UserInfoService', ['$q',function($q)
         }
     }
 }]);
-
-collettaApp.service('CollettaService', function()
-{
-    return{
-        colletta: []
-    }
-});
 
 collettaApp.service('ComuniService', function()
 {

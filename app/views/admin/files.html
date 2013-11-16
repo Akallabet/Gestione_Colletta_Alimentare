@@ -3,7 +3,20 @@
     <div class="hero-unit">
          <h2>Gestione File</h2>
     </div>
-    <div class="container center-container" >
-
+    <div class="container center-container" ng-if="files.length>0">
+			<div class="row" ng-repeat="file in files" my:uploader>
+				<form enctype="multipart/form-data" id="file-uploader" target="uploader.php">
+					<input type="hidden" value="{{colletta_active.anno}}" name="year"/>
+					<div class="btn  fake-uploader {{file.checked && 'btn-success' || 'btn-warning'}}">
+						{{file.name}}
+					</div>
+					<input type="file" name="{{colletta_active.anno}}" style="display:none;"/>
+					<span ng-show="file.checked">file caricato</span>
+					<span ng-show="!file.checked">file non ancora caricato</span>
+				</form>
+				<div class="progress" ng-show="progress!=0">
+					<div class="bar" style="width:{{progress}}%;"></div>
+				</div>
+			</div>
     </div>
 </div>

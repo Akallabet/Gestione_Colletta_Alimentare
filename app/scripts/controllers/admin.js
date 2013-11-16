@@ -1,6 +1,6 @@
 'use strict';
 
-var AdminCtrl=['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'AdminPagesService', 'LogoutFactory', 'VersionService',
+collettaApp.controller('AdminCtrl', ['$scope', '$resource', '$location', '$routeParams', 'UserInfoService', 'UserInfoFactory', 'AdminPagesService', 'LogoutFactory', 'VersionService',
 function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFactory, AdminPagesService,  LogoutFactory, VersionService)
 {
 	$scope.version= VersionService.version;
@@ -16,4 +16,4 @@ function($scope, $resource, $location, $routeParams, UserInfoService, UserInfoFa
 	}
 	$scope.sections.map(function(s){
 			return s.active= (s.url==$scope.section) ? true: false;});
-}]
+}])

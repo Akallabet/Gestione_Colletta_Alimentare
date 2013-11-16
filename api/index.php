@@ -137,8 +137,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
         )
         {
             $strin=stringify($values);
-
-            $filename= 'resources/'.md5("{$token}{$property}{{$strin}}{$l_start}{$l_end}".".js");
+            $filename= 'resources/cache/'.md5("{$token}{$property}{{$strin}}{$l_start}{$l_end}".".js");
 
             if (file_exists($filename) && (filemtime($filename)-time())<$mtime) {
                 $ret= json_decode(file_get_contents($filename));
@@ -184,7 +183,16 @@ $app->post('/:token/upload/supermercati/:id_colletta', function($token, $id_coll
 });
 
 $app->get('/:token/files/:year', function($token, $year){
-    
+    echo json_encode(array("files"=>getUploadedFiles()));
+});
+
+$app->post('/:token/files/:year', function($token, $year){
+    //echo "lalalalalla";
+    //echo json_encode(array("files"=>getUploadedFiles()));
+    //uploadFile();
+    move_uploaded_file($_FILES[$year]["tmp_name"],"resources/uploaded/{$year}/".$_FILES[$year]["name"]);
+
+    echo json_encode(array("files"=>getUploadedFiles()));
 });
 
 $app->run();
@@ -218,5 +226,24 @@ function deleteCache()
       if(is_file($file))
         unlink($file); // delete file
     }
+}
+
+function getUploadedFiles()
+{
+    $path= "resources/uploaded";
+    $files= array("supermercati"=>array("checked"=>true),"catene"=>array("checked"=>true),"capi_equipe"=>array("checked"=>true));
+    $dirs = array_filter(glob("resources/uploaded/*"), 'is_dir');
+    $ret= array();
+    
+    foreach ($dirs as $key => $year) {
+        $tmp=explode("/", $year);
+        $ret[$tmp[count($tmp)-1]]= array();
+        
+        foreach ($files as $name=>$file) {
+            $ret[$tmp[count($tmp)-1]][$name]= array();
+            $ret[$tmp[count($tmp)-1]][$name]["checked"]= file_exists("{$year}/{$name}.csv");
+        }
+    }
+    return $ret;
 }
 ?>

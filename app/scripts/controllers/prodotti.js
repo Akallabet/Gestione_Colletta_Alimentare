@@ -1,7 +1,7 @@
 'use strict';
 var prodotti=[];
 
-var ProdottiCtrl=['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService',
+collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService',
 function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService)
 {
     $scope.version= VersionService.version;
@@ -142,4 +142,4 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             $scope.$emit("refresh");
         });
     }
-}];
+}]);

@@ -1,6 +1,6 @@
 'use strict';
 
-var LoginCtrl=['$scope', '$resource','$location','LoginFactory', 'VersionService',
+collettaApp.controller('LoginCtrl', ['$scope', '$resource','$location','LoginFactory', 'VersionService',
 function($scope, $resource, $location, LoginFactory, VersionService)
 {
     $scope.version= VersionService.version;
@@ -26,4 +26,4 @@ function($scope, $resource, $location, LoginFactory, VersionService)
             });
         }
     }
-}]
+}]);

@@ -82,7 +82,7 @@
                    <th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
                 </thead>
                 <tbody> 
-                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input | range:((rowsNumber*(currentPage-1))):(rowsNumber*currentPage)" rel="{{supermercato.index}}">
+                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input" rel="{{supermercato.index}}">
                         <td ng-click="">
                             <input 
                                 type="checkbox"

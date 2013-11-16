@@ -1,6 +1,6 @@
 'use strict';
 
-var UserCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService', 'CollettaService',
+collettaApp.controller('UserCtrl',['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService', 'CollettaService',
 function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, UserInfoService, UserInfoFactory, LogoutFactory, VersionService, CollettaService)
 {
     $scope.version= VersionService.version;
@@ -8,6 +8,10 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
     $scope.token= $routeParams.token;
     $scope.user= UserInfoService.user;
     $scope.colletta= CollettaService.colletta;
+    $scope.colletta_active= CollettaService.active;
+    $scope.collettaPromise= CollettaService.collettaPromise;
+    $scope.collettaDeferred= CollettaService.collettaDeferred;
+    $scope.files= CollettaService.files;
     
     $scope.logout= function()
     {
@@ -23,7 +27,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
         property: 'colletta'
     },function()
     {
-        console.log(collettaFactory);
+        $scope.colletta.length=0;
         for(var i=0; i<collettaFactory.colletta.length; i++)
         {
             $scope.colletta.push($.extend(
@@ -33,6 +37,14 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
                 }
             ));
         }
+        for(var i=0; i<$scope.colletta.length; i++)
+        {
+            if($scope.colletta[i].attiva)
+            {
+                CollettaService.active= $.extend({}, $scope.colletta[i]);
+            }
+        }
+        $scope.collettaDeferred.resolve();
     });
 
     var usr= UserInfoFactory.get({token: $scope.token}, function(){
@@ -87,4 +99,4 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
             UserInfoService.addInfo(usr.user);*/
         }
     });
-}]
+}]);

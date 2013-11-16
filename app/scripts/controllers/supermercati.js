@@ -1,6 +1,6 @@
 'use strict';
 var catene=[];
-var SupermercatiCtrl=['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService',
+collettaApp.controller('SupermercatiCtrl',['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService',
 function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService)
 {
     AdminPagesService.section='supermercati';
@@ -287,7 +287,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
             //$scope.$emit("refresh");
         });
     }
-}];
+}]);
 
 collettaApp.filter('range', function() {
   return function(input, min, max) {
