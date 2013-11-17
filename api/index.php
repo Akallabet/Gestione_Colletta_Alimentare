@@ -73,7 +73,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                 $obj= new Prodotti();
             break;
         case 'supermercati':
-            require_once("./models/supermercati_colletta.php");
+            require_once("./models/supermercati.php");
 
             if($method=='get')
             {
@@ -90,7 +90,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                 }
             }
             if(checkPermissions($token,4))
-                $obj= new SupermercatiColletta();
+                $obj= new Supermercati();
             break;
         case 'comuni':
             require_once("./models/comuni.php");
@@ -182,16 +182,24 @@ $app->post('/:token/upload/supermercati/:id_colletta', function($token, $id_coll
     //doAction($token, 'insert', $property, null, null, $req);
 });
 
+$app->get('/:token/info/update/:year', function($token, $year) use($app){
+    $req= json_decode($app->request()->getBody());
+    $res= false;
+
+    if(checkPermissions($token,1))
+    {
+        $res=updateFiles($year);
+        deleteCache();
+    }
+    echo json_encode(array("result"=>$res));
+});
+
 $app->get('/:token/files/:year', function($token, $year){
     echo json_encode(array("files"=>getUploadedFiles()));
 });
 
 $app->post('/:token/files/:year', function($token, $year){
-    //echo "lalalalalla";
-    //echo json_encode(array("files"=>getUploadedFiles()));
-    //uploadFile();
     move_uploaded_file($_FILES[$year]["tmp_name"],"resources/uploaded/{$year}/".$_FILES[$year]["name"]);
-
     echo json_encode(array("files"=>getUploadedFiles()));
 });
 
@@ -244,6 +252,82 @@ function getUploadedFiles()
             $ret[$tmp[count($tmp)-1]][$name]["checked"]= file_exists("{$year}/{$name}.csv");
         }
     }
+    return $ret;
+}
+
+function getFileCSvContent($filename)
+{
+    $contents= new stdClass();
+    $contents->values= array();
+    if (file_exists($filename)) {
+        $fp = fopen($filename, "r");
+        $line=0;
+        $columns= array();
+        
+        while (($data = fgetcsv($fp, 30000, "\r")) !== FALSE) {
+            $num = count($data);
+            for($i=0; $i<count($data);$i++)
+            {
+                if($i==0)
+                    $columns= explode(";",$data[$i]);
+                else
+                {
+                    $row= explode(";",$data[$i]);
+                    for($j=0;$j<count($columns);$j++)
+                    {
+                        $contents->values[$line][$columns[$j]]= '"'.utf8_encode($row[$j]).'"';
+                    }
+                    $line++;
+                }
+            }
+        }
+        fclose($fp);
+    }
+    return $contents;
+}
+
+function updateFiles($year)
+{
+    $ret= true;
+
+    require_once("./models/comuni.php");
+    require_once("./models/catene.php");
+    require_once("./models/colletta.php");
+    require_once("./models/supermercati.php");
+    require_once("./models/capi_equipe.php");
+
+    //Database
+    $comuni= call_user_func_array(array(new Comuni(), 'get'), array(array()));
+    //$catene= call_user_func_array(array(new Catene(), 'get'), array(array()));
+    //$capi_equipe= call_user_func_array(array(new CapiEquipe(), 'get'), array(array()));
+    $colletta= call_user_func_array(array(new Colletta(), 'get'), array(array("anno"=>$year)));
+
+    //Files
+    $catene= getFileCSvContent("resources/uploaded/{$year}/catene.csv");
+    $capi_equipe= getFileCSvContent("resources/uploaded/{$year}/capi_equipe.csv");
+    $supermercati= getFileCSvContent("resources/uploaded/{$year}/supermercati.csv");
+    
+    foreach ($supermercati->values as $key => $supermercato) {
+        $found= false;
+        foreach ($comuni as $comune) {
+            if('"'.$comune->nome.'"'==$supermercato["comune"])
+            {
+                $supermercato["id_comune"]= $comune->id;
+                $found= true;
+                break;
+            }
+        }
+        if(!$found) $supermercato["id_comune"]= "NULL";
+        $supermercato["id_diocesi"]= "NULL";
+        $supermercato["id_area"]= 1;
+        $supermercato["confermato"]= 0;
+        $supermercato["id_colletta"]= $colletta[0]->id;
+        unset($supermercato["comune"]);
+        $supermercati->values[$key]= $supermercato;
+    }
+    //call_user_func_array(array(new Catene(), 'insertOrUpdate'), array($catene));
+    call_user_func_array(array(new Supermercati(), 'insertOrUpdate'), array($supermercati));
+
     return $ret;
 }
 ?>

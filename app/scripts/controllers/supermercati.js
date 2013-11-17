@@ -5,8 +5,8 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
 {
     AdminPagesService.section='supermercati';
     $scope.version= VersionService.version;
-    $scope.colletta= CollettaService.colletta=[];
     $scope.supermercati= SupermercatiService.supermercati=[];
+    $scope.colletta= CollettaService.colletta;
     $scope.checkedAll= 0;
     $scope.pages= 1;
     $scope.columns=[];
@@ -261,31 +261,6 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
     $scope.disableChecked= function()
     {
         
-    }
-
-    $scope.changeCollettaActive= function(c)
-    {
-        var values=[];
-        var set=[];
-
-        for(var i=0; i<$scope.colletta.length; i++)
-        {
-            $scope.colletta[i].attiva= ($scope.colletta[i].anno==c.anno) ? true : false;
-            values.push($scope.colletta[i]);
-            set.push({id: $scope.colletta[i].id});
-        }
-
-        var setC= new SetInfoFactory({
-            values: values,
-            set: set
-        });
-        setC.$save({
-            token: $routeParams.token,
-            property: 'colletta'
-        },
-        function(){
-            //$scope.$emit("refresh");
-        });
     }
 }]);
 

@@ -1,17 +1,21 @@
 <?php
 require_once("model.php");
 
-class TableSupermercatoColletta
+class TableSupermercato
 {
 	public $id;
-	public $id_supermercato;
 	public $id_colletta;
 	public $id_catena;
+	public $indirizzo;
+	public $email;
+	public $telefono;
+	public $contattato;
+	public $id_comune;
+	public $id_diocesi;
 	public $nome;
 	public $id_magazzino;
 	public $id_area;
-	public $id_comune;
-	public $confemrato;
+	public $confermato;
 	
 	public function __construct()
 	{
@@ -19,13 +23,13 @@ class TableSupermercatoColletta
 	}
 }
 
-class SupermercatiColletta extends Model
+class Supermercati extends Model
 {
 	public function __construct()
 	{
 		parent::__construct();
 		$this->table= 'supermercati';
-		$this->table_model= "TableSupermercatoColletta";
+		$this->table_model= "TableSupermercato";
 		$this->join_statement= " JOIN supermercati_anagrafica B ON A.id_supermercato=B.id";
 		$this->select_statement= "A.id, A.id_supermercato, A.id_colletta, A.id_catena, A.confermato, A.nome, A.id_magazzino, A.id_area, B.id_comune, B.id_diocesi, C.nome";
 		$this->statements= array(

@@ -60,10 +60,10 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
             {
                 case 1:
                 $scope.user.pages=[
-                    {url: 'gestione_catene', label: 'Catene'},
+                    //{url: 'gestione_catene', label: 'Catene'},
                     {url: 'gestione_supermercati', label: 'Supermercati'},
-                    {url: 'gestione_magazzini', label: 'Magazzini'},
-                    {url: 'gestione_utenti', label: 'Utenti'},
+                    //{url: 'gestione_magazzini', label: 'Magazzini'},
+                    //{url: 'gestione_utenti', label: 'Utenti'},
                     {url: 'supermercati', label: 'Carichi'},
                     {url: 'gestione_files', label: 'Upload'}
                 ];

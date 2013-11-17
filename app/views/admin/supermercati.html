@@ -4,18 +4,6 @@
          <h2>Gestione Supermercati</h2>
     </div>
     <div class="container center-container" >
-        <form class="form-inline" ng-submit="getSupermercati()">
-            <div class="btn-group">
-            <button type="button" class="btn btn-primary" 
-                ng-repeat="c in colletta"
-                ng-model="c.attiva"
-                btn-checkbox
-                ng-change="changeCollettaActive(c)">
-                {{c.anno}}
-            </button>
-            <button class="btn">Upload file</button>
-        </div>
-        </form>
         <form class="form-inline" ng-show="search.visible" ng-submit="getSupermercati()">
             <select ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
                 <option></option>

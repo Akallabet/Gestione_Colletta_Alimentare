@@ -40,15 +40,6 @@
                             </li>
                         </ul>
                     </div>-->
-                    
-                    <div pagination class="pagination-small pagination-no-margin text-right"
-                        total-items="100"
-                        items-per-page="15"
-                        current-page="1"
-                        previous-text="Precedento"
-                        next-text="Successivo">
-                    </div>
-                
                 </div>
             </div>
             <table class="table table-bordered table-striped table-hover table-container table-condensed">
@@ -56,7 +47,7 @@
                    <th>Nome</th><th>Indirizzo</th><th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
                 </thead>
                 <tbody>
-                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input | range:((rowsNumber*(currentPage-1))):(rowsNumber*currentPage)" rel="{{supermercato.index}}">
+                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati | filter:filter_input" rel="{{supermercato.index}}">
                         <td ng-click="openDetails(supermercato.id)">{{supermercato.nome}}</td>
                         <td ng-click="openDetails(supermercato.id)">{{supermercato.indirizzo}}</td>
                         <td ng-click="openDetails(supermercato.id)">{{supermercato.provincia}}</td>

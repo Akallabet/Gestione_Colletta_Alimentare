@@ -1,8 +1,7 @@
 'use strict';
 var prodotti=[];
 
-collettaApp.controller('CaricoCtrl', ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'CaricoService', '$modalInstance', 'VersionService',
-function($scope, $resource, $location, $routeParams, GetInfoFactory, CaricoService, $modalInstance, VersionService)
+var CaricoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, CaricoService, $modalInstance, VersionService)
 {
 	$scope.version= VersionService.version;
 	$scope.columns= CaricoService.prodottiNomi;
@@ -17,4 +16,6 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, CaricoServi
 	$scope.cancel = function () {
   		$modalInstance.dismiss('cancel');
 	}
-}]);
+};
+
+CaricoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'CaricoService', '$modalInstance', 'VersionService'];

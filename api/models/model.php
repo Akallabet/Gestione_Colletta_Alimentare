@@ -23,16 +23,28 @@ class Model
 								"GET_BY_ID"=>"SELECT * FROM {$this->table} WHERE id=?");
 	}
 
-	function insert($parameters)
+	function insertOrUpdate($parameters)
 	{
-		$parameters->values= $this->sanitize($parameters->values);
+		$this->insert($parameters, true);
+	}
+	function insert($parameters, $duplicate=false)
+	{
 		$values= array();
 		foreach ($parameters->values as $key => $value) {
-			$parameters->values[$key]= get_object_vars($value);
+			$parameters->values[$key]= (!is_array($value)) ? $this->sanitize(get_object_vars($value)) : $this->sanitize($value);
 			$values[]= "(".implode(", ", $parameters->values[$key]).")";
 		}
 		$query="INSERT INTO {$this->table} (".implode(', ',array_keys($parameters->values[0])).") VALUES ".implode(",", $values);
-		
+		if($duplicate)
+		{
+			$query.=" ON DUPLICATE KEY UPDATE";
+			$updup= array();
+			foreach (array_keys($parameters->values[0]) as $k=> $ud) {
+				$updup[]= "{$ud} = VALUES($ud)";
+			}
+			$query.= " ".implode(", ", $updup);
+		}
+		//echo $query;
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true);
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);
@@ -70,7 +82,7 @@ class Model
 	
 	public function get($values, $limit_from=null, $limit_to=null)
 	{
-		$values= $this->sanitize(get_object_vars($values));
+		$values= $this->sanitize((!is_array($values)) ? get_object_vars($values) : $values);
 		$str= "SELECT * FROM {$this->table}";
 		if(count($values)>0)
 		{
@@ -157,7 +169,8 @@ class Model
 		{
 			foreach ($p as $key => $value) {
 				if(!is_object($value) && !is_array($value))
-					$p[$key]= $this->connector->connection->real_escape_string($value);
+					$p[$key]= stripslashes($value);
+					//$p[$key]= $this->connector->connection->real_escape_string($value);
 			}
 		}
 		else $p= $this->connector->connection->real_escape_string($p);

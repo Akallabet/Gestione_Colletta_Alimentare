@@ -35,7 +35,8 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         function(){
             if(typeof ret.prodotti!='undefined')
             {
-                ret.prodotti.map(function(p){return $.extend(p, {carico: parseInt(p.carico), kg: parseInt(p.kg), scatole: parseInt(p.scatole)})});
+                $scope.prodotti.length=0;
+                ret.prodotti.map(function(p){return $.extend(p, {carico: parseInt(p.carico), kg: p.kg, scatole: parseInt(p.scatole)})});
                 var prodTmp= _.groupBy(ret.prodotti, function(prod){ return parseInt(prod.carico)});
                 $scope.prodottiByTipo= _.groupBy(ret.prodotti, function(prod){ return prod.prodotto});
                 
@@ -43,7 +44,6 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
                 {
                     $scope.prodotti.push({order: parseInt(i), objects: prodTmp[i]});
                 }
-                console.log($scope.prodotti);
                 $scope.prodottiLength= $scope.prodotti.length;
                 CaricoService.lastId= ($scope.prodottiLength>0) ? $scope.prodotti[$scope.prodotti.length-1].objects[0].carico : 0;
             }

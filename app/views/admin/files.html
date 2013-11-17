@@ -3,20 +3,39 @@
     <div class="hero-unit">
          <h2>Gestione File</h2>
     </div>
-    <div class="container center-container" ng-if="files.length>0">
-			<div class="row" ng-repeat="file in files" my:uploader>
-				<form enctype="multipart/form-data" id="file-uploader" target="uploader.php">
-					<input type="hidden" value="{{colletta_active.anno}}" name="year"/>
-					<div class="btn  fake-uploader {{file.checked && 'btn-success' || 'btn-warning'}}">
-						{{file.name}}
-					</div>
-					<input type="file" name="{{colletta_active.anno}}" style="display:none;"/>
-					<span ng-show="file.checked">file caricato</span>
-					<span ng-show="!file.checked">file non ancora caricato</span>
-				</form>
-				<div class="progress" ng-show="progress!=0">
-					<div class="bar" style="width:{{progress}}%;"></div>
-				</div>
+    <div class="container center-container">
+    	<form class="form-inline">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" 
+                    ng-repeat="c in colletta"
+                    ng-model="c.attiva"
+                    btn-checkbox
+                    ng-change="changeCollettaActive(c)">
+                    {{c.anno}}
+                </button>
+            </div>
+        </form>
+    	<div class="row">
+    		<span ng-show="uploaded">File aggiornati</span>
+    		<div class="progress" ng-show="progress!=0" style="width: 200px;">
+				<div class="bar" style="width:{{progress}}%;"></div>
 			</div>
+    	</div>
+    	<form enctype="multipart/form-data" id="file-uploader" target="uploader.php" my:upload>
+			<div class="row" ng-repeat="file in files" my:uploader>
+				<input type="hidden" value="{{colletta_active.anno}}" name="year"/>
+				<div ng-show="file.status!=2"class="btn  fake-uploader {{(file.checked && file.status!=2) && 'btn-success' || 'btn-danger'}}">
+					{{file.name}}
+				</div>
+				<div ng-show="file.status==2" class="btn  fake-uploader btn-warning">
+					{{file.name}}
+				</div>
+				<input type="file" name="{{colletta_active.anno}}" style="display:none;"/>
+				<span ng-show="(file.checked && file.status!=2)">file caricato</span>
+				<span ng-show="(!file.checked && file.status!=2)">file non ancora caricato</span>
+				<span class="status-2" ng-show="file.status==2">aggiorna</span>
+			</div>
+			<button class="btn btn-primary" ng-show="getChecked()">Aggiorna ed esegui le modifiche in line</button>
+		</form>
     </div>
 </div>
