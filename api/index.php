@@ -269,7 +269,9 @@ function getFileCSvContent($filename)
             for($i=0; $i<count($data);$i++)
             {
                 if($i==0)
+                {
                     $columns= explode(";",$data[$i]);
+                }
                 else
                 {
                     $row= explode(";",$data[$i]);
@@ -295,6 +297,7 @@ function updateFiles($year)
     require_once("./models/colletta.php");
     require_once("./models/supermercati.php");
     require_once("./models/capi_equipe.php");
+    require_once("./models/capi_equipe_supermercati.php");
 
     //Database
     $comuni= call_user_func_array(array(new Comuni(), 'get'), array(array()));
@@ -306,7 +309,9 @@ function updateFiles($year)
     $catene= getFileCSvContent("resources/uploaded/{$year}/catene.csv");
     $capi_equipe= getFileCSvContent("resources/uploaded/{$year}/capi_equipe.csv");
     $supermercati= getFileCSvContent("resources/uploaded/{$year}/supermercati.csv");
-    
+    $capi_equipe_supermercati= new stdClass();
+    $capi_equipe_supermercati->values= array();
+
     foreach ($supermercati->values as $key => $supermercato) {
         $found= false;
         foreach ($comuni as $comune) {
@@ -323,10 +328,16 @@ function updateFiles($year)
         $supermercato["confermato"]= 0;
         $supermercato["id_colletta"]= $colletta[0]->id;
         unset($supermercato["comune"]);
+
+        //Setting Capi_equipe_supermercati
+        $capi_equipe_supermercati->values[]= array("id_capo_equipe"=>$supermercato["id_capo_equipe"], "id_supermercato"=>$supermercato["id"]);
+        unset($supermercato["id_capo_equipe"]);
         $supermercati->values[$key]= $supermercato;
     }
-    //call_user_func_array(array(new Catene(), 'insertOrUpdate'), array($catene));
+    call_user_func_array(array(new Catene(), 'insertOrUpdate'), array($catene));
+    call_user_func_array(array(new CapiEquipe(), 'insertOrUpdate'), array($capi_equipe));
     call_user_func_array(array(new Supermercati(), 'insertOrUpdate'), array($supermercati));
+    call_user_func_array(array(new CapiEquipeSupermercati(), 'insertOrUpdate'), array($capi_equipe_supermercati));
 
     return $ret;
 }
