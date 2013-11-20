@@ -12,7 +12,8 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
     $scope.collettaPromise= CollettaService.collettaPromise;
     $scope.collettaDeferred= CollettaService.collettaDeferred;
     $scope.files= CollettaService.files;
-    
+    $scope.pages= PagesService.pages;
+
     $scope.logout= function()
     {
         LogoutFactory.get(function()
@@ -55,23 +56,21 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
         else
         {
             angular.extend($scope.user, usr.user);
-            
+
+            $scope.user.pages.length=0;
+            $scope.user.pages.push({url: 'supermercati', label: 'Gestione carichi', selected: 0});
             switch(parseInt($scope.user.privilegi))
             {
                 case 1:
-                $scope.user.pages=[
-                    //{url: 'gestione_catene', label: 'Catene'},
-                    {url: 'gestione_supermercati', label: 'Supermercati'},
-                    //{url: 'gestione_magazzini', label: 'Magazzini'},
-                    //{url: 'gestione_utenti', label: 'Utenti'},
-                    {url: 'supermercati', label: 'Carichi'},
-                    {url: 'gestione_files', label: 'Upload'}
-                ];
-                break;
-                default:
-                    $scope.user.pages=[{url: 'supermercati', label: 'Gestione carichi'}];
+                $scope.user.pages.push({url: 'gestione_supermercati', label: 'Supermercati', selected: 0});
+                $scope.user.pages.push({url: 'gestione_files', label: 'Upload', selected: 0});
+                //{url: 'gestione_catene', label: 'Catene'},
+                //{url: 'gestione_magazzini', label: 'Magazzini', selected: 0},
+                //{url: 'gestione_utenti', label: 'Utenti', selected: 0},
+
                 break;
             }
+            PagesService.def.resolve();
             /*
             usr.user.privilegi= parseInt(usr.user.privilegi);
             $scope.nome= usr.user.nome;

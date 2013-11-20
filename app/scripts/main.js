@@ -58,38 +58,6 @@ collettaApp.service('AdminPagesService', function()
     }
 });
 
-collettaApp.service('UserInfoService', ['$q',function($q)
-{
-    function User(obj){
-        return $.extend({}, {
-            nome: null,
-            cognome: null,
-            email: null,
-            privilegi: null,
-            ruolo: null,
-            telefono: null,
-            username: null,
-            pages: [],
-        }, obj);
-    }
-
-    return{
-        user: {
-            nome: null,
-            cognome: null,
-            email: null,
-            privilegi: null,
-            ruolo: null,
-            telefono: null,
-            username: null,
-            pages: [],
-        },
-        userObj: function(obj){
-            return new User(obj);
-        }
-    }
-}]);
-
 collettaApp.service('SupermercatiService', ['$q', function($q){
     function Supermercato(obj){
         return $.extend({}, {

@@ -32,7 +32,7 @@ class Comuni extends Model
 	
 	function get($values, $limit_from=null, $limit_to=null)
 	{
-		$values= $this->sanitize(get_object_vars($values));
+		$values= $this->sanitize((!is_array($values)) ? get_object_vars($values) : $values);
 		$str= "SELECT {$this->select_statement} FROM {$this->table} A {$this->join_statement}";
 		if(count($values)>0)
 		{

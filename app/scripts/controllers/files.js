@@ -46,7 +46,7 @@ function($scope, $resource, $location, $routeParams, ServerAddress, SetInfoFacto
 	    var ret= filesUploadCRUD.get(function(){
 	    	if(typeof ret.result!='undefined')
 	    	{
-	    		console.log(ret)
+	    		//console.log(ret)
 	    	}
 	    });
 	}

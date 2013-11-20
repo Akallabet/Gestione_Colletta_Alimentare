@@ -1,7 +1,7 @@
 'use strict';
 var catene=[];
-collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService',
-function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService)
+collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'PagesService',
+function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, PagesService)
 {
     AdminPagesService.section='supermercati';
     $scope.version= VersionService.version;
@@ -17,10 +17,17 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
     $scope.catene= CateneService.catene;
     $scope.capi_equipe= CapiEquipeService.capi_equipe;
     $scope.capi_equipe_supermercati= CapiEquipeService.capi_equipe_supermercati;
+    $scope.pages= PagesService.pages;
+    $scope.pagesPromise= PagesService.prom;
     
+    $scope.pagesPromise.then(function(){
+        $scope.pages.map(function(p){ return p.selected= (p.label=='Supermercati') ? 1 : 0;});
+        console.log($scope.pages);
+    });
+
     $scope.pagination={
         page:1,
-        itemsPerPage:100,
+        itemsPerPage:50,
         currentPage: function()
         {
             return $scope.pagination.page*$scope.pagination.itemsPerPage;
@@ -111,11 +118,13 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
             property: 'capi_equipe_supermercati'
         },function()
         {
+            $scope.capi_equipe_supermercati= capi_equipe_supermercatiFactory.capi_equipe_supermercati;
+            /*
             for(var i=0;i<capi_equipe_supermercatiFactory.capi_equipe_supermercati.length;i++)
             {
                 var sup_tmp= capi_equipe_supermercatiFactory.capi_equipe_supermercati[i];
                 $scope.capi_equipe[sup_tmp.id_capo_equipe].supermercati.push(sup_tmp.id_supermercato);
-            }
+            }*/
             $scope.capi_equipe_supermercati_deferred.resolve();
         });
     }
@@ -139,6 +148,14 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
             },
             function(){
             $scope.supermercati.length=0;
+
+            //Capi equipe
+            for(var i=0;i<$scope.capi_equipe_supermercati.length;i++)
+            {
+                var sup_tmp= $scope.capi_equipe_supermercati[i];
+                $scope.capi_equipe[sup_tmp.id_capo_equipe].supermercati.push(sup_tmp.id_supermercato);
+            }
+
             for(var i in superm.supermercati)
             {
                 superm.supermercati[i].catena= $scope.catene.filter(function(c){ return c.id==superm.supermercati[i].id_catena}).map(function(c){return c.nome})[0];
@@ -275,6 +292,12 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
     $scope.disableChecked= function()
     {
         
+    }
+
+    $scope.incrementPagination= function()
+    {
+        if($scope.supermercati.length>$scope.pagination.currentPage())
+            $scope.pagination.page++;
     }
 }]);
 

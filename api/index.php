@@ -143,7 +143,8 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
         )
         {
             $strin=stringify($values);
-            $filename= 'resources/cache/'.md5("{$token}{$property}{{$strin}}{$l_start}{$l_end}".".js");
+            //echo "{$token} --- {$property} --- {$strin} --- {$l_start} --- {$l_end}";
+            $filename= 'resources/cache/'.md5("{$token}{$property}{$strin}{$l_start}{$l_end}".".js");
 
             if (file_exists($filename) && (filemtime($filename)-time())<$mtime) {
                 $ret= json_decode(file_get_contents($filename));
@@ -206,6 +207,7 @@ $app->get('/:token/files/:year', function($token, $year){
 
 $app->post('/:token/files/:year', function($token, $year){
     move_uploaded_file($_FILES[$year]["tmp_name"],"resources/uploaded/{$year}/".$_FILES[$year]["name"]);
+    deleteCache();
     echo json_encode(array("files"=>getUploadedFiles()));
 });
 
@@ -235,7 +237,7 @@ function stringify($inJSON)
 
 function deleteCache()
 {
-    $files = glob('resources/*'); // get all file names
+    $files = glob('resources/cache/*'); // get all file names
     foreach($files as $file){ // iterate files
       if(is_file($file))
         unlink($file); // delete file

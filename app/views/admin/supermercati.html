@@ -1,9 +1,9 @@
 <div  ng-controller="SupermercatiCtrl" >
     <div ng-include="'views/common/menu.html?version={{version}}'"></div>
     <div class="hero-unit">
-         <h2>Gestione Supermercati</h2>
+         
     </div>
-    <div class="container center-container" >
+    <div class="container center-container">
         <div  ng-show="supermercati.length>0">
             <div class="row">
                 <form class="form-inline">
@@ -59,7 +59,18 @@
                         </td>
                     </tr>
                 </tbody>
-                <tfoot></tfoot>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <button 
+                                ng-show="supermercati.length>pagination.currentPage()"
+                                class="btn btn-primary"
+                                ng-click="incrementPagination()">
+                                    Visualizza altri
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

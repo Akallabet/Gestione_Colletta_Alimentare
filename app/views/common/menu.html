@@ -10,7 +10,7 @@
             <div collapse="navCollapsed" class="nav-collapse collapse" id="main-menu">
                 <ul class="nav" id="main-menu-left">
                     <li ng-repeat="page in user.pages" class="{{activePage==page && 'active'}}">
-                        <a ng-href="#/{{token}}/{{page.url}}">{{page.label}}</a>
+                        <a ng-href="#/{{token}}/{{page.url}}" ng-class="page.selected && 'btn-success'">{{page.label}}</a>
                     </li>
                 </ul>
                 <ul class="nav pull-right" id="main-menu-right">
