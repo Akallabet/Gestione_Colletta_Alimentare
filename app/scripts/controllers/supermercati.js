@@ -1,7 +1,7 @@
 'use strict';
 var catene=[];
-collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'PagesService',
-function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, PagesService)
+collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService',
+function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService)
 {
     AdminPagesService.section='supermercati';
     $scope.version= VersionService.version;
@@ -17,14 +17,12 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
     $scope.catene= CateneService.catene;
     $scope.capi_equipe= CapiEquipeService.capi_equipe;
     $scope.capi_equipe_supermercati= CapiEquipeService.capi_equipe_supermercati;
-    $scope.pages= PagesService.pages;
-    $scope.pagesPromise= PagesService.prom;
-    
-    $scope.pagesPromise.then(function(){
+    /*
+    $scope.pages.then(function(){
         $scope.pages.map(function(p){ return p.selected= (p.label=='Supermercati') ? 1 : 0;});
         console.log($scope.pages);
     });
-
+    */
     $scope.pagination={
         page:1,
         itemsPerPage:50,

@@ -7,12 +7,13 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
     $scope.activePage= $routeParams.page;
     $scope.token= $routeParams.token;
     $scope.user= UserInfoService.user;
+    $scope.userDef= UserInfoService.def;
+    $scope.userProm= UserInfoService.prom;
     $scope.colletta= CollettaService.colletta;
     $scope.colletta_active= CollettaService.active;
     $scope.collettaPromise= CollettaService.collettaPromise;
     $scope.collettaDeferred= CollettaService.collettaDeferred;
-    $scope.files= CollettaService.files;
-    $scope.pages= PagesService.pages;
+    $scope.files= CollettaService.files;    
 
     $scope.logout= function()
     {
@@ -67,35 +68,9 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
                 //{url: 'gestione_catene', label: 'Catene'},
                 //{url: 'gestione_magazzini', label: 'Magazzini', selected: 0},
                 //{url: 'gestione_utenti', label: 'Utenti', selected: 0},
-
                 break;
             }
-            PagesService.def.resolve();
-            /*
-            usr.user.privilegi= parseInt(usr.user.privilegi);
-            $scope.nome= usr.user.nome;
-            $scope.cognome= usr.user.cognome;
-            $scope.email= usr.user.email;
-            $scope.privilegi= usr.user.privilegi;
-            $scope.ruolo= usr.user.ruolo;
-            $scope.telefono= usr.user.telefono;
-            $scope.username= usr.user.username;
-            
-            switch($scope.privilegi)
-            {
-                case 1:
-                $scope.pages=[
-                    {url: 'gestione/supermercati', label: 'Gestione supermercati'},
-                    {url: 'supermercati', label: 'Gestione carichi'},
-                    {url: 'magazzini', label: 'gestione magazzini'},
-                    {url: 'utenti', label: 'gestione utenti'}
-                ];
-                break;
-                default:
-                    $scope.pages=[{url: 'supermercati', label: 'Gestione carichi'}];
-                break;
-            }
-            UserInfoService.addInfo(usr.user);*/
+            $scope.userDef.resolve();
         }
     });
 }]);
