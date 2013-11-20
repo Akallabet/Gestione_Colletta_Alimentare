@@ -90,27 +90,6 @@ collettaApp.service('UserInfoService', ['$q',function($q)
     }
 }]);
 
-collettaApp.service('ComuniService', function()
-{
-    return{
-        comuni: []
-    }
-});
-
-collettaApp.service('CateneService', function()
-{
-    return{
-        catene: []
-    }
-});
-
-collettaApp.service('CapiEquipeService', function()
-{
-    return{
-        capi_equipe: []
-    }
-});
-
 collettaApp.service('SupermercatiService', ['$q', function($q){
     function Supermercato(obj){
         return $.extend({}, {

@@ -29,7 +29,7 @@ class Comuni extends Model
 			"GET_BY_ID_PROVINCIA"=>"SELECT $this->select_statement FROM {$this->table} WHERE A.id_provincia= ? LIMIT ?,?"
 			);
 	}
-	/*
+	
 	function get($values, $limit_from=null, $limit_to=null)
 	{
 		$values= $this->sanitize(get_object_vars($values));
@@ -54,7 +54,7 @@ class Comuni extends Model
 		}
 		$res= $this->executeStandardQuery($str);
 		return $res;
-	}*/
+	}
 
 	function getAll($limit_from=null, $limit_to=null, $json=false)
 	{

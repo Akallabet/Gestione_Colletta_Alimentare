@@ -107,6 +107,11 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             if(checkPermissions($token,4))
                 $obj= new CapiEquipe();
             break;
+        case 'capi_equipe_supermercati':
+            require_once("./models/capi_equipe_supermercati.php");
+            if(checkPermissions($token,4))
+                $obj= new CapiEquipeSupermercati();
+            break;
         case 'colletta':
             require_once("./models/colletta.php");
             if(checkPermissions($token,4))
@@ -130,6 +135,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
         //Cache control
         if($method=='get' && 
             ($property=='supermercati' ||
+             $property=='capi_equipe' || 
              $property=='comuni' ||
              $property=='provincie' || 
              $property=='catene' ||
