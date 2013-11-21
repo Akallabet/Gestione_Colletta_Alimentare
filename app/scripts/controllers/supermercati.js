@@ -23,6 +23,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
         console.log($scope.pages);
     });
     */
+
     $scope.pagination={
         page:1,
         itemsPerPage:50,
@@ -153,10 +154,10 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
                 var sup_tmp= $scope.capi_equipe_supermercati[i];
                 $scope.capi_equipe[sup_tmp.id_capo_equipe].supermercati.push(sup_tmp.id_supermercato);
             }
-
+            
             for(var i in superm.supermercati)
             {
-                superm.supermercati[i].catena= $scope.catene.filter(function(c){ return c.id==superm.supermercati[i].id_catena}).map(function(c){return c.nome})[0];
+                superm.supermercati[i].catena= $scope.catene.filter(function(c){ return c.id==superm.supermercati[i].id_catena})[0];
                 superm.supermercati[i].comune= $scope.comuni.filter(function(c){ return c.id==superm.supermercati[i].id_comune}).map(function(c){return c.nome})[0];
                 superm.supermercati[i].provincia= $scope.comuni.filter(function(c){ return c.id==superm.supermercati[i].id_comune}).map(function(c){return c.provincia})[0];
                 superm.supermercati[i].capi_equipe=[];

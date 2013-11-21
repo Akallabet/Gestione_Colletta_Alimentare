@@ -1,0 +1,23 @@
+<div class="navbar navbar-fixed-top" ng-controller="UserCtrl">
+    <div class="navbar-inner">
+        <div class="container">
+            <button ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#/{{token}}/home">Colletta Alimentare <span ng-repeat="c in colletta|filter:{attiva:true}">{{c.anno}}</span></a>
+            <div collapse="navCollapsed" class="nav-collapse collapse" id="main-menu">
+                <ul class="nav" id="main-menu-left">
+                    <li ng-repeat="page in user.pages" class="{{activePage==page && 'active'}}">
+                        <a ng-href="#/{{token}}/{{page.url}}" ng-class="page.selected && 'btn-success'">{{page.label}}</a>
+                    </li>
+                </ul>
+                <ul class="nav pull-right" id="main-menu-right">
+                    <li><a target="_blank" href="" title="">Ciao {{user.nome}}</a></li>
+                    <li><a target="_blank" href="" title="" ng-click="logout()">logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
