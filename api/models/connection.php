@@ -3,11 +3,16 @@
 class Connector
 {
 	private $DB_NAME = 'colletta_alimentare';
+	//local
 	private $DB_HOST = 'localhost';
 	private $DB_USER = 'colletta';
 	private $DB_PASS = '171882109';
-	
-	public $connection;
+
+	//remote
+	//private $DB_HOST = '192.186.204.169';
+	//private $DB_USER = 'gnca';
+	//private $DB_PASS = 'gnca2013';
+	//public $connection;
 	
 	function Connector()
 	{

@@ -1,0 +1,3 @@
+<FilesMatch "\.(?i:mp4)$"> 
+Header set Content-Disposition attachment 
+</FilesMatch>

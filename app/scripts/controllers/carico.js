@@ -8,13 +8,10 @@ var CaricoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFact
 	$scope.carico = CaricoService.caricoTmpl;
 	$scope.lastId = CaricoService.lastId;
 	$scope.modalTitle= CaricoService.modalTitle;
+	$scope.modalButtons= CaricoService.modalButtons;
 
-	$scope.ok = function () {
-		$modalInstance.close();
-	}
-
-	$scope.cancel = function () {
-  		$modalInstance.dismiss('cancel');
+	$scope.closeModal= function(action){
+		$modalInstance.close(action);
 	}
 };
 

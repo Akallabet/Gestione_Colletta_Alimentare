@@ -71,10 +71,16 @@ class Model
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);
 	}
 	
-	function delete($id)
+	function delete($parameters)
 	{
-		$id= $this->sanitize($id);
-		$query= "DELETE FROM {$this->table} WHERE id='{$id}'";
+		//$ids= $this->sanitize($parameters->set);
+		$ids= array();
+		//print_r($ids);
+		foreach ($parameters->set as $key => $id) {
+			$ids[]= $id->id;
+		}
+		$query= "DELETE FROM {$this->table} WHERE id IN(".implode(", ", $ids).")";
+		echo $query;
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true);
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);

@@ -1,7 +1,7 @@
 'use strict';
 var catene=[];
-collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService',
-function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService)
+collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService',
+function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService)
 {
     AdminPagesService.section='supermercati';
     $scope.version= VersionService.version;
@@ -297,6 +297,46 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
     {
         if($scope.supermercati.length>$scope.pagination.currentPage())
             $scope.pagination.page++;
+    }
+
+    $scope.openNewSupermercato = function () {
+        SupermercatoService.modalTitle= "Nuovo Supermercato";
+        //$scope.caricoTmpl.map(function(c, i){return $.extend(c, CaricoService.newCarico[i])});
+        var modalInstance = $modal.open({
+            templateUrl: 'supermercatiModal.html',
+            controller: SupermercatoCtrl,
+            resolve: {
+                
+            }
+        });
+
+        modalInstance.result.then(function (type, selectedItem) {
+            //saveNewCarico();
+        },function () {
+            
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    }
+
+    $scope.openSetSupermercato = function (carico) {
+        SupermercatoService.modalTitle= "Modifica Supermercato";
+        //$scope.caricoTmpl.map(function(c, i){return $.extend(c, carico[i])});
+        
+        var modalInstance = $modal.open({
+            templateUrl: 'supermercatiModal.html',
+            controller: SupermercatoCtrl,
+            resolve: {
+                
+            }
+        });
+
+        modalInstance.result.then(function (type,selectedItem) {
+            //if(type=='ok') setCarico();
+            //else if(type=='del') removeCarico();
+        },function () {
+            
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
     }
 }]);
 

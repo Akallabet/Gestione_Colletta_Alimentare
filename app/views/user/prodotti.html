@@ -18,16 +18,17 @@
         <table class="table table-bordered table-striped table-hover table-container table-condensed" ng-show="view==1">
         <thead>
             <tr>
-                <th><div class="text-center fsize12">N°</div></th>
-                <th colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo" style="width: 8%;">
+                <th class="first"><div class="text-center fsize12">N°</div></th>
+                <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
                     <div class="text-center fsize12">{{prod.tipo}}</div>
                 </th>
+                <th class="last"><div class="text-center fsize12">TOT</div></th>
             </tr>
             <tr>
                 <th></th>
-                <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12]" class="fsize10">
+                <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
                     <span class="pull-left">kg</span>
-                    <span class="pull-right">scatole</span>
+                    <span class="pull-right">scat.</span>
                 </th>
             </tr>
         </thead>
@@ -38,10 +39,27 @@
                     <span class="pull-left">{{pr.kg}}</span>
                     <span class="pull-right">{{pr.scatole}}</span>
                 </td>
+                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
+                    <span class="pull-left">{{rowTotal.kg}}</span>
+                    <span class="pull-right">{{rowTotal.scatole}}</span>
+                </td>
             </tr>
         </tbody>
-        <tfoot></tfoot>
+        <tfoot class="total">
+            <tr>
+                <td>TOT</td>
+                <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
+                    <span class="pull-left">{{prod.kg}}</span>
+                    <span class="pull-right">{{prod.scatole}}</span>
+                </td>
+                <td class="tipo">
+                    <span class="pull-left">{{Total.kg}}</span>
+                    <span class="pull-right">{{Total.scatole}}</span>
+                </td>
+            </tr>
+        </tfoot>
         </table>
+        <!--
         <table class="table table-adapt table-bordered table-striped table-hover table-container table-condensed" ng-show="view==0">
             <thead>
                 <tr>
@@ -61,6 +79,7 @@
             </tbody>
             <tfoot></tfoot>
         </table>
+        -->
     </div>
     <script type="text/ng-template" id="myModalContent.html">
         <form>
@@ -91,8 +110,9 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="ok()">OK</button>
-                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                    {{button.label}}
+                </button>
             </div>
         </form>
     </script>

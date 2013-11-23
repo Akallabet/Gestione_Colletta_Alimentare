@@ -1,8 +1,8 @@
 'use strict';
 var prodotti=[];
 
-collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService',
-function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService)
+collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'DeleteInfoFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService',
+function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, DeleteInfoFactory, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService)
 {
     $scope.version= VersionService.version;
     $scope.view= 1;
@@ -11,6 +11,8 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
     $scope.caricoTmpl= CaricoService.caricoTmpl;
     $scope.prodotti=[];
     $scope.prodottiByTipo= [];
+    $scope.prodottiByTipoTotal= [];
+    $scope.Total= {kg: 0, scatole: 0};
     $scope.prodottiCarichi={};
     $scope.prodottiLength=0;
     $scope.lastCarico=1;
@@ -36,14 +38,17 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             if(typeof ret.prodotti!='undefined')
             {
                 $scope.prodotti.length=0;
-                ret.prodotti.map(function(p){return $.extend(p, {carico: parseInt(p.carico), kg: p.kg, scatole: parseInt(p.scatole)})});
+
                 var prodTmp= _.groupBy(ret.prodotti, function(prod){ return parseInt(prod.carico)});
                 $scope.prodottiByTipo= _.groupBy(ret.prodotti, function(prod){ return prod.prodotto});
                 
+                var x=1;
                 for(var i in prodTmp)
                 {
-                    $scope.prodotti.push({order: parseInt(i), objects: prodTmp[i]});
+                    $scope.prodotti.push({order: x, id: prodTmp[i][0].carico, objects: prodTmp[i]});
+                    x++;
                 }
+                $scope.getProdottiByTipoTotal();
                 $scope.prodottiLength= $scope.prodotti.length;
                 CaricoService.lastId= ($scope.prodottiLength>0) ? $scope.prodotti[$scope.prodotti.length-1].objects[0].carico : 0;
             }
@@ -59,9 +64,43 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
     
     $scope.isNaN= isNaN;
     $scope.parseInt= parseInt;
+    
+    $scope.getCaricoTotal= function(prods)
+    {
+        var ret= {kg: 0, scatole: 0};
+        for(var i=0;i<prods.length;i++)
+        {
+            ret.kg+= parseFloat(prods[i].kg);
+            ret.scatole+= parseFloat(prods[i].scatole);
+        }
+        return ret;
+    }
+
+    $scope.getProdottiByTipoTotal= function()
+    {
+        $scope.Total= {kg: 0, scatole: 0};
+        $scope.prodottiByTipoTotal.length=0;
+        var tmp= {type: '', kg: 0, scatole: 0};
+        for(var i in $scope.prodottiByTipo)
+        {
+            var tmpRow= {type: i, kg: 0, scatole: 0};
+            for(var j=0; j<$scope.prodottiByTipo[i].length; j++)
+            {
+                tmpRow.kg+= parseFloat($scope.prodottiByTipo[i][j].kg);
+                tmpRow.scatole+= parseFloat($scope.prodottiByTipo[i][j].scatole);
+            }
+            $scope.Total.kg+= parseFloat(tmpRow.kg);
+            $scope.Total.scatole+= parseFloat(tmpRow.scatole);
+            $scope.prodottiByTipoTotal.push(tmpRow);
+        }
+    }
 
     $scope.openNewCarico = function () {
         CaricoService.modalTitle= "Nuovo Carico";
+        CaricoService.modalButtons[0].active= true;
+        CaricoService.modalButtons[1].active= false;
+        CaricoService.modalButtons[2].active= true;
+
         $scope.caricoTmpl.map(function(c, i){return $.extend(c, CaricoService.newCarico[i])});
         var modalInstance = $modal.open({
             templateUrl: 'myModalContent.html',
@@ -71,15 +110,19 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             }
         });
 
-        modalInstance.result.then(function (selectedItem) {
+        modalInstance.result.then(function (type, selectedItem) {
             saveNewCarico();
         },function () {
+            
             //$log.info('Modal dismissed at: ' + new Date());
         });
     }
 
     $scope.openSetCarico = function (carico) {
         CaricoService.modalTitle= "Modifica Carico";
+        CaricoService.modalButtons[0].active= true;
+        CaricoService.modalButtons[1].active= true;
+        CaricoService.modalButtons[2].active= true;
         $scope.caricoTmpl.map(function(c, i){return $.extend(c, carico[i])});
         
         var modalInstance = $modal.open({
@@ -90,9 +133,15 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-            setCarico();
+        modalInstance.result.then(function (action,selectedItem) {
+            if(action=='ok') setCarico();
+            else if(action=='del') removeCarico();
+            else if(action=='dismiss')
+            {
+
+            }
         },function () {
+            
             //$log.info('Modal dismissed at: ' + new Date());
         });
     }
@@ -131,6 +180,27 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         });
         
         var setC= new SetInfoFactory({
+            values: values,
+            set: set
+        });
+        setC.$save({
+            token: $routeParams.token,
+            property: 'prodotti'
+        },
+        function(){
+            $scope.$emit("refresh");
+        });
+    }
+
+    function removeCarico()
+    {
+        var values=[];
+        var set=[];
+        $scope.caricoTmpl.map(function(c){
+            set.push({id: c.id});
+        });
+        
+        var setC= new DeleteInfoFactory({
             values: values,
             set: set
         });

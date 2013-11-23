@@ -146,7 +146,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             //echo "{$token} --- {$property} --- {$strin} --- {$l_start} --- {$l_end}";
             $filename= 'resources/cache/'.md5("{$token}{$property}{$strin}{$l_start}{$l_end}".".js");
 
-            if (file_exists($filename) && (filemtime($filename)-time())<$mtime) {
+            if (file_exists($filename)) {
                 $ret= json_decode(file_get_contents($filename));
             } else {
                 $ret= call_user_func_array(array($obj, $method), array($values, $l_start, $l_end));
@@ -177,6 +177,11 @@ $app->post('/:token/get/:property', function($token, $property) use($app){
 $app->post('/:token/set/:property', function($token, $property) use($app){
     $req= json_decode($app->request()->getBody());
     doAction($token, 'update', $property, null, null, $req);
+});
+
+$app->post('/:token/delete/:property', function($token, $property) use($app){
+    $req= json_decode($app->request()->getBody());
+    doAction($token, 'delete', $property, null, null, $req);
 });
 
 $app->post('/:token/save/:property', function($token, $property) use($app){
