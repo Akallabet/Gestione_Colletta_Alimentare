@@ -2,6 +2,8 @@
 
 .center-container{}
 
+form .filter{width: 180px;}
+
 .table-container{}
 .table-container .first{width: 2.3%;}
 .table-container .other{width: 7.6%;}
@@ -28,7 +30,7 @@
 }
 
 .modal.fade.in {top: 5%!important;}
-.modal{width: 400px!important; max-height: 520px!important;}
+.modal{min-width: 400px!important; max-height: 520px!important;}
 .modal-header {padding: 0 15px!important;}
 .modal-footer {padding: 5px 15px !important;}
 

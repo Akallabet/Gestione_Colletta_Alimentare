@@ -5,6 +5,7 @@ collettaApp.service('CapiEquipeService', ["$q", function($q)
     	def: def,
     	prom: def.promise,
         capi_equipe: {},
+        capi_equipe_array: [],
         capi_equipe_supermercati: {}
     }
 }]);

@@ -110,8 +110,12 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             }
         });
 
-        modalInstance.result.then(function (type, selectedItem) {
-            saveNewCarico();
+        modalInstance.result.then(function (action,selectedItem) {
+            if(action=='ok') saveNewCarico();
+            else if(action=='dismiss')
+            {
+
+            }
         },function () {
             
             //$log.info('Modal dismissed at: ' + new Date());

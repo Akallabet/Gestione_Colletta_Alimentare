@@ -31,7 +31,13 @@ class Model
 	{
 		$values= array();
 		foreach ($parameters->values as $key => $value) {
-			$parameters->values[$key]= (!is_array($value)) ? $this->sanitize(get_object_vars($value)) : $this->sanitize($value);
+			$value= (is_object($value)) ? get_object_vars($value) : $value;
+			foreach ($value as $k => $v) {
+				$value[$k]= '"'.$v.'"';
+			}
+			$parameters->values[$key]= $value;
+			//print_r($parameters->values[$key]);
+			//$parameters->values[$key]= (!is_array($value)) ? $this->sanitize(get_object_vars($value)) : $this->sanitize($value);
 			$values[]= "(".implode(", ", $parameters->values[$key]).")";
 		}
 		$query="INSERT INTO {$this->table} (".implode(', ',array_keys($parameters->values[0])).") VALUES ".implode(",", $values);
@@ -44,9 +50,8 @@ class Model
 			}
 			$query.= " ".implode(", ", $updup);
 		}
-		//echo $query;
 		$res= $this->connector->connection->query($query);
-		if($res) return array('result'=>true);
+		if($res) return array('result'=>true, 'id'=>$this->connector->connection->insert_id);
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);
 	}
 	
@@ -175,8 +180,9 @@ class Model
 		{
 			foreach ($p as $key => $value) {
 				if(!is_object($value) && !is_array($value))
-					$p[$key]= stripslashes($value);
-					//$p[$key]= $this->connector->connection->real_escape_string($value);
+				{
+					$p[$key]= $this->connector->connection->real_escape_string($value);
+				}
 			}
 		}
 		else $p= $this->connector->connection->real_escape_string($p);

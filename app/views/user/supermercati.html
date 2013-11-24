@@ -34,35 +34,37 @@
                 <div class="span7 pull-right" ng-show="pages>1">
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover table-container table-condensed">
-                <thead>
-                   <th>Nome</th><th>Indirizzo</th><th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
-                </thead>
-                <tbody>
-                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch,nome:nomeSearch,indirizzo: indirizzoSearch}|limitTo:pagination.currentPage()" rel="{{supermercato.index}}">
-                        <td ng-click="openDetails(supermercato.id)">{{supermercato.nome}}</td>
-                        <td ng-click="openDetails(supermercato.id)">{{supermercato.indirizzo}}</td>
-                        <td ng-click="openDetails(supermercato.id)">{{supermercato.provincia}}</td>
-                        <td ng-click="openDetails(supermercato.id)">{{supermercato.comune}}</td>
-                        <td ng-click="openDetails(supermercato.id)">{{supermercato.catena.nome}}</td>
-                        <td>
-                            <p ng-repeat="capo_equipe in supermercato.capi_equipe">{{capo_equipe.nome}} {{capo_equipe.cognome}}</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="8">
-                            <button 
-                                ng-show="supermercati.length>pagination.currentPage()"
-                                class="btn btn-primary"
-                                ng-click="incrementPagination()">
-                                    Visualizza altri
-                            </button>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="row">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                       <th>Nome</th><th>Indirizzo</th><th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
+                    </thead>
+                    <tbody>
+                        <tr class="cursor-pointer" ng-repeat="supermercato in supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch,nome:nomeSearch,indirizzo: indirizzoSearch}|limitTo:pagination.currentPage()" rel="{{supermercato.index}}">
+                            <td ng-click="openDetails(supermercato.id)">{{supermercato.nome}}</td>
+                            <td ng-click="openDetails(supermercato.id)">{{supermercato.indirizzo}}</td>
+                            <td ng-click="openDetails(supermercato.id)">{{supermercato.provincia}}</td>
+                            <td ng-click="openDetails(supermercato.id)">{{supermercato.comune}}</td>
+                            <td ng-click="openDetails(supermercato.id)">{{supermercato.catena.nome}}</td>
+                            <td>
+                                <p ng-repeat="capo_equipe in supermercato.capi_equipe">{{capo_equipe.nome}} {{capo_equipe.cognome}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <button 
+                                    ng-show="supermercati.length>pagination.currentPage()"
+                                    class="btn btn-primary"
+                                    ng-click="incrementPagination()">
+                                        Visualizza altri
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>

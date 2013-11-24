@@ -82,7 +82,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                     $values->id_area= $_SESSION['user']['id_area'];
                 }
             }
-            else if($method=='set')
+            else if($method=='set' || $method=='insert')
             {
                 if($_SESSION['user']['privilegi']==1)
                 {
@@ -290,7 +290,7 @@ function getFileCSvContent($filename)
                     $row= explode(";",$data[$i]);
                     for($j=0;$j<count($columns);$j++)
                     {
-                        $contents->values[$line][$columns[$j]]= '"'.utf8_encode($row[$j]).'"';
+                        $contents->values[$line][$columns[$j]]= utf8_encode($row[$j]);
                     }
                     $line++;
                 }

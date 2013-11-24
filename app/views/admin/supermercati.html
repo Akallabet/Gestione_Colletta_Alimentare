@@ -7,23 +7,23 @@
         <div  ng-show="supermercati.length>0">
             <div class="row">
                 <form class="form-inline">
-                    <select ui-select2="{ allowClear: true}" ng-model="nomeSearch" placeholder="Punto vendita">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="nomeSearch" placeholder="Punto vendita">
                         <option ng-value=""></option>
                         <option ng-value="supermercato.nome" ng-repeat="supermercato in supermercati|filter:{catena.id: catenaSearch,id_comune: comuneSearch,indirizzo:indirizzoSearch}">{{supermercato.nome}}</option>
                     </select>
-                    <select ui-select2="{ allowClear: true}" ng-model="indirizzoSearch" placeholder="Indirizzo">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="indirizzoSearch" placeholder="Indirizzo">
                         <option ng-value=""></option>
                         <option ng-value="supermercato.indirizzo" ng-repeat="supermercato in supermercati|filter:{catena.id: catenaSearch,id_comune: comuneSearch,nome:nomeSearch}">{{supermercato.indirizzo}}</option>
                     </select>
-                    <select ui-select2="{ allowClear: true}" ng-model="provinciaSearch" placeholder="Provincia">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="provinciaSearch" placeholder="Provincia">
                         <option ng-value=""></option>
                         <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
                     </select>
-                    <select ui-select2="{ allowClear: true}" ng-model="comuneSearch" placeholder="Comune">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="comuneSearch" placeholder="Comune">
                         <option ng-value=""></option>
                         <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
                     </select>
-                    <select ui-select2="{ allowClear: true}" ng-model="catenaSearch" placeholder="Catena">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="catenaSearch" placeholder="Catena">
                         <option ng-value=""></option>
                         <option ng-value="catena.nome" ng-repeat="catena in catene">{{catena.nome}}</option>
                     </select>
@@ -37,73 +37,99 @@
             <div class="row">
                 <button class="btn btn-primary" ng-click="openNewSupermercato()">Inserisci nuovo</button>
             </div>
-            <table class="table table-bordered table-striped table-hover table-container table-condensed">
-                <thead>
-                   <th>
-                    <input type="checkbox"
-                        ng-model="checkedAll"
-                        ng-checked="checkedAll"
-                        toggle:all/>
-                    </th>
-                    <th>ID</th><th>ok</th><th>Nome</th><th>Indirizzo</th>
-                   <th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
-                </thead>
-                <tbody> 
-                    <tr class="cursor-pointer" ng-repeat="supermercato in supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch,nome:nomeSearch,indirizzo: indirizzoSearch}|limitTo:pagination.currentPage()" rel="{{supermercato.index}}" ng-click="openSetSupermercato()">
-                        <td ng-click="">
-                            <input 
-                                type="checkbox"
-                                ng-model="supermercato.checked"
-                                ng-true-value="1"
-                                ng-false-value="0"
-                            />
-                        </td>
-                        <td ng-click="">{{supermercato.id}}</td>
-                        <td ng-click="">{{supermercato.confermato}}</td>
-                        <td ng-click="">{{supermercato.nome}}</td>
-                        <td ng-click="">{{supermercato.indirizzo}}</td>
-                        <td ng-click="">{{supermercato.provincia}}</td>
-                        <td ng-click="">{{supermercato.comune}}</td>
-                        <td ng-click="">{{supermercato.catena.nome}}</td>
-                        <td>
-                            <p ng-repeat="capo_equipe in supermercato.capi_equipe">{{capo_equipe.nome}} {{capo_equipe.cognome}}</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="8">
-                            <button 
-                                ng-show="supermercati.length>pagination.currentPage()"
-                                class="btn btn-primary"
-                                ng-click="incrementPagination()">
-                                    Visualizza altri
-                            </button>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="row">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                       <th>
+                        <input type="checkbox"
+                            ng-model="checkedAll"
+                            ng-checked="checkedAll"
+                            toggle:all/>
+                        </th>
+                        <th>ID</th><th>ok</th><th>Nome</th><th>Indirizzo</th>
+                       <th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
+                    </thead>
+                    <tbody> 
+                        <tr class="cursor-pointer" ng-repeat="supermercato in supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch,nome:nomeSearch,indirizzo: indirizzoSearch}|limitTo:pagination.currentPage()" rel="{{supermercato.index}}" ng-click="openSetSupermercato()">
+                            <td ng-click="">
+                                <input 
+                                    type="checkbox"
+                                    ng-model="supermercato.checked"
+                                    ng-true-value="1"
+                                    ng-false-value="0"
+                                />
+                            </td>
+                            <td ng-click="">{{supermercato.id}}</td>
+                            <td ng-click="">{{supermercato.confermato}}</td>
+                            <td ng-click="">{{supermercato.nome}}</td>
+                            <td ng-click="">{{supermercato.indirizzo}}</td>
+                            <td ng-click="">{{supermercato.provincia}}</td>
+                            <td ng-click="">{{supermercato.comune}}</td>
+                            <td ng-click="">{{supermercato.catena.nome}}</td>
+                            <td>
+                                <p ng-repeat="capo_equipe in supermercato.capi_equipe">{{capo_equipe.nome}} {{capo_equipe.cognome}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <button 
+                                    ng-show="supermercati.length>pagination.currentPage()"
+                                    class="btn btn-primary"
+                                    ng-click="incrementPagination()">
+                                        Visualizza altri
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
         </div>
         <script type="text/ng-template" id="supermercatiModal.html">
         <form>
             <div class="modal-header">
                 <h3>{{modalTitle}}</h3>
             </div>
-            <div class="modal-body new_carico_modal">
+            <div class="modal-body">
                 <table class="table table-bordered table-striped table-hover table-container table-condensed">
                     <thead>
                         <tr>
-                            
+                            <th>Nome</th><th>Indirizzo</th><th>Comune</th><th>Catena</th><th>Capi equipe</th>
+                            <th>Area</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="" ng-repeat="pr in carico | orderBy:prodotto">
-                            <td class="">{{pr.prodotto}}</td>
-                            <td>
-                                <input type="text" class="span1" ng-model="pr.kg" required/>
+                        <tr>
+                            <td class="">
+                                <input type="text" class="span2" ng-model="supTmpl.nome" required/>
                             </td>
                             <td>
-                                <input type="text" class="span1" ng-model="pr.scatole" required/>
+                                <input type="text" class="span2" ng-model="supTmpl.indirizzo" required/>
+                            </td>
+                            <td>
+                                <select class="filter" ui-select2="{ allowClear: true}" ng-model="supTmpl.id_comune" placeholder="Comune">
+                                    <option ng-value=""></option>
+                                    <option ng-value="comune.id" ng-repeat="comune in comuni">{{comune.nome}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="filter" ui-select2="{ allowClear: true}" ng-model="supTmpl.id_catena" placeholder="Catena">
+                                    <option ng-value=""></option>
+                                    <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="filter" ui-select2="{ allowClear: true}" multiple ng-model="supTmpl.capi_equipe" placeholder="Capiequipe">
+                                    <option ng-value=""></option>
+                                    <option ng-value="capo_equipe.id" ng-repeat="capo_equipe in capi_equipe">{{capo_equipe.nome}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="filter" ui-select2="{ allowClear: true}" ng-model="supTmpl.id_area" placeholder="Area">
+                                    <option ng-value=""></option>
+                                    <option ng-value="area" ng-repeat="area in [1,2,3,4,5]">{{area}}</option>
+                                </select>
                             </td>
                         </tr>
                     </tbody>
@@ -111,9 +137,10 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="ok()">OK</button>
-                <button class="btn btn-danger" ng-click="delete()">Elimina</button>
-                <button class="btn btn-warning" ng-click="cancel()">Annulla</button>
+            {{}}
+                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                    {{button.label}}
+                </button>
             </div>
         </form>
     </script>
