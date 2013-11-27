@@ -1,11 +1,14 @@
 'use strict';
 var prodotti=[];
 
-var CaricoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, CaricoService, $modalInstance, VersionService)
+var CaricoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, CaricoService, $modalInstance, VersionService, ProdottiService)
 {
 	$scope.version= VersionService.version;
+	$scope.prodotti= ProdottiService.prodotti;
 	$scope.columns= CaricoService.prodottiNomi;
-	$scope.carico = CaricoService.caricoTmpl;
+	$scope.modifyId= CaricoService.modifyId;
+	$scope.caricoTmpl= CaricoService.caricoTmpl
+	$scope.carico = $scope.prodotti.filter(function(p){return p.id==$scope.modifyId;})[0];
 	$scope.lastId = CaricoService.lastId;
 	$scope.modalTitle= CaricoService.modalTitle;
 	$scope.modalButtons= CaricoService.modalButtons;
@@ -15,4 +18,4 @@ var CaricoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFact
 	}
 };
 
-CaricoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'CaricoService', '$modalInstance', 'VersionService'];
+CaricoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'CaricoService', '$modalInstance', 'VersionService','ProdottiService'];

@@ -374,7 +374,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             if(typeof newSupermercato.supermercati!='undefined' && typeof newSupermercato.supermercati.id!='undefined')
             {
                 var cs= [];
-                ce_s.map(function(c){return cs.push({id_capo_equipe: c, id_supermercato: newSupermercato.supermercati.id})});
+                ce_s.map(function(c){return cs.push($.extend({}, {id_capo_equipe: c, id_supermercato: newSupermercato.supermercati.id}))});
                 var newCapoEquipeSupermercato= new InsertInfoFactory({
                     values: cs
                 });
@@ -383,12 +383,12 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
                     property: 'capi_equipe_supermercati'
                 },
                 function(){
-                    $scope.capi_equipe[]
-                    $scope.getSupermercati();
+                    $location.path($routeParams.token+"/supermercati");
                 });
             }
             else
-                $scope.getSupermercati();
+            {    $location.path($routeParams.token+"/supermercati");
+            }
         });
     }
 }]);

@@ -34,12 +34,12 @@
         </thead>
         <tbody>
             <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
-                <td ng-click="openSetCarico(carico.objects)"><div class="text-center fsize12">{{carico.order}}</div></td>
-                <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico.objects)">
+                <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
+                <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
                     <span class="pull-left">{{pr.kg}}</span>
                     <span class="pull-right">{{pr.scatole}}</span>
                 </td>
-                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
+                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico)" ng-model="rowTotal">
                     <span class="pull-left">{{rowTotal.kg}}</span>
                     <span class="pull-right">{{rowTotal.scatole}}</span>
                 </td>
@@ -59,29 +59,8 @@
             </tr>
         </tfoot>
         </table>
-        <!--
-        <table class="table table-adapt table-bordered table-striped table-hover table-container table-condensed" ng-show="view==0">
-            <thead>
-                <tr>
-                    <th colspan="2" class="span2">Carichi</th>
-                    <th ng-repeat="(k, c) in prodotti" class="span1" style="text-align: center;">{{k}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="" ng-repeat="(key, prodotti) in prodottiByTipo | orderBy:tipo">
-                    <td class="tipo">{{key}}</td>
-                    <td><p>kg</p><p>scatole</p></td>
-                    <td ng-repeat="prodotto in prodotti | orderBy: carico" style="text-align: center;" class="cursor-pointer">
-                        <p>{{prodotto.kg}}</p>
-                        <p>{{prodotto.scatole}}</p>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot></tfoot>
-        </table>
-        -->
     </div>
-    <script type="text/ng-template" id="myModalContent.html">
+    <script type="text/ng-template" id="caricoNewModal.html">
         <form>
             <div class="modal-header">
                 <h3>{{modalTitle}}</h3>
@@ -96,7 +75,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="" ng-repeat="pr in carico | orderBy:prodotto">
+                        <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto">
+                            <td class="">{{pr.prodotto}}</td>
+                            <td>
+                                <input type="text" class="span1" ng-model="pr.kg" required/>
+                            </td>
+                            <td>
+                                <input type="text" class="span1" ng-model="pr.scatole" required/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                    {{button.label}}
+                </button>
+            </div>
+        </form>
+    </script>
+    <script type="text/ng-template" id="caricoEditModal.html">
+        <form>
+            <div class="modal-header">
+                <h3>{{modalTitle}}</h3>
+            </div>
+            <div class="modal-body new_carico_modal">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kili</th>
+                            <th>Scatole</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" ng-repeat="pr in carico.objects | orderBy:prodotto">
                             <td class="">{{pr.prodotto}}</td>
                             <td>
                                 <input type="text" class="span1" ng-model="pr.kg" required/>

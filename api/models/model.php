@@ -33,7 +33,7 @@ class Model
 		foreach ($parameters->values as $key => $value) {
 			$value= (is_object($value)) ? get_object_vars($value) : $value;
 			foreach ($value as $k => $v) {
-				$value[$k]= '"'.$v.'"';
+				$value[$k]= $v;//'"'.$v.'"';
 			}
 			$parameters->values[$key]= $value;
 			//print_r($parameters->values[$key]);
@@ -50,6 +50,7 @@ class Model
 			}
 			$query.= " ".implode(", ", $updup);
 		}
+		echo $query;
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true, 'id'=>$this->connector->connection->insert_id);
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);
@@ -69,7 +70,7 @@ class Model
 			$str= "UPDATE  {$this->table} SET ";
 			$str.= implode(", ", $setValues);
 			$str.= " WHERE {$set_tmp_keys[0]} = '{$set_tmp[$set_tmp_keys[0]]}' ";
-			
+			echo $str;
 			$res= $this->executeStandardQuery($str);
 		}
 		if($res) return array('result'=>true);
