@@ -1,0 +1,133 @@
+<div ng-controller="ProdottiCtrl">
+    <div ng-include="'views/common/menu.html?version={{version}}'"></div>
+    <div class="hero-unit">
+        <h3>Gestione prodotti - {{supermercato.nome}}, {{supermercato.indirizzo}}</h3>
+    </div>
+    <div class="container center-container">
+        <div class="row-fluid">
+            <div class="alert span6 offset3" ng-show="prodottiLength==0">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Attenzione!</strong> Non hai insetrito nessun carico in questo supermercato!
+            </div>
+        </div>
+        <div class="row-fluid">
+            <form class="form-inline">
+                <button class="btn btn-primary" ng-click="openNewCarico()">Inserisci un nuovo carico</button>
+            </form>
+        </div>
+        <table class="table table-bordered table-striped table-hover table-container table-condensed" ng-show="view==1">
+        <thead>
+            <tr>
+                <th class="first"><div class="text-center fsize12">N°</div></th>
+                <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
+                    <div class="text-center fsize12">{{prod.tipo}}</div>
+                </th>
+                <th class="last"><div class="text-center fsize12">TOT</div></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
+                    <span class="pull-left">kg</span>
+                    <span class="pull-right">scat.</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
+                <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
+                <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
+                    <span class="pull-left">{{pr.kg}}</span>
+                    <span class="pull-right">{{pr.scatole}}</span>
+                </td>
+                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico)" ng-model="rowTotal">
+                    <span class="pull-left">{{rowTotal.kg}}</span>
+                    <span class="pull-right">{{rowTotal.scatole}}</span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot class="total">
+            <tr>
+                <td>TOT</td>
+                <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
+                    <span class="pull-left">{{prod.kg}}</span>
+                    <span class="pull-right">{{prod.scatole}}</span>
+                </td>
+                <td class="tipo">
+                    <span class="pull-left">{{Total.kg}}</span>
+                    <span class="pull-right">{{Total.scatole}}</span>
+                </td>
+            </tr>
+        </tfoot>
+        </table>
+    </div>
+    <script type="text/ng-template" id="caricoNewModal.html">
+        <form>
+            <div class="modal-header">
+                <h3>{{modalTitle}}</h3>
+            </div>
+            <div class="modal-body new_carico_modal">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kili</th>
+                            <th>Scatole</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto">
+                            <td class="">{{pr.prodotto}}</td>
+                            <td>
+                                <input type="text" class="span1" ng-model="pr.kg" required/>
+                            </td>
+                            <td>
+                                <input type="text" class="span1" ng-model="pr.scatole" required/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                    {{button.label}}
+                </button>
+            </div>
+        </form>
+    </script>
+    <script type="text/ng-template" id="caricoEditModal.html">
+        <form>
+            <div class="modal-header">
+                <h3>{{modalTitle}}</h3>
+            </div>
+            <div class="modal-body new_carico_modal">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kili</th>
+                            <th>Scatole</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" ng-repeat="pr in carico.objects | orderBy:prodotto">
+                            <td class="">{{pr.prodotto}}</td>
+                            <td>
+                                <input type="text" class="span1" ng-model="pr.kg" required/>
+                            </td>
+                            <td>
+                                <input type="text" class="span1" ng-model="pr.scatole" required/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                    {{button.label}}
+                </button>
+            </div>
+        </form>
+    </script>
+</div>

@@ -1,0 +1,85 @@
+<div  ng-controller="ReportCtrl" >
+    <div ng-include="'views/common/menu.html?version={{version}}'"></div>
+    <div class="hero-unit">
+        <h3>Report prodotti</h3>
+    </div>
+    <div class="container center-container">
+        <div  ng-show="searchForm">
+            <div class="row">
+                <form class="form-inline" ng-submit="getSupermercati()">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
+                        <option ng-value=""></option>
+                        <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
+                    </select>
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.comune" placeholder="Comune">
+                        <option ng-value=""></option>
+                        <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
+                    </select>
+                    <button class="btn btn-primary">Genera</button>
+                </form>
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Comune</th>
+                            <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
+                                <div class="text-center fsize10">{{prod.tipo}}</div>
+                            </th>
+                            <th class="last" colspan="2">
+                                <div class="text-center fsize10">TOT</div>
+                            </th>
+                            <th class="">
+                                <div class="text-center fsize10">Carichi</div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
+                                <span class="pull-left">kg</span>
+                                <span class="pull-right">scat.</span>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="comune in reportByComuniArray|filter:{enabled: true}">
+                            <td>{{comune.nome}}</td>
+                            <td colspan="2" class="tipo fsize10" ng-repeat="tot in comune.totaliArray | orderBy:tipo">
+                                <span class="pull-left" ng-init="tot.kg=limitDecimal(tot.kg)">{{tot.kg}}</span>
+                                <span class="pull-right" ng-init="tot.scatole=limitDecimal(tot.scatole)">{{tot.scatole}}</span>
+                            </td>
+                            <td colspan="2" class="fsize10">
+                                <span class="pull-left" ng-init="comune.complessivo.kg=limitDecimal(comune.complessivo.kg)">{{comune.complessivo.kg}}</span>
+                                <span class="pull-right" ng-init="comune.complessivo.scatole=limitDecimal(comune.complessivo.scatole)">{{comune.complessivo.scatole}}</span>
+                            </td>
+                            <td class="fsize10">
+                                <span class="pull-right">{{comune.complessivo.carichi.length}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>TOTALE</th>
+                            <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipiArray | orderBy:tipo">
+                                <span class="pull-left" ng-init="tot.kg=parseInt(tot.kg)">{{tot.kg}}</span>
+                                <span class="pull-right" ng-init="tot.scatole=parseInt(tot.scatole)">{{tot.scatole}}</span>
+                            </th>
+                            <th colspan="2">
+                                <span class="pull-left" ng-init="totaliComplessivi.complessivo.kg=parseInt(totaliComplessivi.complessivo.kg)">
+                                    {{totaliComplessivi.complessivo.kg}}
+                                </span>
+                                <span class="pull-right" ng-init="totaliComplessivi.complessivo.scatole=parseInt(totaliComplessivi.complessivo.scatole)">
+                                    {{totaliComplessivi.complessivo.scatole}}
+                                </span>
+                            </th>
+                            <th>
+                                <span class="pull-right">{{totaliComplessivi.complessivo.carichi}}</span>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+    </div>
+</div>

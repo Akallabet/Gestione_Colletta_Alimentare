@@ -1,18 +1,19 @@
 'use strict';
 var catene=[];
-collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory',
-function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory)
+collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService',
+function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService)
 {
     AdminPagesService.section='supermercati';
     $scope.version= VersionService.version;
     $scope.supermercati= SupermercatiService.supermercati=[];
+    $scope.newSupermercati= SupermercatiService.tmpl;
     $scope.colletta= CollettaService.colletta;
     $scope.collettaPromise= CollettaService.collettaPromise;
     $scope.checkedAll= 0;
     $scope.columns=[];
     $scope.getComuneById= getComuneById;
     $scope.chosenSuperm= 2;
-    $scope.provincie= [];
+    $scope.provincie= ProvincieService.provincie;
     $scope.comuni= ComuniService.comuni;
     $scope.catene= CateneService.catene;
     $scope.capi_equipe= CapiEquipeService.capi_equipe;
@@ -57,7 +58,11 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
                 for (var i = 0; i < comuniFactory.comuni.length; i++) {
                     $scope.comuni.push(comuniFactory.comuni[i]);
                 }
-                $scope.provincie= _.uniq($scope.comuni.map(function(c){ return {id: c.id_provincia, nome: c.provincia}}), 'id');
+                var provincieTmp= _.uniq($scope.comuni.map(function(c){ return {id: c.id_provincia, nome: c.provincia}}), 'id');
+                $scope.provincie.length=0;
+                for (var i = 0; i < provincieTmp.length; i++) {
+                    $scope.provincie[i]= $.extend({}, provincieTmp[i]);
+                };
                 ComuniService.def.resolve();
             });
         }
@@ -81,16 +86,17 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             });
         }
     }
+
     $scope.stuffs= [
-                {
-                 "name":"thing1",
-                 "desc":"this is the first thing"
-                },
-                {
-                 "name":"thing2",
-                 "desc":"this is the second thing"
-                }
-               ]
+        {
+         "name":"thing1",
+         "desc":"this is the first thing"
+        },
+        {
+         "name":"thing2",
+         "desc":"this is the second thing"
+        }
+    ]
     
     $scope.getCapiEquipe= function()
     {
@@ -136,8 +142,8 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
         if($scope.search.provincia!=null && $scope.search.provincia!='') query.id_provincia= $scope.search.provincia;
         if($scope.search.catena!=null && $scope.search.catena!='') query.id_catena= $scope.search.catena;
         
-        query.id_colletta= $scope.colletta.filter(function(c){return c.attiva==true})[0].id;
-
+        query.id_colletta= $scope.colletta.filter(function(c){return c.attiva==1})[0].id;
+        
         var superm= new GetInfoFactory(
             query
         );
@@ -148,29 +154,35 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             },
             function(){
             $scope.supermercati.length=0;
-
+            
             //Capi equipe
             for(var i=0;i<$scope.capi_equipe_supermercati.length;i++)
             {
                 var sup_tmp= $scope.capi_equipe_supermercati[i];
-                $scope.capi_equipe[sup_tmp.id_capo_equipe].supermercati.push(sup_tmp.id_supermercato);
+                if(typeof $scope.capi_equipe[sup_tmp.id_capo_equipe]!='undefined')
+                    $scope.capi_equipe[sup_tmp.id_capo_equipe].supermercati.push(sup_tmp.id_supermercato);
             }
-            
-            for(var i in superm.supermercati)
+    
+            for(var i=0; i<superm.supermercati.length;i++)
             {
                 superm.supermercati[i].catena= $scope.catene.filter(function(c){ return c.id==superm.supermercati[i].id_catena})[0];
                 superm.supermercati[i].comune= $scope.comuni.filter(function(c){ return c.id==superm.supermercati[i].id_comune}).map(function(c){return c.nome})[0];
                 superm.supermercati[i].provincia= $scope.comuni.filter(function(c){ return c.id==superm.supermercati[i].id_comune}).map(function(c){return c.provincia})[0];
-                superm.supermercati[i].capi_equipe=[];
-                for (var j in $scope.capi_equipe) {
-                    if($scope.capi_equipe[j].supermercati.indexOf(superm.supermercati[i].id)!=-1)
+                superm.supermercati[i].capi_equipe={};
+
+                for (var j in $scope.capi_equipe){
+                    if(typeof $scope.capi_equipe[j].supermercati!='undefined')
                     {
-                        superm.supermercati[i].capi_equipe.push($scope.capi_equipe[j]);
+                        if($scope.capi_equipe[j].supermercati.indexOf(superm.supermercati[i].id)!=-1)
+                        {
+                            superm.supermercati[i].capi_equipe= $.extend({}, $scope.capi_equipe[j]);
+                        }
                     }
                 };
                 $scope.supermercati.push(SupermercatiService.supermercato(superm.supermercati[i]));
             }
-            $scope.chosenSuperm= $scope.supermercati[0].id;
+            //console.log($scope.supermercati);
+            //$scope.chosenSuperm= $scope.supermercati[0].id;
             $scope.search.visible= false;
         });
     }
@@ -228,7 +240,6 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             ]).then(function(){
         $scope.getSupermercati();
     });
-
     //Launch
     if(typeof $routeParams.idSupermercato!='undefined')
         $scope.$emit("id");
@@ -301,13 +312,23 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     }
 
     $scope.openNewSupermercato = function () {
+        /*
+        SupermercatoService.mod= SupermercatoService.tmpl= {
+            nome: '',
+            indirizzo: '',
+            id_comune: '',
+            id_catena: '',
+            capi_equipe: {},
+            id_area: 1
+        };*/
+        //console.log(SupermercatoService);
         SupermercatoService.modalTitle= "Nuovo Supermercato";
         SupermercatoService.modalButtons[0].active= true;
         SupermercatoService.modalButtons[1].active= false;
         SupermercatoService.modalButtons[2].active= true;
 
         var modalInstance = $modal.open({
-            templateUrl: 'supermercatiModal.html',
+            templateUrl: 'newSupermercatiModal.html',
             controller: SupermercatoCtrl,
             resolve: {
                 
@@ -326,7 +347,9 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
         });
     }
 
-    $scope.openSetSupermercato = function (carico) {
+    $scope.openSetSupermercato = function (supermercato) {
+        //SupermercatoService.mod= supermercato;
+        console.log(SupermercatoService.mod)
         SupermercatoService.modalTitle= "Modifica Supermercato";
         SupermercatoService.modalButtons[0].active= true;
         SupermercatoService.modalButtons[1].active= false;
@@ -359,13 +382,16 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
 
     function saveSupermercato()
     {
-        var ce_s= $scope.supTmpl.capi_equipe;
+        console.log($scope.supTmpl);
+        /*
+        var ce_s= $scope.supTmpl.capi_equipe[0];
         delete $scope.supTmpl.capi_equipe;
         $scope.supTmpl.id_colletta= $scope.colletta.filter(function(c){return c.attiva==true})[0].id;
         var insertedId= 0;
         var newSupermercato= new InsertInfoFactory({
             values: [$scope.supTmpl]
         });
+        /*
         newSupermercato.$save({
             token: $routeParams.token,
             property: 'supermercati'
@@ -390,6 +416,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             {    $location.path($routeParams.token+"/supermercati");
             }
         });
+        */
     }
 }]);
 

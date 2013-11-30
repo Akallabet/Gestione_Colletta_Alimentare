@@ -75,13 +75,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto">
+                        <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto" is:number ng-model="pr">
                             <td class="">{{pr.prodotto}}</td>
                             <td>
-                                <input type="text" class="span1" ng-model="pr.kg" required/>
+                                <input type="text" class="span1" ng-model="pr.kg" placeholder="0" required/>
                             </td>
                             <td>
-                                <input type="text" class="span1" ng-model="pr.scatole" required/>
+                                <input type="text" class="span1" ng-model="pr.scatole" placeholder="0" required/>
                             </td>
                         </tr>
                     </tbody>

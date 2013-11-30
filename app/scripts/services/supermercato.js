@@ -15,6 +15,7 @@ collettaApp.service('SupermercatoService', ['$q',function($q)
             id_catena: '',
             capi_equipe: [],
             id_area: 1
-        }
+        },
+        mod: {}
     }
 }]);

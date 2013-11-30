@@ -50,7 +50,7 @@ class Model
 			}
 			$query.= " ".implode(", ", $updup);
 		}
-		echo $query;
+		//echo $query;
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true, 'id'=>$this->connector->connection->insert_id);
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);
@@ -70,7 +70,7 @@ class Model
 			$str= "UPDATE  {$this->table} SET ";
 			$str.= implode(", ", $setValues);
 			$str.= " WHERE {$set_tmp_keys[0]} = '{$set_tmp[$set_tmp_keys[0]]}' ";
-			echo $str;
+			//echo $str;
 			$res= $this->executeStandardQuery($str);
 		}
 		if($res) return array('result'=>true);
@@ -86,7 +86,7 @@ class Model
 			$ids[]= $id->id;
 		}
 		$query= "DELETE FROM {$this->table} WHERE id IN(".implode(", ", $ids).")";
-		echo $query;
+		//echo $query;
 		$res= $this->connector->connection->query($query);
 		if($res) return array('result'=>true);
 		else return array('result'=>false, 'error'=>$this->connector->connection->error);
@@ -99,6 +99,7 @@ class Model
 		if(count($values)>0)
 		{
 			$par= Array();
+			
 			foreach ($values as $key => $value) {
 				if(is_object($value))
 				{
@@ -110,7 +111,9 @@ class Model
 					}
 				}
 				else
+				{
 					$par[]= "{$key} = {$value}";
+				}
 			}
 			$str= "SELECT * FROM {$this->table} WHERE ".implode(" AND ", $par);
 		}

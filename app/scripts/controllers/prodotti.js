@@ -161,8 +161,8 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
                 id_supermercato: $routeParams.idSupermercato,
                 id_user: '',
                 prodotto:"'"+c.prodotto+"'",
-                kg: c.kg,
-                scatole: c.scatole,
+                kg: (c.kg!="") ? c.kg : 0,
+                scatole: (c.scatole!="") ? c.scatole : 0,
                 carico: lastId+1
             });
         });

@@ -64,6 +64,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
             {
                 case 1:
                 $scope.user.pages.push({url: 'gestione_supermercati', label: 'Gestione Supermercati', selected: 0});
+                $scope.user.pages.push({url: 'gestione_report', label: 'Report', selected: 0});
                 $scope.user.pages.push({url: 'gestione_files', label: 'Upload', selected: 0});
                 //{url: 'gestione_catene', label: 'Catene'},
                 //{url: 'gestione_magazzini', label: 'Magazzini', selected: 0},

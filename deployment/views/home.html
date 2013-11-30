@@ -1,0 +1,9 @@
+<div  ng-controller="HomeCtrl">
+	<div ng-include="'views/common/menu.html?version={{version}}'"></div>
+    <div class="hero-unit">
+         <a href="#/{{token}}/{{page.url}}/" class="btn btn-primary" ng-repeat="page in user.pages">{{page.label}}</a>
+    </div>
+    <div class="container center-container">
+        
+    </div>
+</div>

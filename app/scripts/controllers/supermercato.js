@@ -12,6 +12,7 @@ var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetIn
 	$scope.modalButtons= SupermercatoService.modalButtons;
 
 	$scope.supTmpl= SupermercatoService.tmpl;
+	$scope.mod= SupermercatoService.mod;
 	
 	$scope.closeModal= function(action){
 		$modalInstance.close(action);
