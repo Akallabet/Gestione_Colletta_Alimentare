@@ -60,11 +60,12 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
 
             $scope.user.pages.length=0;
             $scope.user.pages.push({url: 'supermercati', label: 'Gestione Carichi', selected: 0});
+            $scope.user.pages.push({url: 'gestione_report', label: 'Report', selected: 0});
+            
             switch(parseInt($scope.user.privilegi))
             {
                 case 1:
                 $scope.user.pages.push({url: 'gestione_supermercati', label: 'Gestione Supermercati', selected: 0});
-                $scope.user.pages.push({url: 'gestione_report', label: 'Report', selected: 0});
                 $scope.user.pages.push({url: 'gestione_files', label: 'Upload', selected: 0});
                 //{url: 'gestione_catene', label: 'Catene'},
                 //{url: 'gestione_magazzini', label: 'Magazzini', selected: 0},

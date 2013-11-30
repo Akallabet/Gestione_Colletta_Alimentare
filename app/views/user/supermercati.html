@@ -34,7 +34,7 @@
                 </form>
             </div>
             <div class="row">
-                <button class="btn btn-primary" ng-click="openNewSupermercato()">Inserisci nuovo</button>
+                <!--<button class="btn btn-primary" ng-click="openNewSupermercato()">Inserisci nuovo</button>-->
                 <span>Supermercati trovati: {{(supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch, provincia: provinciaSearch,nome:nomeSearch,indirizzo: indirizzoSearch}).length}}</span>
             </div>
             <div class="row">
@@ -53,7 +53,7 @@
                             <td>
                                 <p>{{supermercato.capi_equipe.nome}} {{supermercato.capi_equipe.cognome}}</p>
                             </td>
-                            <td><button class="btn btn-primary" ng-click="openSetSupermercato(supermercato)">Modifica</button></td>
+                            <!--<td><button class="btn btn-primary" ng-click="openSetSupermercato(supermercato)">Modifica</button></td>-->
                         </tr>
                     </tbody>
                     <tfoot>
