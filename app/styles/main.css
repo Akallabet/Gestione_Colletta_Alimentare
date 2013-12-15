@@ -16,6 +16,8 @@ form .filter{width: 180px;}
 .table-adapt tbody tr p{margin: 0 0 0 0;}
 .table-adapt tbody td{line-height: 20px;}
 
+.table-container td{vertical-align: middle;}
+
 .pagination-no-margin{margin: 0 0;}
 
 .cursor-pointer{cursor: pointer;}

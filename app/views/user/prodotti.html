@@ -39,7 +39,7 @@
                     <span class="pull-left">{{pr.kg}}</span>
                     <span class="pull-right">{{pr.scatole}}</span>
                 </td>
-                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico)" ng-model="rowTotal">
+                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
                     <span class="pull-left">{{rowTotal.kg}}</span>
                     <span class="pull-right">{{rowTotal.scatole}}</span>
                 </td>
@@ -75,7 +75,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto" is:number ng-model="pr">
+                        <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto" ng-model="pr">
                             <td class="">{{pr.prodotto}}</td>
                             <td>
                                 <input type="text" class="span1" ng-model="pr.kg" placeholder="0" required/>

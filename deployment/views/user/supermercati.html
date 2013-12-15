@@ -7,50 +7,44 @@
         <div  ng-show="supermercati.length>0">
             <div class="row">
                 <form class="form-inline">
-                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="nomeSearch" placeholder="Punto vendita">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="filter.nome" placeholder="Punto vendita">
                         <option ng-value=""></option>
-                        <option ng-value="supermercato.nome" ng-repeat="supermercato in supermercati|filter:{catena.id: catenaSearch,id_comune: comuneSearch,indirizzo:indirizzoSearch}">{{supermercato.nome}}</option>
+                        <option ng-value="supermercato.nome" ng-repeat="supermercato in supermercati|filter:{catena.id: filter.catena,id_comune: filter.comune,indirizzo:filter.indirizzo}">{{supermercato.nome}}</option>
                     </select>
-                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="indirizzoSearch" placeholder="Indirizzo">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="filter.indirizzo" placeholder="Indirizzo">
                         <option ng-value=""></option>
-                        <option ng-value="supermercato.indirizzo" ng-repeat="supermercato in supermercati|filter:{catena.id: catenaSearch,id_comune: comuneSearch,nome:nomeSearch}">{{supermercato.indirizzo}}</option>
+                        <option ng-value="supermercato.indirizzo" ng-repeat="supermercato in supermercati|filter:{catena.id: filter.catena,id_comune: filter.comune,nome:filter.nome}">{{supermercato.indirizzo}}</option>
                     </select>
-                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="provinciaSearch" placeholder="Provincia">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="filter.provincia" placeholder="Provincia">
                         <option ng-value=""></option>
                         <option ng-value="provincia.nome" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
                     </select>
-                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="comuneSearch" placeholder="Comune">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="filter.comune" placeholder="Comune">
                         <option ng-value=""></option>
-                        <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{provincia: provinciaSearch}">{{comune.nome}}</option>
+                        <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{provincia: filter.provincia}">{{comune.nome}}</option>
                     </select>
-                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="catenaSearch" placeholder="Catena">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="filter.catena" placeholder="Catena">
                         <option ng-value=""></option>
                         <option ng-value="catena.nome" ng-repeat="catena in catene">{{catena.nome}}</option>
                     </select>
+                    <!--
                     <select class="filter" ui-select2="{ allowClear: true}" ng-model="capoEquipeSearch" placeholder="Capi Equipe">
                         <option ng-value=""></option>
                         <option ng-value="capo_equipe.nome" ng-repeat="capo_equipe in capi_equipe">{{capo_equipe.nome}}</option>
                     </select>
+                    -->
                 </form>
             </div>
             <div class="row">
-                <!--<button class="btn btn-primary" ng-click="openNewSupermercato()">Inserisci nuovo</button>-->
-                <span>Supermercati trovati: {{(supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch, provincia: provinciaSearch,nome:nomeSearch,indirizzo: indirizzoSearch}).length}}</span>
+                <span>Supermercati trovati: {{(supermercati|filter:{catena.nome: filter.catena,id_comune: filter.comune, provincia: filter.provincia,nome:filter.nome,indirizzo: filter.indirizzo}).length}}</span>
             </div>
             <div class="row">
                 <table class="table table-bordered table-striped table-hover table-container table-condensed">
                     <thead>
-                       <th>id</th>
-                       <th>Nome</th>
-                       <th>Indirizzo</th>
-                       <th>Provincia</th>
-                       <th>Comune</th>
-                       <th>Catena</th>
-                       <th>Capi Equipe</th>
-                       <!--<th>Modifica</th>-->
+                       <th>id</th><th>Nome</th><th>Indirizzo</th><th>Provincia</th><th>Comune</th><th>Catena</th><th>Capi Equipe</th>
                     </thead>
                     <tbody>
-                        <tr class="cursor-pointer" ng-repeat="supermercato in supermercati|filter:{catena.nome: catenaSearch,id_comune: comuneSearch, provincia: provinciaSearch,nome:nomeSearch,indirizzo: indirizzoSearch,capi_equipe.nome:capoEquipeSearch}|limitTo:pagination.currentPage()" rel="{{supermercato.index}}">
+                        <tr class="cursor-pointer" ng-repeat="supermercato in supermercati|filter:{catena.nome: filter.catena,id_comune: filter.comune, provincia: filter.provincia,nome:filter.nome,indirizzo: filter.indirizzo}|limitTo:pagination.currentPage()" rel="{{supermercato.index}}">
                             <td ng-click="openDetails(supermercato.id)">{{supermercato.id}}</td>
                             <td ng-click="openDetails(supermercato.id)">{{supermercato.nome}}</td>
                             <td ng-click="openDetails(supermercato.id)">{{supermercato.indirizzo}}</td>
@@ -60,7 +54,6 @@
                             <td>
                                 <p>{{supermercato.capi_equipe.nome}} {{supermercato.capi_equipe.cognome}}</p>
                             </td>
-                            <!--<td><button class="btn btn-primary" ng-click="openSetSupermercato(supermercato)">Modifica</button></td>-->
                         </tr>
                     </tbody>
                     <tfoot>

@@ -1,4 +1,5 @@
 <?php
+
 require_once("Slim/Slim.php");
 \Slim\Slim::registerAutoloader();
 
@@ -82,7 +83,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                     $values->id_area= $_SESSION['user']['id_area'];
                 }
             }
-            else if($method=='set' || $method=='insert')
+            else if($method=='update' || $method=='insert')
             {
                 if($_SESSION['user']['privilegi']==1)
                 {
@@ -93,7 +94,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                 $obj= new Supermercati();
             break;
         case 'report':
-            require_once("./models/supermercati.php");
+            require_once("./models/report.php");
 
             if($method=='get')
             {
@@ -103,7 +104,7 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
                 }
             }
             if(checkPermissions($token,4))
-                $obj= new Supermercati();
+                $obj= new Report();
             break;
         case 'comuni':
             require_once("./models/comuni.php");
@@ -125,11 +126,22 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
             if(checkPermissions($token,4))
                 $obj= new CapiEquipeSupermercati();
             break;
+        case 'aree':
+            require_once("./models/aree.php");
+            if($_SESSION['user']['privilegi']==1)
+            {
+                $obj= new Aree();
+                if($method=='update')
+                {
+                    deleteCache();
+                }
+            }
+            break;
         case 'colletta':
             require_once("./models/colletta.php");
             if(checkPermissions($token,4))
                 $obj= new Colletta();
-            if($method=='set')
+            if($method=='update')
             {
                 if($_SESSION['user']['privilegi']==1)
                 {
@@ -152,11 +164,11 @@ function doAction($token, $method, $property, $l_start, $l_end, $values)
              $property=='comuni' ||
              $property=='provincie' || 
              $property=='catene' ||
+             $property=='aree' ||
              $property=='regioni')
         )
         {
             $strin=stringify($values);
-            //echo "{$token} --- {$property} --- {$strin} --- {$l_start} --- {$l_end}";
             $filename= 'resources/cache/'.md5("{$token}{$property}{$strin}{$l_start}{$l_end}".".js");
 
             if (file_exists($filename)) {

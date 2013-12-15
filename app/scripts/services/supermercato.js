@@ -9,12 +9,13 @@ collettaApp.service('SupermercatoService', ['$q',function($q)
         ],
         modalTitle: "",
         tmpl: {
-            nome: '',
-            indirizzo: '',
+            nome: null,
+            indirizzo: null,
             id_comune: '',
+            id_provincia: '',
             id_catena: '',
-            capi_equipe: [],
-            id_area: 1
+            id_area: '',
+            id_colletta: ''
         },
         mod: {}
     }

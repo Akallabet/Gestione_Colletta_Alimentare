@@ -1,7 +1,6 @@
 collettaApp.directive('isNumber', function () {
     return {
         link: function (scope) {
-            console.log(scope.pr)
             scope.$watch('pr.scatole', function(newValue,oldValue) {
                 var arr = String(newValue).split("");
                 if (arr.length === 0) return;

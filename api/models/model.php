@@ -33,7 +33,7 @@ class Model
 		foreach ($parameters->values as $key => $value) {
 			$value= (is_object($value)) ? get_object_vars($value) : $value;
 			foreach ($value as $k => $v) {
-				$value[$k]= $v;//'"'.$v.'"';
+				$value[$k]= '"'.$v.'"';
 			}
 			$parameters->values[$key]= $value;
 			//print_r($parameters->values[$key]);
@@ -58,10 +58,11 @@ class Model
 	
 	function update($parameters)
 	{
+		$res=null;
 		foreach ($parameters->values as $key => $value) {
 			$setValues= array();
 			foreach ($value as $column => $val) {
-				$setValues[]= " {$column} = '{$val}' ";
+				$setValues[]=  $column.'= "'.$val.'"';
 			}
 			
 			$set_tmp= get_object_vars($parameters->set[$key]);

@@ -139,7 +139,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
                 
             }
         });
-
+        
         modalInstance.result.then(function (action,selectedItem) {
             if(action=='ok') setCarico(carico);
             else if(action=='del') removeCarico(carico);
@@ -160,7 +160,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             return $.extend({}, {
                 id_supermercato: $routeParams.idSupermercato,
                 id_user: '',
-                prodotto:"'"+c.prodotto+"'",
+                prodotto: c.prodotto,
                 kg: (c.kg!="") ? c.kg : 0,
                 scatole: (c.scatole!="") ? c.scatole : 0,
                 carico: lastId+1

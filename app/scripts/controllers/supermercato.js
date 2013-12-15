@@ -1,11 +1,12 @@
 'use strict';
 var prodotti=[];
 
-var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, $modalInstance, VersionService, ComuniService, CateneService, CapiEquipeService)
+var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, $modalInstance, VersionService, ComuniService, CateneService, CapiEquipeService, AreeService)
 {
 	$scope.version= VersionService.version;
 	$scope.comuni= ComuniService.comuni;
 	$scope.catene= CateneService.catene;
+	$scope.aree= AreeService.aree;
 	$scope.capi_equipe= CapiEquipeService.capi_equipe_array;
 	
 	$scope.modalTitle= SupermercatoService.modalTitle;
@@ -19,5 +20,4 @@ var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetIn
 	}
 }
 
-
-SupermercatoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', '$modalInstance', 'VersionService','ComuniService','CateneService','CapiEquipeService'];
+SupermercatoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', '$modalInstance', 'VersionService','ComuniService','CateneService','CapiEquipeService','AreeService'];

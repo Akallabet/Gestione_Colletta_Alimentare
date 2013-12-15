@@ -21,6 +21,20 @@ collettaApp.service("CaricoService", ["$q",function($q)
             {tipo:"LATTE"},
             {tipo:"VARIE"}
         ],
+        prodottiTmpl: [
+            {prodotto:"OLIO", kg: 0, scatole: 0},
+            {prodotto:"OMOGENIZZATI", kg: 0, scatole: 0},
+            {prodotto:"ALIMENTI INFANZIA", kg: 0, scatole: 0},
+            {prodotto:"TONNO", kg: 0, scatole: 0},
+            {prodotto:"CARNE IN SCATOLA", kg: 0, scatole: 0},
+            {prodotto:"PELATI", kg: 0, scatole: 0},
+            {prodotto:"LEGUMI", kg: 0, scatole: 0},
+            {prodotto:"PASTA", kg: 0, scatole: 0},
+            {prodotto:"RISO", kg: 0, scatole: 0},
+            {prodotto:"ZUCCHERO", kg: 0, scatole: 0},
+            {prodotto:"LATTE", kg: 0, scatole: 0},
+            {prodotto:"VARIE", kg: 0, scatole: 0}
+        ],
         modalOptions: {
             title: "Nuovo Carico",
             buttons: "Nuovo Carico"
