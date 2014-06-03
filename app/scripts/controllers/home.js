@@ -5,5 +5,6 @@ function($scope, $resource, $location, $routeParams, UserInfoService, VersionSer
 {
 	$scope.version= VersionService.version;
     $scope.token= $routeParams.token;
+
     $scope.user= UserInfoService.user;
 }]);

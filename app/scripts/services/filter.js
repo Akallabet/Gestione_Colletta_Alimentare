@@ -6,6 +6,7 @@ collettaApp.service('FilterService', function()
         indirizzo: '',
         provincia: '',
         comune: '',
-        catena: ''
+        catena: '',
+        capoEquipe: ''
     }
 });

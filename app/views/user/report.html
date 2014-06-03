@@ -137,7 +137,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="fsize10" ng-repeat="object in report|filter:{enabled:true,catena.nome:search.catena}">
+                        <tr class="fsize10" ng-repeat="object in report|filter:{enabled:true,catena.nome:search.catena}|orderBy:'comune'">
                             <td style="word-break:break-all;">{{object.nome}}</td>
                             <td style="word-break:break-all;">{{object.indirizzo}}</td>
                             <td style="word-break:break-all;">{{object.comune}}</td> 
@@ -169,6 +169,30 @@
                             <td>{{object.totali.scatole}}</td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr class="fsize11">
+                            <th>KILI</th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
+                                <span class="pull-left" ng-init="tot.kg=parseInt(tot.kg)">{{tot.kg}}</span>
+                            </th>
+                            <th colspan="2">
+                                {{parseInt(totaliComplessivi.complessivo.kg)}}
+                            </th>
+                        </tr>
+                        <tr class="fsize11">
+                            <th>SCATOLE</th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
+                                <span class="pull-left" ng-init="tot.scatole=parseInt(tot.scatole)">{{tot.scatole}}</span>
+                            </th>
+                            <th colspan="2">
+                                {{parseInt(totaliComplessivi.complessivo.scatole)}}
+                            </th>
+                        </tr>
+                    </tfoot>
                     <!--
                     <tfoot>
                         <tr>

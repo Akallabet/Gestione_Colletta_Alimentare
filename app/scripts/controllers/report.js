@@ -139,7 +139,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             for(var i=0; i<superm.report.length;i++)
             {
                 superm.report[i].catena= $scope.catene.filter(function(c){ return c.id==superm.report[i].id_catena})[0];
-                $scope.report[superm.report[i].id]= superm.report[i];
+                //$scope.report[superm.report[i].id]= superm.report[i];
                 if(superm.report[i].prodotti.length>0) superm.report[i].enabled= true;
                 else superm.report[i].enabled= false;
                 if(typeof $scope.reportByComuni[superm.report[i].id_comune]=='undefined')

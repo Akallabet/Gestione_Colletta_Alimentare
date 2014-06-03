@@ -1,7 +1,7 @@
 'use strict';
 var prodotti=[];
 
-var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, $modalInstance, VersionService, ComuniService, CateneService, CapiEquipeService, AreeService)
+var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, VersionService, ComuniService, CateneService, CapiEquipeService, AreeService, dialogSupermercato)
 {
 	$scope.version= VersionService.version;
 	$scope.comuni= ComuniService.comuni;
@@ -9,15 +9,13 @@ var SupermercatoCtrl= function($scope, $resource, $location, $routeParams, GetIn
 	$scope.aree= AreeService.aree;
 	$scope.capi_equipe= CapiEquipeService.capi_equipe_array;
 	
-	$scope.modalTitle= SupermercatoService.modalTitle;
-	$scope.modalButtons= SupermercatoService.modalButtons;
+	$scope.modalTitle= dialogSupermercato.modalTitle;
+	$scope.modalButtons= dialogSupermercato.modalButtons;
+    $scope.newCapoEquipe= dialogSupermercato.newCapoEquipe;
 
-	$scope.supTmpl= SupermercatoService.tmpl;
+	$scope.supermercato= SupermercatoService;
+
 	$scope.mod= SupermercatoService.mod;
-	
-	$scope.closeModal= function(action){
-		$modalInstance.close(action);
-	}
 }
 
-SupermercatoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', '$modalInstance', 'VersionService','ComuniService','CateneService','CapiEquipeService','AreeService'];
+SupermercatoCtrl.$inject= ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', 'VersionService','ComuniService','CateneService','CapiEquipeService','AreeService', 'dialogSupermercato'];

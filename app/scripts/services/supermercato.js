@@ -2,21 +2,35 @@
 collettaApp.service('SupermercatoService', ['$q',function($q)
 {
     return{
-    	modalButtons:[
-            {label: "ok", type: "primary", active: true, action: 'ok'},
-            {label: "elimina", type: "danger", active: true, action: 'del'},
-            {label: "annulla", type: "warning", active: true, action: 'dismiss'}
-        ],
-        modalTitle: "",
-        tmpl: {
-            nome: null,
-            indirizzo: null,
+        default: {
+            nome: '',
+            indirizzo: '',
             id_comune: '',
             id_provincia: '',
             id_catena: '',
             id_area: '',
-            id_colletta: ''
+            id_colletta: '',
+            capo_equipe: null
         },
-        mod: {}
+        info: {
+            nome: '',
+            indirizzo: '',
+            id_comune: '',
+            id_provincia: '',
+            id_catena: '',
+            id_area: '',
+            id_colletta: '',
+            capo_equipe: null
+        },
+        mod: {},
+        getInfo: function(supermercato)
+        {
+            $.extend(this.info, supermercato);
+//            this.info= $.parseJSON(localStorage.supermercato);
+        },
+        resetInfo: function()
+        {
+            $.extend(this.info, this.default);
+        }
     }
 }]);

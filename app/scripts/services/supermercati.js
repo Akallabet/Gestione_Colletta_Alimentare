@@ -18,7 +18,7 @@ collettaApp.service('SupermercatiService', ['$q', function($q){
             confermato: null,
             indirizzo: null,
             id_diocesi: null,
-            capi_equipe: []
+            capo_equipe: {nome:""}
         }, obj);
     }
 
