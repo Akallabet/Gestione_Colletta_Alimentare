@@ -1,5 +1,5 @@
 <div ng-controller="SupermercatoCtrl">
-    <div z-index="1040" class="modal-backdrop" ng-click="closeModal()">
+    <div z-index="1040" class="modal-backdrop" ng-click="closeModal('dismiss')">
     </div>
     <div class="modal"  index="0" style="z-index: 1050;">
         <div class="modal-header">
@@ -32,7 +32,7 @@
                     <tr>
                         <th>Comune</th>
                         <td>
-                            <select class="filter" ng-if="supermercato.info.id_comune" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_comune" placeholder="Comune">
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_comune" placeholder="Comune">
                                 <option ng-value=""></option>
                                 <option ng-value="comune.id" ng-repeat="comune in comuni">{{comune.nome}}</option>
                             </select>
@@ -40,7 +40,7 @@
                     <tr>
                         <th>Catena</th>
                         <td>
-                            <select class="filter" ng-if="supermercato.info.id_catena" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_catena" placeholder="Catena">
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_catena" placeholder="Catena">
                                 <option ng-value=""></option>
                                 <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
                             </select>
@@ -49,7 +49,7 @@
                     <tr>
                         <th>Area</th>
                         <td>
-                            <select class="filter" ng-if="supermercato.info.id_area" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_area" placeholder="Area">
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_area" placeholder="Area">
                                 <option ng-value=""></option>
                                 <option ng-value="area.id" ng-repeat="area in aree">{{area.nome}}</option>
                             </select>
@@ -58,8 +58,7 @@
                     <tr>
                         <th>Capo equipe</th>
                         <td>
-                            <p>{{addNewCapoEquipeName}}</p>
-                            <select class="filter" ng-if="supermercato.info.capo_equipe" ng-show="newCapoEquipe.status==0" ui-select2="{ allowClear: true}" ng-model="supermercato.info.capi_equipe" placeholder="Capo equipe">
+                            <select class="filter" ng-show="newCapoEquipe.status==0" ui-select2="{ allowClear: true}" ng-model="supermercato.info.capo_equipe.id" placeholder="Capo equipe">
                                 <option ng-value=""></option>
                                 <option ng-value="capo_equipe.id" ng-repeat="capo_equipe in capi_equipe">{{capo_equipe.nome}}</option>
                             </select>

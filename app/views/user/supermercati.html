@@ -85,8 +85,10 @@
                 </table>
             </div>
         </div>
-        <div ng-include="'views/user/supermercato_dialog.html?version={{version}}'" ng-show="modalShow">
+        <div ng-if="modalShow">
+            <div ng-include="'views/user/supermercato_dialog.html?version={{version}}'">
 
+            </div>
         </div>
     </div>
 </div>
