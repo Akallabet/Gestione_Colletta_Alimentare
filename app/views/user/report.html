@@ -20,6 +20,10 @@
                         <option ng-value=""></option>
                         <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
                     </select>
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.colletta" placeholder="Colletta">
+                        <option ng-value=""></option>
+                        <option ng-value="coll.id" ng-repeat="coll in colletta">{{coll.nome}} {{coll.anno}}</option>
+                    </select>
                     <button class="btn btn-primary">Genera</button>
                 </form>
             </div>

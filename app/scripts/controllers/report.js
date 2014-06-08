@@ -64,8 +64,13 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
         provincia: '',
         comune: '',
         catena: '',
+        colletta: '',
         comuniId: []
     }
+
+    CollettaService.prom.then(function(){
+        $scope.search.colletta= CollettaService.active.id;
+    });
 
     ComuniService.getInfo(false);
     CateneService.getInfo(false);
@@ -81,7 +86,10 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
         {
             query.id_provincia= $scope.search.provincia;
         }
-        query.id_colletta= $scope.colletta.filter(function(c){return c.attiva==1})[0].id;
+        else if($scope.search.colletta!=null && $scope.search.colletta!='')
+        {
+            query.id_colletta= $scope.search.colletta;
+        }
         
         var superm= new GetInfoFactory(
             query

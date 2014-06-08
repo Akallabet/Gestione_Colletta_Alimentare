@@ -11,7 +11,7 @@ collettaApp.service('CollettaService', ["$q",'GetInfoFactory', '$routeParams', f
         {
         	var $this= this;
         	var collettaFactory= new GetInfoFactory();
-		    collettaFactory.$save({
+		    var res= collettaFactory.$save({
 		        token: $routeParams.token,
 		        property: 'colletta'
 		    },function()
@@ -35,6 +35,7 @@ collettaApp.service('CollettaService', ["$q",'GetInfoFactory', '$routeParams', f
 		        }
 		        $this.def.resolve();
 		    });
+		    return res;
         }
     }
 }]);
