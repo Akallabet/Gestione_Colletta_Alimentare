@@ -1,5 +1,5 @@
 
-collettaApp.service('SupermercatoService', ['$q',function($q)
+collettaApp.service('SupermercatoService', ['$q', 'SetInfoFactory', '$routeParams', function($q, SetInfoFactory, $routeParams)
 {
     function getSupermercatoInfo(obj)
     {
@@ -15,18 +15,38 @@ collettaApp.service('SupermercatoService', ['$q',function($q)
             capo_equipe: (typeof obj.capo_equipe!='undefined') ? obj.capo_equipe : {nome: '', id: ''},
         }
     }
-
+    var def= $q.defer();
     return{
+        def: def,
+        prom: def.promise,
         mod: {},
         info:{},
         getInfo: function()
         {
             $.extend(true, this.info, getSupermercatoInfo($.parseJSON(localStorage.supermercato)));
-            console.log(this.info);
         },
         resetInfo: function()
         {
             $.extend(true, this.info, getSupermercatoInfo({}));
+        },
+        setInfo: function()
+        {
+            var $this= this;
+
+            var tmpSupermercato= $.extend({}, $this.info);
+            delete tmpSupermercato.capo_equipe;
+            
+            var setSup= new SetInfoFactory({
+                values: [tmpSupermercato],
+                set: [{id: tmpSupermercato.id}]
+            });
+            setSup.$save({
+                token: $routeParams.token,
+                property: 'supermercati'
+            },
+            function(){
+                $this.def.notify(true);
+            });
         }
     }
 }]);

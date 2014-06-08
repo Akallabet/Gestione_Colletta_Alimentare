@@ -35,5 +35,11 @@ collettaApp.config(['$routeProvider', function($routeProvider) {
         .when('/:token/prodotti/:idSupermercato', {
             templateUrl:'views/user/prodotti.html?version='+versionTmpl
         })
+        .when('/:token/supermercato/:idSupermercato', {
+            templateUrl:'views/user/supermercato.html?version='+versionTmpl
+        })
+        .when('/:token/supermercato/nuovo', {
+            templateUrl:'views/user/supermercato.html?version='+versionTmpl
+        })
         .otherwise({redirectTo:'/'});
 }]);

@@ -1,0 +1,76 @@
+<div ng-controller="SupermercatoCtrl">
+    <div ng-include="'views/common/menu.html?version={{version}}'"></div>
+    <div class="hero-unit">
+         <h3>Gestione supermercato</h3>
+    </div>
+    <div class="container center-container" >
+            <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    <!--
+                        <th>Nome</th><th>Indirizzo</th><th>Comune</th><th>Catena</th><th>Area</th>
+                    -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Nome</th>
+                        <td class="">
+                            <input type="text" class="span2" ng-model="supermercato.info.nome" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Indirizzo</th>
+                        <td>
+                            <input type="text" class="span2" ng-model="supermercato.info.indirizzo" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Comune</th>
+                        <td>
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_comune" placeholder="Comune">
+                                <option ng-value=""></option>
+                                <option ng-value="comune.id" ng-repeat="comune in comuni">{{comune.nome}}</option>
+                            </select>
+                        </td>
+                    <tr>
+                        <th>Catena</th>
+                        <td>
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_catena" placeholder="Catena">
+                                <option ng-value=""></option>
+                                <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Area</th>
+                        <td>
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_area" placeholder="Area">
+                                <option ng-value=""></option>
+                                <option ng-value="area.id" ng-repeat="area in aree">{{area.nome}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Capo equipe</th>
+                        <td>
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.capo_equipe.id" placeholder="Capo equipe">
+                                <option ng-value=""></option>
+                                <option ng-value="capo_equipe.id" ng-repeat="capo_equipe in capi_equipe">{{capo_equipe.nome}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            <button class="btn btn-primary" ng-click="supermercato.setInfo()">ok</button>        
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

@@ -12,7 +12,7 @@ function($scope, $resource, $location, $routeParams, ServerAddress, SetInfoFacto
 	$scope.progress= 0;
 	$scope.collettaPromise= CollettaService.collettaPromise;
 
-	$scope.collettaPromise.then(function(){
+	CollettaService.prom.then(function(){
 		$scope.colletta_active= $scope.colletta.filter(function(c){ return c.attiva=="1";})[0];
 		
 		var ret= filesUpload.get({year: $scope.colletta_active.anno}, function()
