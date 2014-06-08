@@ -1,26 +1,67 @@
-collettaApp.service('CapiEquipeSupermercatiService', ["$q", 'GetInfoFactory', '$routeParams', function($q, GetInfoFactory, $routeParams)
+collettaApp.service('CapiEquipeSupermercatiService', ["$q", 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory','$routeParams', 'SupermercatoService', function($q, GetInfoFactory, InsertInfoFactory, SetInfoFactory, $routeParams, SupermercatoService)
 {
 	var def= $q.defer();
     return{
     	def: def,
     	prom: def.promise,
         capi_equipe_supermercati: [],
-        getInfo: function()
+        getInfo: function(refresh)
         {
+        	var res= null;
         	var $this= this;
-        	var capi_equipe_supermercatiFactory= new GetInfoFactory();
+        	if(refresh || $this.capi_equipe_supermercati.length=== 0)
+        	{
+	        	var capi_equipe_supermercatiFactory= new GetInfoFactory();
 
-	        capi_equipe_supermercatiFactory.$save({
+		        res= capi_equipe_supermercatiFactory.$save({
+		            token: $routeParams.token,
+		            property: 'capi_equipe_supermercati'
+		        },function()
+		        {
+		        	$this.capi_equipe_supermercati.length= 0;
+		        	for (var i = 0; i < capi_equipe_supermercatiFactory.capi_equipe_supermercati.length; i++) {
+		        		$this.capi_equipe_supermercati.push(capi_equipe_supermercatiFactory.capi_equipe_supermercati[i]);
+		        	}
+		            $this.def.resolve();
+		        });
+		        return res;
+		    }
+        },
+        saveInfo: function()
+	    {
+	    	var $this= this;
+	        var newCapoEquipeSupermercato= new InsertInfoFactory({
+	            values: [{id_capo_equipe: SupermercatoService.info.capo_equipe.id, id_supermercato: SupermercatoService.info.id}]
+	        });
+
+	        var r= newCapoEquipeSupermercato.$save({
 	            token: $routeParams.token,
 	            property: 'capi_equipe_supermercati'
-	        },function()
+	        },
+	        function(result)
 	        {
-	        	$this.capi_equipe_supermercati.length= 0;
-	        	for (var i = 0; i < capi_equipe_supermercatiFactory.capi_equipe_supermercati.length; i++) {
-	        		$this.capi_equipe_supermercati.push(capi_equipe_supermercatiFactory.capi_equipe_supermercati[i]);
-	        	}
-	            $this.def.resolve();
+	        	
 	        });
-        }
+	        return r;
+	    },
+	    setInfo: function()
+	    {
+	    	var $this= this;
+	        var setSup= new SetInfoFactory({
+	            values: [{id_capo_equipe: SupermercatoService.info.capo_equipe.id, id_supermercato: SupermercatoService.info.id}],
+	            set: [{id_supermercato: SupermercatoService.info.id}]
+	        });
+
+	        var r= setSup.$save({
+	            token: $routeParams.token,
+	            property: 'capi_equipe_supermercati'
+	        },
+	        function(){
+	        	// $this.def.notify(1);
+	            // getSupermercati(true);
+	        });
+	        
+	        return r;
+	    }
     }
 }]);

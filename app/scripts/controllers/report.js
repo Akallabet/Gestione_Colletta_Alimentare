@@ -1,7 +1,7 @@
 'use strict';
 var catene=[];
-collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService',
-function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService)
+collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService',
+function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService)
 {
     AdminPagesService.section='report';
     $scope.version= VersionService.version;
@@ -12,7 +12,8 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     $scope.reportByProvincie={};
     $scope.newSupermercati= SupermercatiService.tmpl;
     $scope.colletta= CollettaService.colletta;
-    $scope.collettaPromise= CollettaService.collettaPromise;
+    $scope.user= UserInfoService.info;
+
     $scope.searchForm= 1;
     $scope.checkedAll= 0;
     $scope.columns=[];
@@ -52,7 +53,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             return (num % 1 === 0) ? num : num.toFixed(2);
         }
     }
-
+    
     $scope.parseInt= function(num)
     {
         return Math.round(num);
@@ -66,49 +67,8 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
         comuniId: []
     }
 
-    $scope.getComuni= function()
-    {
-        if($scope.comuni.length==0)
-        {
-            var comuniFactory= new GetInfoFactory();
-
-            comuniFactory.$save({
-                token: $routeParams.token,
-                property: 'comuni'
-            },
-            function()
-            {
-                for (var i = 0; i < comuniFactory.comuni.length; i++) {
-                    $scope.comuni.push(comuniFactory.comuni[i]);
-                }
-                var provincieTmp= _.uniq($scope.comuni.map(function(c){ return {id: c.id_provincia, nome: c.provincia}}), 'id');
-                $scope.provincie.length=0;
-                for (var i = 0; i < provincieTmp.length; i++) {
-                    $scope.provincie[i]= $.extend({}, provincieTmp[i]);
-                };
-                ComuniService.def.resolve();
-            });
-        }
-    }
-
-    $scope.getCatene= function()
-    {
-        if($scope.catene.length==0)
-        {
-            var cateneFactory= new GetInfoFactory();
-            cateneFactory.$save({
-                token: $routeParams.token,
-                property: 'catene'
-            },function()
-            {
-                for (var i = 0; i < cateneFactory.catene.length; i++) {
-                    $scope.catene.push(cateneFactory.catene[i]);
-                }
-                CateneService.def.resolve();
-                catene= $scope.catene;
-            });
-        }
-    }
+    ComuniService.getInfo(false);
+    CateneService.getInfo(false);
     
     $scope.getSupermercati= function(id)
     {
@@ -188,36 +148,6 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             $scope.search.visible= false;
         });
     }
-
-    $scope.getReport= function()
-    {
-
-    }
-
-    function addInfoToSupermercati()
-    {
-        
-    }
-
-    $scope.$on("comuni", function()
-    {
-        $scope.getComuni();
-    });
-    $scope.$on("catene", function()
-    {
-        $scope.getCatene();
-    });
-
-    $q.all([$scope.collettaPromise,
-            ComuniService.prom,
-            CateneService.prom,
-            ]).then(function(){
-        //$scope.getSupermercati();
-    });
-
-    $scope.$emit("comuni");
-    $scope.$emit("catene");
-
     
     $scope.getAllSupermercatiIds= function(property)
     {

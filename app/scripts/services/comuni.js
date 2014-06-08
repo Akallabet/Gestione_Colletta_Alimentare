@@ -5,10 +5,10 @@ collettaApp.service('ComuniService', ["$q", 'GetInfoFactory', 'ProvincieService'
     	def: def,
     	prom: def.promise,
         comuni: [],
-        getInfo: function()
+        getInfo: function(refresh)
         {
         	var $this= this;
-        	if($this.comuni.length==0)
+        	if(refresh || $this.comuni.length==0)
 	        {
 	            var comuniFactory= new GetInfoFactory();
 

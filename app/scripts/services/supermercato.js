@@ -1,5 +1,6 @@
 
-collettaApp.service('SupermercatoService', ['$q', 'SetInfoFactory', '$routeParams', function($q, SetInfoFactory, $routeParams)
+collettaApp.service('SupermercatoService', ['$q', '$routeParams', 'SetInfoFactory', 'InsertInfoFactory', 'CollettaService', 'ComuniService',  
+function($q, $routeParams, SetInfoFactory, InsertInfoFactory, CollettaService, ComuniService)
 {
     function getSupermercatoInfo(obj)
     {
@@ -40,13 +41,40 @@ collettaApp.service('SupermercatoService', ['$q', 'SetInfoFactory', '$routeParam
                 values: [tmpSupermercato],
                 set: [{id: tmpSupermercato.id}]
             });
-            setSup.$save({
+            var ret= setSup.$save({
+                token: $routeParams.token,
+                property: 'supermercati'
+            },
+            function(res){
+                localStorage.supermercato= JSON.stringify($this.info);
+                $this.getInfo();
+            });
+            return ret;
+        },
+        addInfo: function()
+        {
+            var $this= this;
+            var res= null;
+
+            var tmpSupermercato= $.extend({}, $this.info);
+            delete tmpSupermercato.capo_equipe;
+
+            tmpSupermercato.id_colletta= CollettaService.colletta.filter(function(c){return c.attiva==1})[0].id;
+            tmpSupermercato.id_provincia= ComuniService.comuni.filter(function(c){return c.id==$this.info.id_comune})[0].id_provincia;
+            
+            var newSupermercato= new InsertInfoFactory({
+                values: [tmpSupermercato]
+            });
+
+            var res= newSupermercato.$save({
                 token: $routeParams.token,
                 property: 'supermercati'
             },
             function(){
-                $this.def.notify(true);
+
             });
+
+            return res;
         }
     }
 }]);

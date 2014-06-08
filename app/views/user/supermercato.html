@@ -4,6 +4,7 @@
          <h3>Gestione supermercato</h3>
     </div>
     <div class="container center-container" >
+        <form ng-submit="editOrAddSupermercato()">
             <table class="table table-bordered table-striped table-hover table-container table-condensed">
                 <thead>
                     <tr>
@@ -30,7 +31,7 @@
                     <tr>
                         <th>Comune</th>
                         <td>
-                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_comune" placeholder="Comune">
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_comune" placeholder="Comune" required>
                                 <option ng-value=""></option>
                                 <option ng-value="comune.id" ng-repeat="comune in comuni">{{comune.nome}}</option>
                             </select>
@@ -38,7 +39,7 @@
                     <tr>
                         <th>Catena</th>
                         <td>
-                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_catena" placeholder="Catena">
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_catena" placeholder="Catena" required>
                                 <option ng-value=""></option>
                                 <option ng-value="catena.id" ng-repeat="catena in catene">{{catena.nome}}</option>
                             </select>
@@ -47,7 +48,7 @@
                     <tr>
                         <th>Area</th>
                         <td>
-                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_area" placeholder="Area">
+                            <select class="filter" ui-select2="{ allowClear: true}" ng-model="supermercato.info.id_area" placeholder="Area" required>
                                 <option ng-value=""></option>
                                 <option ng-value="area.id" ng-repeat="area in aree">{{area.nome}}</option>
                             </select>
@@ -66,11 +67,11 @@
                 <tfoot>
                     <tr>
                         <th>
-                            <button class="btn btn-primary" ng-click="supermercato.setInfo()">ok</button>        
+                            <button class="btn btn-primary">ok</button>        
                         </th>
                     </tr>
                 </tfoot>
             </table>
-        </div>
+        </form>
     </div>
 </div>

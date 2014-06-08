@@ -1,7 +1,7 @@
 'use strict';
 
-collettaApp.controller('FilesCtrl', ['$scope', '$resource', '$location', '$routeParams', 'ServerAddress', 'SetInfoFactory', 'UserInfoService', 'VersionService', 'filesUpload', 'CollettaService',
-function($scope, $resource, $location, $routeParams, ServerAddress, SetInfoFactory, UserInfoService, VersionService, filesUpload, CollettaService)
+collettaApp.controller('FilesCtrl', ['$scope', '$resource', '$q', '$location', '$routeParams', 'ServerAddress', 'SetInfoFactory', 'UserInfoService', 'VersionService', 'filesUpload', 'CollettaService', 'SupermercatiService', 'ComuniService', 'CateneService', 'AreeService', 'CapiEquipeService', 'CapiEquipeSupermercatiService',
+function($scope, $resource, $q, $location, $routeParams, ServerAddress, SetInfoFactory, UserInfoService, VersionService, filesUpload, CollettaService, SupermercatiService, ComuniService, CateneService, AreeService, CapiEquipeService, CapiEquipeSupermercatiService)
 {
 	$scope.version= VersionService.version;
 	$scope.token= $routeParams.token;
@@ -71,7 +71,13 @@ function($scope, $resource, $location, $routeParams, ServerAddress, SetInfoFacto
             property: 'colletta'
         },
         function(){
-            //$scope.$emit("refresh");
+        	$q.all([ComuniService.getInfo(false),
+        			CateneService.getInfo(false),
+        			CapiEquipeService.getInfo(false),
+        			AreeService.getInfo(false),
+        			CapiEquipeSupermercatiService.getInfo(false)]).then(function(){
+				SupermercatiService.getInfo(true);
+			});
         });
     }
 }]);

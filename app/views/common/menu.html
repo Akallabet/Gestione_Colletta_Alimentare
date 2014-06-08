@@ -6,7 +6,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="#/{{token}}/home">Colletta Alimentare <span ng-repeat="c in colletta|filter:{attiva:true}">{{c.anno}}</span></a>
+            <a class="brand" href="#/{{token}}/home"><span ng-repeat="c in colletta|filter:{attiva:true}">{{c.nome}} {{c.anno}}</span></a>
             <div collapse="navCollapsed" class="nav-collapse collapse" id="main-menu">
                 <ul class="nav" id="main-menu-left">
                     <li ng-repeat="page in user.pages" class="{{activePage==page && 'active'}}">

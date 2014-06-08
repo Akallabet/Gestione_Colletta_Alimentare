@@ -4,7 +4,7 @@
          <h3>Gestione carichi</h3>
     </div>
     <div class="container center-container" >
-        <div  ng-show="supermercati.length>0">
+        <div ng-show="initialized">
             <div class="row">
                 <form class="form-inline">
                     <select class="filter" ui-select2="{ allowClear: true}" ng-model="filter.nome" placeholder="Punto vendita">
@@ -33,11 +33,11 @@
                     </select>
                 </form>
             </div>
-            <div class="row" style="margin: 0 0 15px 0;">
+            <div class="row" style="margin: 0 0 15px 0;" ng-show="initialized">
                 <span>Supermercati trovati: {{(supermercati|filter:{catena.nome: filter.catena,id_comune: filter.comune, provincia: filter.provincia,nome:filter.nome,indirizzo: filter.indirizzo}).length}}</span>
-                <button class="btn btn-primary" ng-click="openNewSupermercato()">Inserisci nuovo</button>
+                <button class="btn btn-primary" ng-click="openNew()">Inserisci nuovo</button>
             </div>
-            <div class="row" ng-model="order" ng-init="order='id'">
+            <div class="row" ng-model="order" ng-init="order='id'" ng-show="supermercati.length>0">
                 <table class="table table-bordered table-striped table-hover table-container table-condensed">
                     <thead>
                         <th>Id</th>
@@ -64,7 +64,9 @@
                                 <button class="btn btn-primary" ng-click="openProducts(supermercato)">Prodotti</button>
                                 <button
                                     class="btn btn-primary"
-                                    ng-click="openDetails(supermercato)">
+                                    ng-click="openDetails(supermercato)"
+                                    ng-if="user.privilegi==1"
+                                >
                                     Modifica
                                 </button>
                             </td>

@@ -6,7 +6,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
     $scope.version= VersionService.version;
     $scope.activePage= $routeParams.page;
     $scope.token= $routeParams.token;
-    $scope.user= UserInfoService.user;
+    $scope.user= UserInfoService.info;
     $scope.colletta= CollettaService.colletta;
     $scope.colletta_active= CollettaService.active;
     $scope.files= CollettaService.files;    

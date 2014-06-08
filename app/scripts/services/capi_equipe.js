@@ -6,14 +6,14 @@ collettaApp.service('CapiEquipeService', ["$q", 'GetInfoFactory', '$routeParams'
     	prom: def.promise,
         capi_equipe: {},
         capi_equipe_array: [],
-        getInfo: function()
+        getInfo: function(refresh)
         {
         	var $this= this;
-        	if($this.capi_equipe_array.length==0)
+        	if($this.capi_equipe_array.length==0 || refresh)
 	        {
 	            var capi_equipeFactory= new GetInfoFactory();
 
-	            capi_equipeFactory.$save({
+	            var res= capi_equipeFactory.$save({
 	                token: $routeParams.token,
 	                property: 'capi_equipe'
 	            },function()
@@ -24,6 +24,7 @@ collettaApp.service('CapiEquipeService', ["$q", 'GetInfoFactory', '$routeParams'
 	                }
 	                $this.def.resolve();
 	            });
+	            return res;
 	        }
 	        else
 	            $this.def.resolve();

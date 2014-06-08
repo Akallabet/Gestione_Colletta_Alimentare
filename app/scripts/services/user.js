@@ -17,7 +17,7 @@ collettaApp.service('UserInfoService', ['$q',  'GetInfoFactory', '$routeParams',
     return{
     	def: def,
     	prom: def.promise,
-        user: {
+        info: {
             nome: null,
             cognome: null,
             email: null,
@@ -40,17 +40,17 @@ collettaApp.service('UserInfoService', ['$q',  'GetInfoFactory', '$routeParams',
                 }
                 else
                 {
-                    angular.extend($this.user, usr.user);
+                    $.extend($this.info, usr.user);
 
-                    $this.user.pages.length=0;
-                    $this.user.pages.push({url: 'supermercati', label: 'Gestione Carichi', selected: 0});
-                    $this.user.pages.push({url: 'gestione_report', label: 'Report', selected: 0});
+                    $this.info.pages.length=0;
+                    $this.info.pages.push({url: 'supermercati', label: 'Gestione Carichi', selected: 0});
+                    $this.info.pages.push({url: 'gestione_report', label: 'Report', selected: 0});
                     
-                    switch(parseInt($this.user.privilegi))
+                    switch(parseInt($this.info.privilegi))
                     {
                         case 1:
-        //                $this.user.pages.push({url: 'gestione_supermercati', label: 'Gestione Supermercati', selected: 0});
-                        $this.user.pages.push({url: 'gestione_files', label: 'Upload', selected: 0});
+        //                $this.info.pages.push({url: 'gestione_supermercati', label: 'Gestione Supermercati', selected: 0});
+                        $this.info.pages.push({url: 'gestione_files', label: 'Upload', selected: 0});
                         //{url: 'gestione_catene', label: 'Catene'},
                         //{url: 'gestione_magazzini', label: 'Magazzini', selected: 0},
                         //{url: 'gestione_utenti', label: 'Utenti', selected: 0},

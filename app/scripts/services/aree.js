@@ -5,10 +5,10 @@ collettaApp.service('AreeService', ["$q", 'GetInfoFactory', '$routeParams', func
     	def: def,
     	prom: def.promise,
         aree: [],
-        getInfo: function()
+        getInfo: function(refresh)
         {
         	var $this= this;
-        	if($this.aree.length==0)
+        	if(refresh || $this.aree.length==0)
 	        {
 	            var areeFactory= new GetInfoFactory();
 	            areeFactory.$save({

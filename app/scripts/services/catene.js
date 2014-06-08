@@ -5,10 +5,10 @@ collettaApp.service('CateneService', ['$q', 'GetInfoFactory', '$routeParams', fu
     	def: def,
     	prom: def.promise,
         catene: [],
-        getInfo: function()
+        getInfo: function(refresh)
         {
         	var $this= this;
-        	if($this.catene.length==0)
+        	if(refresh || $this.catene.length==0)
 	        {
 	            var cateneFactory= new GetInfoFactory();
 	            cateneFactory.$save({
