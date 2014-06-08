@@ -37,7 +37,7 @@
                 <span>Supermercati trovati: {{(supermercati|filter:{catena.nome: filter.catena,id_comune: filter.comune, provincia: filter.provincia,nome:filter.nome,indirizzo: filter.indirizzo}).length}}</span>
                 <button class="btn btn-primary" ng-click="openNew()">Inserisci nuovo</button>
             </div>
-            <div class="row" ng-model="order" ng-init="order='id'" ng-show="supermercati.length>0">
+            <div class="row" ng-model="order" ng-init="order='id_supermercato'" ng-show="supermercati.length>0">
                 <table class="table table-bordered table-striped table-hover table-container table-condensed">
                     <thead>
                         <th>Id</th>
@@ -51,7 +51,7 @@
                     </thead>
                     <tbody>
                         <tr class="" ng-repeat="supermercato in supermercati|filter:{catena.nome: filter.catena,id_comune: filter.comune, provincia: filter.provincia,nome:filter.nome, indirizzo: filter.indirizzo, capo_equipe.nome: filter.capoEquipe}:false | orderBy: order | limitTo:pagination.currentPage()" rel="{{supermercato.index}}">
-                            <td>{{supermercato.id}}</td>
+                            <td>{{supermercato.id_supermercato}}</td>
                             <td>{{supermercato.nome}}</td>
                             <td>{{supermercato.indirizzo}}</td>
                             <td>{{supermercato.provincia}}</td>
@@ -65,7 +65,7 @@
                                 <button
                                     class="btn btn-primary"
                                     ng-click="openDetails(supermercato)"
-                                    ng-if="user.privilegi==1"
+                                    ng-if="user.privilegi>0"
                                 >
                                     Modifica
                                 </button>

@@ -1,12 +1,13 @@
 'use strict';
 var prodotti=[];
 
-var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, VersionService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, AreeService, SupermercatiService, dialogSupermercato)
+var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, VersionService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, AreeService, SupermercatiService, dialogSupermercato, UserInfoService)
 {
 	$scope.def= $q.defer();
 	$scope.prom= $scope.def.promise;
 	var tryPromises= [];
 	$scope.version= VersionService.version;
+	$scope.user= UserInfoService.info;
 	$scope.comuni= ComuniService.comuni;
 	$scope.catene= CateneService.catene;
 	$scope.aree= AreeService.aree;
@@ -48,6 +49,7 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
 	{
 		var prom= null;
     	var f= $scope.capi_equipe_supermercati.filter(function(c){ return c.id_supermercato===$scope.supermercato.info.id});
+    	
     	if(f.length>0)
     	{
     		if(f[0].id_capo_equipe!==$scope.supermercato.info.capo_equipe.id)
@@ -62,9 +64,15 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
     			d.resolve();
     		}
     	}
-    	else
+    	else if($scope.supermercato.info.capo_equipe.id!='')
     	{
     		prom= CapiEquipeSupermercatiService.saveInfo();
+    	}
+    	else
+    	{
+    		var d= $q.defer();
+    		prom= d.promise;
+    		d.resolve();
     	}
 
     	prom.then(function(){
@@ -80,4 +88,4 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
 	}
 }
 
-SupermercatoCtrl.$inject= ['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', 'VersionService','ComuniService','CateneService','CapiEquipeService', 'CapiEquipeSupermercatiService', 'AreeService', 'SupermercatiService', 'dialogSupermercato'];
+SupermercatoCtrl.$inject= ['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', 'VersionService','ComuniService','CateneService','CapiEquipeService', 'CapiEquipeSupermercatiService', 'AreeService', 'SupermercatiService', 'dialogSupermercato', 'UserInfoService'];

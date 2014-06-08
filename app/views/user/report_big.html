@@ -1,0 +1,169 @@
+<div  ng-controller="ReportCtrl" >
+    <div class="row" ng-show="!tableView">
+        <table class="table table-bordered table-striped table-hover table-container table-condensed">
+            <thead>
+                <tr>
+                    <th>Comune</th>
+                    <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo" style="width:95px;">
+                        <div class="text-center fsize10">{{prod.tipo}}</div>
+                    </th>
+                    <th class="last" colspan="2" style="width:90px;">
+                        <div class="text-center fsize10">TOT</div>
+                    </th>
+                    <th class="" style="width:46px;">
+                        <div class="text-center fsize10">Carichi</div>
+                    </th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]" class="fsize10" style="width:45px;">
+                        <span class="pull-left" ng-if="$even">kg</span>
+                        <span class="pull-right" ng-if="$odd">scat.</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="comune in reportByComuniArray|filter:{enabled: true}">
+                    <td>{{comune.nome}}</td>
+                    <td class="tipo fsize10">{{comune.totali[0].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[0].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[1].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[1].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[2].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[2].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[3].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[3].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[4].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[4].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[5].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[5].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[6].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[6].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[7].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[7].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[8].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[8].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[9].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[9].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[10].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[10].scatole}}</td>
+                    <td class="tipo fsize10">{{comune.totali[11].kg}}</td>
+                    <td class="tipo fsize10">{{comune.totali[11].scatole}}</td>
+                    <td class="fsize10">{{comune.complessivo.kg}}</td>
+                    <td class="fsize10">{{comune.complessivo.scatole}}</td>
+                    <td class="fsize10">
+                        <span class="pull-right">{{comune.complessivo.carichi.length}}</span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="fsize11">
+                    <th>KILI</th>
+                    <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
+                        <span class="pull-left" ng-init="tot.kg=parseInt(tot.kg)">{{tot.kg}}</span>
+                    </th>
+                    <th colspan="2">
+                        {{parseInt(totaliComplessivi.complessivo.kg)}}
+                    </th>
+                    <th rowspan="2">
+                        <span class="pull-right">{{totaliComplessivi.complessivo.carichi}}</span>
+                    </th>
+                </tr>
+                <tr class="fsize11">
+                    <th>SCATOLE</th>
+                    <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
+                        <span class="pull-left" ng-init="tot.scatole=parseInt(tot.scatole)">{{tot.scatole}}</span>
+                    </th>
+                    <th colspan="2">
+                        {{parseInt(totaliComplessivi.complessivo.scatole)}}
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div> 
+    <!--<div class="row" ng-show="tableView" ng-repeat="comune in reportByComuniArray|filter:{enabled: true}">-->
+    <div class="row" ng-show="tableView">
+        <table class="table table-bordered table-striped table-hover table-container table-condensed">
+            <thead>
+                <tr>
+                    <th>nome</th>
+                    <th>indirizzo</th>
+                    <th>comune</th>
+                    <th style="width:95px;" class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
+                        <div class="text-center fsize10">{{prod.tipo}}</div>
+                    </th>
+                    <th style="width:90px;" class="last" colspan="2">
+                        <div class="text-center fsize10">TOT</div>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width:120px; word-break:break-all;"></th>
+                    <th style="width:120px; word-break:break-all;"></th>
+                    <th style="width:120px; word-break:break-all;"></th>
+                    <th ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]" class="fsize10" style="width:45px;">
+                        <span class="pull-left" ng-if="$even">kg</span>
+                        <span class="pull-right" ng-if="$odd">scat.</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="fsize10" ng-repeat="object in report|filter:{enabled:true,catena.nome:search.catena}|orderBy:'comune'">
+                    <td style="word-break:break-all;">{{object.nome}}</td>
+                    <td style="word-break:break-all;">{{object.indirizzo}}</td>
+                    <td style="word-break:break-all;">{{object.comune}}</td> 
+                    <td>{{object.prodotti[0].Kg}}</td>
+                    <td>{{object.prodotti[0].scatole}}</td>
+                    <td>{{object.prodotti[1].Kg}}</td>
+                    <td>{{object.prodotti[1].scatole}}</td>
+                    <td>{{object.prodotti[2].Kg}}</td>
+                    <td>{{object.prodotti[2].scatole}}</td>
+                    <td>{{object.prodotti[3].Kg}}</td>
+                    <td>{{object.prodotti[3].scatole}}</td>
+                    <td>{{object.prodotti[4].Kg}}</td>
+                    <td>{{object.prodotti[4].scatole}}</td>
+                    <td>{{object.prodotti[5].Kg}}</td>
+                    <td>{{object.prodotti[5].scatole}}</td>
+                    <td>{{object.prodotti[6].Kg}}</td>
+                    <td>{{object.prodotti[6].scatole}}</td>
+                    <td>{{object.prodotti[7].Kg}}</td>
+                    <td>{{object.prodotti[7].scatole}}</td>
+                    <td>{{object.prodotti[8].Kg}}</td>
+                    <td>{{object.prodotti[8].scatole}}</td>
+                    <td>{{object.prodotti[9].Kg}}</td>
+                    <td>{{object.prodotti[9].scatole}}</td>
+                    <td>{{object.prodotti[10].Kg}}</td>
+                    <td>{{object.prodotti[10].scatole}}</td>
+                    <td>{{object.prodotti[11].Kg}}</td>
+                    <td>{{object.prodotti[11].scatole}}</td>
+                    <td>{{object.totali.kg}}</td>
+                    <td>{{object.totali.scatole}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="fsize11">
+                    <th>KILI</th>
+                    <th></th>
+                    <th></th>
+                    <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
+                        <span class="pull-left" ng-init="tot.kg=parseInt(tot.kg)">{{tot.kg}}</span>
+                    </th>
+                    <th colspan="2">
+                        {{parseInt(totaliComplessivi.complessivo.kg)}}
+                    </th>
+                </tr>
+                <tr class="fsize11">
+                    <th>SCATOLE</th>
+                    <th></th>
+                    <th></th>
+                    <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
+                        <span class="pull-left" ng-init="tot.scatole=parseInt(tot.scatole)">{{tot.scatole}}</span>
+                    </th>
+                    <th colspan="2">
+                        {{parseInt(totaliComplessivi.complessivo.scatole)}}
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
