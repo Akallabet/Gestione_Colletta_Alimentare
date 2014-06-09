@@ -2335,6 +2335,7 @@ disabled look for disabled choices in the results dropdown
 
 form .filter{width: 180px;}
 
+.table .actions {width: 160px;}
 .table-container{}
 .table-container .first{width: 2.3%;}
 .table-container .other{width: 7.6%;}

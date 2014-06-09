@@ -1,9 +1,10 @@
 'use strict';
 var catene=[];
-collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService','AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService',
-function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService)
+collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService',
+function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService)
 {
-    AdminPagesService.section='report';
+    $scope.excelMode= false;
+    $scope.route= $routeParams;
     $scope.version= VersionService.version;
     $scope.tableView= false;
     $scope.report= ReportService.report;
@@ -77,90 +78,93 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     
     $scope.getSupermercati= function(refresh)
     {
-        var query= {};
-        if($scope.search.comune!=null && $scope.search.comune!='')
+        if(refresh || $scope.report.length===0)
         {
-            query.id_comune= $scope.search.comune;
-        }
-        else if($scope.search.provincia!=null && $scope.search.provincia!='')
-        {
-            query.id_provincia= $scope.search.provincia;
-        }
-        else if($scope.search.colletta!=null && $scope.search.colletta!='')
-        {
-            query.id_colletta= $scope.search.colletta;
-        }
-        
-        var superm= new GetInfoFactory(
-            query
-        );
-        
-        $scope.report.length=0;
-        $scope.reportByComuni= ReportService.reportByComuni = {};
-        $scope.reportByComuniArray.length=0;
-        $scope.totaliComplessivi.tipiArray= [];
-        $scope.totaliComplessivi.tipi= $.extend(true, [], CaricoService.prodottiTmpl);
-        $scope.totaliComplessivi.complessivo= {kg: 0, scatole: 0, carichi: 0};
-
-        superm.$save({
-            token: $routeParams.token,
-                property: 'report'
-            },
-            function(){
-                for(var i=0; i<superm.report.length;i++)
-                {
-                    superm.report[i].catena= $scope.catene.filter(function(c){ return c.id==superm.report[i].id_catena})[0];
-                    //$scope.report[superm.report[i].id]= superm.report[i];
-                    if(superm.report[i].prodotti.length>0) superm.report[i].enabled= true;
-                    else superm.report[i].enabled= false;
-                    if(typeof $scope.reportByComuni[superm.report[i].id_comune]=='undefined')
-                    {
-                        $scope.reportByComuni[superm.report[i].id_comune]={
-                            nome: $scope.comuni.filter(function(c){return c.id==superm.report[i].id_comune})[0].nome,
-                            objects: [],
-                            complessivo:{kg: 0, scatole: 0, carichi: []},
-                            totali: $.extend(true, [], CaricoService.prodottiTmpl),
-                            enabled: false
-                        }
-                    }
-                    var c_tmp= $scope.reportByComuni[superm.report[i].id_comune];
-                    c_tmp.objects.push(superm.report[i]);
-                    if(superm.report[i].prodotti.length>0) c_tmp.enabled= true;
-                    var tipi_tmp= $.extend(true, {}, $scope.tipiTotali);
-                    superm.report[i].totali={kg: 0, scatole: 0};
-                    for (var j=0;j<superm.report[i].prodotti.length;j++)
-                    {
-                        superm.report[i].prodotti[j].Kg= parseInt(superm.report[i].prodotti[j].Kg);
-                        superm.report[i].prodotti[j].scatole= parseInt(superm.report[i].prodotti[j].scatole);
-
-                        var prod_tmp= c_tmp.totali.filter(function(t){return t.prodotto==superm.report[i].prodotti[j].prodotto})[0];
-                        var tot_tmp= $scope.totaliComplessivi.tipi.filter(function(t){return t.prodotto==superm.report[i].prodotti[j].prodotto})[0];
-                        
-                        superm.report[i].totali.kg+= superm.report[i].prodotti[j].Kg;
-                        superm.report[i].totali.scatole+= superm.report[i].prodotti[j].scatole;
-                        prod_tmp.kg+= superm.report[i].prodotti[j].Kg;
-                        prod_tmp.scatole+= superm.report[i].prodotti[j].scatole;
-                        c_tmp.complessivo.kg+= superm.report[i].prodotti[j].Kg;
-                        c_tmp.complessivo.scatole+= superm.report[i].prodotti[j].scatole;
-
-                        tot_tmp.kg+= superm.report[i].prodotti[j].Kg;
-                        tot_tmp.scatole+= superm.report[i].prodotti[j].scatole;
-                        $scope.totaliComplessivi.complessivo.kg+= superm.report[i].prodotti[j].Kg;
-                        $scope.totaliComplessivi.complessivo.scatole+= superm.report[i].prodotti[j].scatole;
-                    }
-                    superm.report[i].comune= c_tmp.nome;
-                    superm.report[i].catena= $scope.catene.filter(function(c){ return c.id==superm.report[i].id_catena})[0];
-                    $scope.report.push($.extend(true, {}, superm.report[i]))
-                    // console.log(superm.report[i]);
-                }
-                for(var i in $scope.reportByComuni)
-                {
-                    $scope.reportByComuniArray.push($scope.reportByComuni[i]);
-                }
-                // console.log($scope.reportByComuniArray);
-                $scope.search.visible= false;
+            var query= {};
+            if($scope.search.comune!=null && $scope.search.comune!='')
+            {
+                query.id_comune= $scope.search.comune;
             }
-        );
+            else if($scope.search.provincia!=null && $scope.search.provincia!='')
+            {
+                query.id_provincia= $scope.search.provincia;
+            }
+            else if($scope.search.colletta!=null && $scope.search.colletta!='')
+            {
+                query.id_colletta= $scope.search.colletta;
+            }
+            
+            var superm= new GetInfoFactory(
+                query
+            );
+            
+            $scope.report.length=0;
+            $scope.reportByComuni= ReportService.reportByComuni = {};
+            $scope.reportByComuniArray.length=0;
+            $scope.totaliComplessivi.tipiArray= [];
+            $scope.totaliComplessivi.tipi= $.extend(true, [], CaricoService.prodottiTmpl);
+            $scope.totaliComplessivi.complessivo= {kg: 0, scatole: 0, carichi: 0};
+
+            superm.$save({
+                token: $routeParams.token,
+                    property: 'report'
+                },
+                function(){
+                    for(var i=0; i<superm.report.length;i++)
+                    {
+                        superm.report[i].catena= $scope.catene.filter(function(c){ return c.id==superm.report[i].id_catena})[0];
+                        //$scope.report[superm.report[i].id]= superm.report[i];
+                        if(superm.report[i].prodotti.length>0) superm.report[i].enabled= true;
+                        else superm.report[i].enabled= false;
+                        if(typeof $scope.reportByComuni[superm.report[i].id_comune]=='undefined')
+                        {
+                            $scope.reportByComuni[superm.report[i].id_comune]={
+                                nome: $scope.comuni.filter(function(c){return c.id==superm.report[i].id_comune})[0].nome,
+                                objects: [],
+                                complessivo:{kg: 0, scatole: 0, carichi: []},
+                                totali: $.extend(true, [], CaricoService.prodottiTmpl),
+                                enabled: false
+                            }
+                        }
+                        var c_tmp= $scope.reportByComuni[superm.report[i].id_comune];
+                        c_tmp.objects.push(superm.report[i]);
+                        if(superm.report[i].prodotti.length>0) c_tmp.enabled= true;
+                        var tipi_tmp= $.extend(true, {}, $scope.tipiTotali);
+                        superm.report[i].totali={kg: 0, scatole: 0};
+                        for (var j=0;j<superm.report[i].prodotti.length;j++)
+                        {
+                            superm.report[i].prodotti[j].Kg= parseInt(superm.report[i].prodotti[j].Kg);
+                            superm.report[i].prodotti[j].scatole= parseInt(superm.report[i].prodotti[j].scatole);
+
+                            var prod_tmp= c_tmp.totali.filter(function(t){return t.prodotto==superm.report[i].prodotti[j].prodotto})[0];
+                            var tot_tmp= $scope.totaliComplessivi.tipi.filter(function(t){return t.prodotto==superm.report[i].prodotti[j].prodotto})[0];
+                            
+                            superm.report[i].totali.kg+= superm.report[i].prodotti[j].Kg;
+                            superm.report[i].totali.scatole+= superm.report[i].prodotti[j].scatole;
+                            prod_tmp.kg+= superm.report[i].prodotti[j].Kg;
+                            prod_tmp.scatole+= superm.report[i].prodotti[j].scatole;
+                            c_tmp.complessivo.kg+= superm.report[i].prodotti[j].Kg;
+                            c_tmp.complessivo.scatole+= superm.report[i].prodotti[j].scatole;
+
+                            tot_tmp.kg+= superm.report[i].prodotti[j].Kg;
+                            tot_tmp.scatole+= superm.report[i].prodotti[j].scatole;
+                            $scope.totaliComplessivi.complessivo.kg+= superm.report[i].prodotti[j].Kg;
+                            $scope.totaliComplessivi.complessivo.scatole+= superm.report[i].prodotti[j].scatole;
+                        }
+                        superm.report[i].comune= c_tmp.nome;
+                        superm.report[i].catena= $scope.catene.filter(function(c){ return c.id==superm.report[i].id_catena})[0];
+                        $scope.report.push($.extend(true, {}, superm.report[i]))
+                        // console.log(superm.report[i]);
+                    }
+                    for(var i in $scope.reportByComuni)
+                    {
+                        $scope.reportByComuniArray.push($scope.reportByComuni[i]);
+                    }
+                    // console.log($scope.reportByComuniArray);
+                    $scope.search.visible= false;
+                }
+            );
+        }
     }
     
     $scope.getAllSupermercatiIds= function(property)

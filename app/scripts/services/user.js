@@ -1,4 +1,4 @@
-collettaApp.service('UserInfoService', ['$q',  'GetInfoFactory', '$routeParams', 'UserInfoFactory', function($q, GetInfoFactory, $routeParams, UserInfoFactory)
+collettaApp.service('UserInfoService', ['$q', '$location',  'GetInfoFactory', '$routeParams', 'UserInfoFactory', function($q, $location, GetInfoFactory, $routeParams, UserInfoFactory)
 {
 	var def= $q.defer();
     function User(obj){

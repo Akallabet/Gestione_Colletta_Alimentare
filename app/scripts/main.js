@@ -29,9 +29,6 @@ collettaApp.config(['$routeProvider', function($routeProvider) {
         .when('/:token/gestione_report', {
             templateUrl:'views/user/report.html?version='+versionTmpl
         })
-        .when('/:token/report_big', {
-            templateUrl:'views/user/report_big.html?version='+versionTmpl
-        })
         .when('/:token/supermercati', {
             templateUrl:'views/user/supermercati.html?version='+versionTmpl
         })
