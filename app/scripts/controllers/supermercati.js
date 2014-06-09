@@ -1,9 +1,11 @@
 'use strict';
 var catene=[];
-collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CapiEquipeSupermercatiService', 'AdminPagesService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'dialogSupermercato','InsertInfoFactory', 'ProvincieService', 'AreeService', 'FilterService', 'UserInfoService',
-function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, AdminPagesService, CaricoService, VersionService, CollettaService, SupermercatoService, dialogSupermercato, InsertInfoFactory, ProvincieService, AreeService, FilterService, UserInfoService)
+collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CapiEquipeSupermercatiService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'dialogSupermercato','InsertInfoFactory', 'ProvincieService', 'AreeService', 'FilterService', 'UserInfoService', 'FeedbackService',
+function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, CaricoService, VersionService, CollettaService, SupermercatoService, dialogSupermercato, InsertInfoFactory, ProvincieService, AreeService, FilterService, UserInfoService, FeedbackService)
 {
-    AdminPagesService.section='supermercati';
+    $scope.feedback= FeedbackService.feedback;
+    $scope.feedback.status=0;
+
     $scope.version= VersionService.version;
     $scope.initialized= false;
     $scope.supermercati= SupermercatiService.supermercati;
@@ -37,6 +39,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
 
     $scope.filter= FilterService.filter;
     
+    $scope.feedback.changeStatus(1);
     ComuniService.getInfo();
     CateneService.getInfo();
     AreeService.getInfo();
@@ -99,7 +102,15 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
             CateneService.prom
             ]).then(function(){
         $scope.initialized= true;
-        SupermercatiService.getInfo(false);
+        
+        SupermercatiService.getInfo(false).then(function(){
+            $scope.feedback.changeStatus(2);
+        },function(){
+            $scope.feedback.changeStatus(3);
+        });
+    },
+    function(){
+        $scope.feedback.changeStatus(3);
     });
 
     //Launch

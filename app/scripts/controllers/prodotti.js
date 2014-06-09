@@ -1,11 +1,13 @@
 'use strict';
 var prodotti=[];
 
-collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'DeleteInfoFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'ProdottiService',
-function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, DeleteInfoFactory, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, ProdottiService)
+collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$modal', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'DeleteInfoFactory', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'ProdottiService', 'FeedbackService',
+function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, DeleteInfoFactory, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, ProdottiService, FeedbackService)
 {
     $scope.version= VersionService.version;
-    $scope.view= 1;
+    $scope.feedback= FeedbackService.feedback;
+    $scope.feedback.status=0;
+
     $scope.supermercato= null;
     $scope.prodottiNomi= CaricoService.prodottiNomi;
     $scope.caricoTmpl= CaricoService.caricoTmpl;
@@ -25,6 +27,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
 
     $scope.getCarichiByIdSupermercato= function()
     {
+        $scope.feedback.changeStatus(1);
         var ret= new GetInfoFactory(
             {
                 id_supermercato: $routeParams.idSupermercato
@@ -38,6 +41,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         function(){
             if(typeof ret.prodotti!='undefined')
             {
+                $scope.feedback.changeStatus(2);
                 $scope.prodotti.length=0;
 
                 var prodTmp= _.groupBy(ret.prodotti, function(prod){ return parseInt(prod.carico)});
@@ -53,6 +57,12 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
                 $scope.prodottiLength= $scope.prodotti.length;
                 CaricoService.lastId= ($scope.prodottiLength>0) ? $scope.prodotti[$scope.prodotti.length-1].objects[0].carico : 0;
             }
+            else
+            {
+                $scope.feedback.changeStatus(3);
+            }
+        },function(){
+            $scope.feedback.changeStatus(3);
         });
     }
     
@@ -95,7 +105,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
             $scope.prodottiByTipoTotal.push(tmpRow);
         }
     }
-
+    
     $scope.openNewCarico = function () {
         CaricoService.modalTitle= "Nuovo Carico";
         CaricoService.modalButtons[0].active= true;

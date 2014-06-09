@@ -36,6 +36,7 @@ collettaApp.service('SupermercatiService', ['$q', '$routeParams', 'GetInfoFactor
         getInfo: function(refresh)
         {
             var $this= this;
+            var res= null;
             if(refresh || $this.supermercati.length==0)
             {
                 var superm= new GetInfoFactory(
@@ -44,7 +45,7 @@ collettaApp.service('SupermercatiService', ['$q', '$routeParams', 'GetInfoFactor
                     }
                 );
                 
-                superm.$save({
+                res= superm.$save({
                     token: $routeParams.token,
                         property: 'supermercati'
                     },
@@ -61,6 +62,7 @@ collettaApp.service('SupermercatiService', ['$q', '$routeParams', 'GetInfoFactor
             
                     for(var i=0; i<superm.supermercati.length;i++)
                     {
+                        superm.supermercati[i].id_supermercato= Math.round(superm.supermercati[i].id_supermercato);
                         superm.supermercati[i].catena= CateneService.catene.filter(function(c){ return c.id==superm.supermercati[i].id_catena})[0];
                         superm.supermercati[i].comune= ComuniService.comuni.filter(function(c){ return c.id==superm.supermercati[i].id_comune}).map(function(c){return c.nome})[0];
                         superm.supermercati[i].provincia= ComuniService.comuni.filter(function(c){ return c.id==superm.supermercati[i].id_comune}).map(function(c){return c.provincia})[0];
@@ -81,6 +83,13 @@ collettaApp.service('SupermercatiService', ['$q', '$routeParams', 'GetInfoFactor
                     FilterService.filter.visible= false;
                 });
             }
+            else
+            {
+                var def= $q.defer();
+                res= def.promise;
+                def.resolve();
+            }
+            return res;
         }
     }
 }]);

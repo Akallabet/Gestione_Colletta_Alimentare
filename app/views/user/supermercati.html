@@ -37,8 +37,13 @@
                 <span>Supermercati trovati: {{(supermercati|filter:{catena.nome: filter.catena,id_comune: filter.comune, provincia: filter.provincia,nome:filter.nome,indirizzo: filter.indirizzo}).length}}</span>
                 <button class="btn btn-primary" ng-click="openNew()">Inserisci nuovo</button>
             </div>
-            <div class="row" ng-model="order" ng-init="order='id_supermercato'" ng-show="supermercati.length>0">
-                <table class="table table-bordered table-striped table-hover table-container table-condensed">
+            <div class="row" ng-model="order" ng-init="order='id_supermercato'" ng-switch on="feedback.status">
+                <p class="loader_supermercati" ng-switch-when="1">
+                    <span>Attendi... </span>
+                    <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                </p>
+                <table class="table table-bordered table-striped table-hover table-container table-condensed" 
+                    ng-switch-when="2">
                     <thead>
                         <th>Id</th>
                         <th>Nome</th>
@@ -61,13 +66,20 @@
                                 <p>{{supermercato.capo_equipe.nome}}</p>
                             </td>
                             <td>
-                                <button class="btn btn-primary" ng-click="openProducts(supermercato)">Prodotti</button>
+                                <button 
+                                    class="btn btn-primary"
+                                    ng-click="openProducts(supermercato)"
+                                    title="Prodotti"
+                                >
+                                    <i class="fa fa-list"></i>
+                                </button>
                                 <button
                                     class="btn btn-primary"
                                     ng-click="openDetails(supermercato)"
                                     ng-if="user.privilegi>0"
+                                    title="Modifica"
                                 >
-                                    Modifica
+                                    <i class="fa fa-edit"></i>
                                 </button>
                             </td>
                         </tr>

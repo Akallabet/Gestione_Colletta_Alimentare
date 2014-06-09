@@ -4,7 +4,10 @@
 
 form .filter{width: 180px;}
 
-.table .actions {width: 160px;}
+.loader_supermercati{font-size: 20px; text-align: center;line-height: 30px;}
+.loader_supermercati i{font-size: 30px;}
+
+.table .actions {width: 84px;}
 .table-container{}
 .table-container .first{width: 2.3%;}
 .table-container .other{width: 7.6%;}

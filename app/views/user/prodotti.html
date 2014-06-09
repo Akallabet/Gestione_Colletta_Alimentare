@@ -3,7 +3,7 @@
     <div class="hero-unit">
         <h3>Gestione prodotti - {{supermercato.nome}}, {{supermercato.indirizzo}}</h3>
     </div>
-    <div class="container center-container">
+    <div class="container center-container" ng-switch on="feedback.status">
         <div class="row-fluid">
             <div class="alert span6 offset3" ng-show="prodottiLength==0">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -15,49 +15,57 @@
                 <button class="btn btn-primary" ng-click="openNewCarico()">Inserisci un nuovo carico</button>
             </form>
         </div>
-        <table class="table table-bordered table-striped table-hover table-container table-condensed" ng-show="view==1">
-        <thead>
-            <tr>
-                <th class="first"><div class="text-center fsize12">N°</div></th>
-                <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
-                    <div class="text-center fsize12">{{prod.tipo}}</div>
-                </th>
-                <th class="last"><div class="text-center fsize12">TOT</div></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
-                    <span class="pull-left">kg</span>
-                    <span class="pull-right">scat.</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
-                <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
-                <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
-                    <span class="pull-left">{{pr.kg}}</span>
-                    <span class="pull-right">{{pr.scatole}}</span>
-                </td>
-                <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
-                    <span class="pull-left">{{rowTotal.kg}}</span>
-                    <span class="pull-right">{{rowTotal.scatole}}</span>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot class="total">
-            <tr>
-                <td>TOT</td>
-                <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
-                    <span class="pull-left">{{prod.kg}}</span>
-                    <span class="pull-right">{{prod.scatole}}</span>
-                </td>
-                <td class="tipo">
-                    <span class="pull-left">{{Total.kg}}</span>
-                    <span class="pull-right">{{Total.scatole}}</span>
-                </td>
-            </tr>
-        </tfoot>
+        <div class="row-fluid" ng-switch-when="1">
+            <p class="loader_supermercati">
+                <span>Attendi... </span>
+                <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+            </p>
+        </div>
+        <table class="table table-bordered table-striped table-hover table-container table-condensed"
+            ng-switch-when="2"
+        >
+            <thead>
+                <tr>
+                    <th class="first"><div class="text-center fsize12">N°</div></th>
+                    <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
+                        <div class="text-center fsize12">{{prod.tipo}}</div>
+                    </th>
+                    <th class="last"><div class="text-center fsize12">TOT</div></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
+                        <span class="pull-left">kg</span>
+                        <span class="pull-right">scat.</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
+                    <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
+                    <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
+                        <span class="pull-left">{{pr.kg}}</span>
+                        <span class="pull-right">{{pr.scatole}}</span>
+                    </td>
+                    <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
+                        <span class="pull-left">{{rowTotal.kg}}</span>
+                        <span class="pull-right">{{rowTotal.scatole}}</span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot class="total">
+                <tr>
+                    <td>TOT</td>
+                    <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
+                        <span class="pull-left">{{prod.kg}}</span>
+                        <span class="pull-right">{{prod.scatole}}</span>
+                    </td>
+                    <td class="tipo">
+                        <span class="pull-left">{{Total.kg}}</span>
+                        <span class="pull-right">{{Total.scatole}}</span>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <script type="text/ng-template" id="caricoNewModal.html">

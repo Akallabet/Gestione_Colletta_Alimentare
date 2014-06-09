@@ -66,9 +66,22 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>
-                            <button class="btn btn-primary">ok</button>        
-                        </th>
+                        <td style="width: 300px;">
+                            <button class="btn btn-primary pull-left">ok</button>        
+                            <div ng-switch="feedback.status" style="margin: 0 0 0 10px; float: left;">
+                                <span ng-switch-when="1">
+                                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                                </span>
+                                <span ng-switch-when="2">
+                                    <i class="fa fa-check"></i>
+                                </span>
+                                <span ng-switch-when="3">
+                                    {{feedback.message[0]}}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                        </td>
                     </tr>
                 </tfoot>
             </table>

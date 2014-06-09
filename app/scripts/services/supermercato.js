@@ -1,5 +1,5 @@
 
-collettaApp.service('SupermercatoService', ['$q', '$routeParams', 'SetInfoFactory', 'InsertInfoFactory', 'CollettaService', 'ComuniService',  
+collettaApp.service('SupermercatoService', ['$q', '$routeParams', 'SetInfoFactory', 'InsertInfoFactory', 'CollettaService', 'ComuniService',
 function($q, $routeParams, SetInfoFactory, InsertInfoFactory, CollettaService, ComuniService)
 {
     function getSupermercatoInfo(obj)

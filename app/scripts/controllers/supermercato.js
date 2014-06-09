@@ -1,8 +1,11 @@
 'use strict';
 var prodotti=[];
-
-var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, VersionService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, AreeService, SupermercatiService, dialogSupermercato, UserInfoService)
+collettaApp.controller('SupermercatoCtrl', ['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', 'VersionService','ComuniService','CateneService','CapiEquipeService', 'CapiEquipeSupermercatiService', 'AreeService', 'SupermercatiService', 'dialogSupermercato', 'UserInfoService', 'FeedbackService',
+function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, VersionService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, AreeService, SupermercatiService, dialogSupermercato, UserInfoService, FeedbackService)
 {
+	$scope.feedback= FeedbackService.feedback;
+	$scope.feedback.status= 0;
+	
 	$scope.def= $q.defer();
 	$scope.prom= $scope.def.promise;
 	var tryPromises= [];
@@ -32,6 +35,7 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
 	$scope.editOrAddSupermercato= function()
 	{
 		var prom= null;
+		$scope.feedback.changeStatus(1);
 		if($scope.supermercato.info.id!=='' && $scope.supermercato.info.id!==null)
 		{
 			prom= $scope.supermercato.setInfo();
@@ -42,6 +46,9 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
 		}
 		prom.then(function(){
 			editOrAddCapoEquipeSupermercato();
+		},
+		function(){
+			$scope.feedback.changeStatus(3);
 		});
 	}
 
@@ -76,7 +83,11 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
     	}
 
     	prom.then(function(){
+    		$scope.feedback.changeStatus(2);
     		reinitializeObjects();
+    	},
+    	function(){
+    		$scope.feedback.changeStatus(3);
     	});
 	}
 
@@ -86,6 +97,4 @@ var SupermercatoCtrl= function($scope, $q, $resource, $location, $routeParams, G
 			SupermercatiService.getInfo(true);
 		});
 	}
-}
-
-SupermercatoCtrl.$inject= ['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', 'VersionService','ComuniService','CateneService','CapiEquipeService', 'CapiEquipeSupermercatiService', 'AreeService', 'SupermercatiService', 'dialogSupermercato', 'UserInfoService'];
+}]);
