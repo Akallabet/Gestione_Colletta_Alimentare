@@ -5,11 +5,18 @@ collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$mo
 function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, DeleteInfoFactory, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, ProdottiService, FeedbackService)
 {
     $scope.version= VersionService.version;
-    $scope.feedback= FeedbackService.feedback;
+    $scope.feedback= FeedbackService.feedback();
     $scope.feedback.status=0;
+
+    $scope.feedbackDialog= FeedbackService.feedback();
+    $scope.feedbackDialog.status=0;
+
+    $scope.nuovoCarico= false;
+    $scope.modificaCarico= false;
 
     $scope.supermercato= null;
     $scope.prodottiNomi= CaricoService.prodottiNomi;
+    $scope.editCarico= {};
     $scope.caricoTmpl= CaricoService.caricoTmpl;
     $scope.prodotti= ProdottiService.prodotti;
     $scope.prodottiByTipo= [];
@@ -107,64 +114,20 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
     }
     
     $scope.openNewCarico = function () {
-        CaricoService.modalTitle= "Nuovo Carico";
-        CaricoService.modalButtons[0].active= true;
-        CaricoService.modalButtons[1].active= false;
-        CaricoService.modalButtons[2].active= true;
-
         $scope.caricoTmpl.map(function(c, i){return $.extend(c, CaricoService.newCarico[i])});
-        var modalInstance = $modal.open({
-            templateUrl: 'caricoNewModal.html',
-            controller: CaricoCtrl,
-            resolve: {
-                
-            }
-        });
-
-        modalInstance.result.then(function (action,selectedItem) {
-            if(action=='ok') saveNewCarico();
-            else if(action=='dismiss')
-            {
-
-            }
-        },function () {
-            
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
+        $scope.nuovoCarico= true;
     }
 
     $scope.openSetCarico = function (carico) {
+        $scope.editCarico= carico;
         $scope.modifyId= CaricoService.modifyId=carico.id;
-        
-        CaricoService.modalTitle= "Modifica Carico";
-        CaricoService.modalButtons[0].active= true;
-        CaricoService.modalButtons[1].active= true;
-        CaricoService.modalButtons[2].active= true;
-        
         $scope.modifyId= carico.ordine;
-        var modalInstance = $modal.open({
-            templateUrl: 'caricoEditModal.html',
-            controller: CaricoCtrl,
-            resolve: {
-                
-            }
-        });
-        
-        modalInstance.result.then(function (action,selectedItem) {
-            if(action=='ok') setCarico(carico);
-            else if(action=='del') removeCarico(carico);
-            else if(action=='dismiss')
-            {
-
-            }
-        },function () {
-            
-            //$log.info('Modal dismissed at: ' + new Date());
-        });
+        $scope.modificaCarico= true;
     }
 
-    function saveNewCarico()
+    $scope.saveNewCarico= function()
     {
+        $scope.feedback.changeStatus(1);
         var lastId= ($scope.prodotti.length>0) ? parseInt($scope.prodotti[$scope.prodotti.length-1].id) : 0;
         var tmpCarico= $scope.caricoTmpl.map(function(c){ 
             return $.extend({}, {
@@ -176,6 +139,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
                 carico: lastId+1
             });
         });
+        $scope.nuovoCarico= false;
         var newCarico= new InsertInfoFactory({
             values: tmpCarico
         });
@@ -185,18 +149,23 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         },
         function(){
             $scope.$emit("refresh");
+            $scope.feedback.changeStatus(2);
+        },
+        function(){
+            $scope.feedback.changeStatus(3);
         });
     }
 
-    function setCarico(carico)
+    $scope.setCarico= function()
     {
+        $scope.feedback.changeStatus(1);
         var values=[];
         var set=[];
-        carico.objects.map(function(c){
+        $scope.editCarico.objects.map(function(c){
                 values.push(c);
                 set.push({id: c.id});
         });
-        
+        $scope.modificaCarico= false;
         var setC= new SetInfoFactory({
             values: values,
             set: set
@@ -207,6 +176,42 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         },
         function(){
             $scope.$emit("refresh");
+            $scope.feedback.changeStatus(2);
+        },
+        function(){
+            $scope.feedback.changeStatus(3);
+        });
+    }
+
+    $scope.removeCarico= function()
+    {
+        $scope.feedback.changeStatus(1);
+        var values=[];
+        var set=[];
+        var index;
+        $scope.prodotti.map(function(p, i){if(p.id==$scope.editCarico.id) index=i;});
+        $scope.editCarico.objects.map(function(c){
+            set.push({id: c.id});
+        });
+        
+        $scope.modificaCarico= false;
+        $scope.prodotti.splice(index,1);
+        
+        var setC= new DeleteInfoFactory({
+            values: values,
+            set: set
+        });
+        setC.$save({
+            token: $routeParams.token,
+            property: 'prodotti'
+        },
+        function(){
+            orderCarichi();
+            $scope.feedback.changeStatus(2);
+            //$scope.$emit("refresh");
+        },
+        function(){
+            $scope.feedback.changeStatus(3);
         });
     }
 
@@ -232,31 +237,6 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         },
         function(){
             $scope.$emit("refresh");
-        });
-    }
-
-    function removeCarico(carico)
-    {
-        var values=[];
-        var set=[];
-        var index;
-        $scope.prodotti.map(function(p, i){if(p.id==carico.id) index=i;});
-        carico.objects.map(function(c){
-            set.push({id: c.id});
-        });
-        $scope.prodotti.splice(index,1);
-        
-        var setC= new DeleteInfoFactory({
-            values: values,
-            set: set
-        });
-        setC.$save({
-            token: $routeParams.token,
-            property: 'prodotti'
-        },
-        function(){
-            orderCarichi();
-            //$scope.$emit("refresh");
         });
     }
 }]);

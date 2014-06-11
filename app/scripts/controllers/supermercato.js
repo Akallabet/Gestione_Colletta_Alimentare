@@ -3,7 +3,10 @@ var prodotti=[];
 collettaApp.controller('SupermercatoCtrl', ['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SupermercatoService', 'VersionService','ComuniService','CateneService','CapiEquipeService', 'CapiEquipeSupermercatiService', 'AreeService', 'SupermercatiService', 'dialogSupermercato', 'UserInfoService', 'FeedbackService',
 function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SupermercatoService, VersionService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, AreeService, SupermercatiService, dialogSupermercato, UserInfoService, FeedbackService)
 {
-	$scope.feedback= FeedbackService.feedback;
+	$scope.generalFeedback= FeedbackService.feedback();
+	$scope.generalFeedback.status= 0;
+
+	$scope.feedback= FeedbackService.feedback();
 	$scope.feedback.status= 0;
 	
 	$scope.def= $q.defer();
@@ -17,11 +20,17 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, Superme
 	$scope.capi_equipe= CapiEquipeService.capi_equipe_array;
 	$scope.capi_equipe_supermercati= CapiEquipeSupermercatiService.capi_equipe_supermercati;
 	
-	CateneService.getInfo();
-	ComuniService.getInfo();
-	AreeService.getInfo();
-	CapiEquipeService.getInfo();
-	CapiEquipeSupermercatiService.getInfo();
+	$scope.generalFeedback.changeStatus(1);
+	$q.all([CateneService.getInfo(),
+		ComuniService.getInfo(),
+		AreeService.getInfo(),
+		CapiEquipeService.getInfo(),
+		CapiEquipeSupermercatiService.getInfo()
+		]).then(function(){
+			$scope.generalFeedback.changeStatus(2);
+		},function(){
+			$scope.generalFeedback.changeStatus(3);
+		});
 	
 	$scope.modalTitle= dialogSupermercato.modalTitle;
 	$scope.modalButtons= dialogSupermercato.modalButtons;

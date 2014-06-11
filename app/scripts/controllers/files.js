@@ -1,8 +1,9 @@
 'use strict';
 
-collettaApp.controller('FilesCtrl', ['$scope', '$resource', '$q', '$location', '$routeParams', 'ServerAddress', 'SetInfoFactory', 'UserInfoService', 'VersionService', 'filesUpload', 'CollettaService', 'SupermercatiService', 'ComuniService', 'CateneService', 'AreeService', 'CapiEquipeService', 'CapiEquipeSupermercatiService',
-function($scope, $resource, $q, $location, $routeParams, ServerAddress, SetInfoFactory, UserInfoService, VersionService, filesUpload, CollettaService, SupermercatiService, ComuniService, CateneService, AreeService, CapiEquipeService, CapiEquipeSupermercatiService)
+collettaApp.controller('FilesCtrl', ['$scope', '$resource', '$q', '$location', '$routeParams', 'ServerAddress', 'SetInfoFactory', 'UserInfoService', 'VersionService', 'filesUpload', 'CollettaService', 'SupermercatiService', 'ComuniService', 'CateneService', 'AreeService', 'CapiEquipeService', 'CapiEquipeSupermercatiService', 'FeedbackService',
+function($scope, $resource, $q, $location, $routeParams, ServerAddress, SetInfoFactory, UserInfoService, VersionService, filesUpload, CollettaService, SupermercatiService, ComuniService, CateneService, AreeService, CapiEquipeService, CapiEquipeSupermercatiService, FeedbackService)
 {
+	$scope.feedback= FeedbackService.feedback();
 	$scope.version= VersionService.version;
 	$scope.token= $routeParams.token;
 	$scope.colletta= CollettaService.colletta;
@@ -78,6 +79,29 @@ function($scope, $resource, $q, $location, $routeParams, ServerAddress, SetInfoF
         			CapiEquipeSupermercatiService.getInfo(false)]).then(function(){
 				SupermercatiService.getInfo(true);
 			});
+        });
+    }
+
+    $scope.deleteCache= function()
+    {
+    	$scope.feedback.changeStatus(1);
+    	var setCache= $resource(ServerAddress.getServerAddress()+':token/cache/delete',{token: '@token'});
+    	
+    	var setC= new setCache();
+        setC.$get({
+            token: $routeParams.token
+        },
+        function(){
+        	$scope.feedback.changeStatus(2);
+   //      	$q.all([ComuniService.getInfo(false),
+   //      			CateneService.getInfo(false),
+   //      			CapiEquipeService.getInfo(false),
+   //      			AreeService.getInfo(false),
+   //      			CapiEquipeSupermercatiService.getInfo(false)]).then(function(){
+			// 	SupermercatiService.getInfo(true);
+			// });
+        },function(){
+        	$scope.feedback.changeStatus(3);
         });
     }
 }]);

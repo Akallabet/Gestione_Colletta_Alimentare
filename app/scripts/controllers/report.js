@@ -1,8 +1,9 @@
 'use strict';
 var catene=[];
-collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService',
-function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService)
+collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService', 'FeedbackService',
+function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService, FeedbackService)
 {
+    $scope.feedback= FeedbackService.feedback();
     $scope.excelMode= false;
     $scope.route= $routeParams;
     $scope.version= VersionService.version;
@@ -34,7 +35,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     $scope.prodottiByTipoTotal= [];
     $scope.Total= {kg: 0, scatole: 0};
     $scope.prodottiCarichi={};
-
+    
     $scope.pagination={
         page:1,
         itemsPerPage:50,
@@ -80,6 +81,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     {
         if(refresh || $scope.report.length===0)
         {
+            $scope.feedback.changeStatus(1);
             var query= {};
             if($scope.search.comune!=null && $scope.search.comune!='')
             {
@@ -162,6 +164,11 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
                     }
                     // console.log($scope.reportByComuniArray);
                     $scope.search.visible= false;
+                    $scope.feedback.changeStatus(2);
+                },
+                function()
+                {
+                    $scope.feedback.changeStatus(3);
                 }
             );
         }

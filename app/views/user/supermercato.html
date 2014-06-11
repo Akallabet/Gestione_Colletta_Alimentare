@@ -3,8 +3,15 @@
     <div class="hero-unit">
          <h3>Gestione supermercato</h3>
     </div>
-    <div class="container center-container" >
-        <form ng-submit="editOrAddSupermercato()">
+    <div class="container center-container" ng-switch on="generalFeedback.status">
+        <p class="loader_supermercati" ng-switch-when="1">
+            <span>Attendi... </span>
+            <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        </p>
+        <p class="loader_supermercati" ng-switch-when="3">
+            <span>Errore... prova a ricaricare la pagina </span>
+        </p>
+        <form ng-submit="editOrAddSupermercato()" ng-switch-when="2">
             <table class="table table-bordered table-striped table-hover table-container table-condensed">
                 <thead>
                     <tr>

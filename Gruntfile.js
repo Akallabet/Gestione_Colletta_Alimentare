@@ -200,7 +200,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/*.html'],
+          src: ['*.html', 'views/**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -234,9 +234,9 @@ module.exports = function (grunt) {
         files: {
           src: [
             '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/styles/fonts/*'
+            // '<%= yeoman.dist %>/styles/{,*/}*.css',
+            // '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+            // '<%= yeoman.dist %>/styles/fonts/*'
           ]
         }
       }
@@ -253,7 +253,13 @@ module.exports = function (grunt) {
             '.htaccess',
             'components/**/*',
             'images/{,*/}*.{gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'styles/*.gif',
+            'styles/*.png',
+            'bower_components/jquery/jquery.min.js',
+            'bower_components/jquery/jquery.form.min.js',
+            'lib/lodash.js',
+            'bower_components/angular/angular.min.js'
           ]
         }]
       }
@@ -295,7 +301,7 @@ module.exports = function (grunt) {
     'cdnify',
     'ngmin',
     'uglify',
-    // 'rev',
+    'rev',
     'usemin'
   ]);
 

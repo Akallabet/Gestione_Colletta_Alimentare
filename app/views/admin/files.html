@@ -15,6 +15,18 @@
                 </button>
             </div>
         </form>
+        <form class="form-inline" ng-switch on="feedback.status">
+            <button class="btn btn-danger" ng-click="deleteCache()">Elimina Cache</button>
+            <span ng-switch-when="1">
+                <i class="fa fa-circle-o-notch fa-spin"></i>
+            </span>
+            <span ng-switch-when="2">
+                Cache eliminata!
+            </span>
+            <span ng-switch-when="3">
+                Errore!
+            </span>
+        </form>
     	<div class="row">
     		<span ng-show="uploaded">File aggiornati</span>
     		<div class="progress" ng-show="progress!=0" style="width: 200px;">

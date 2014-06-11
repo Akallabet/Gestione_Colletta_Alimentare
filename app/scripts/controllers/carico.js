@@ -14,7 +14,8 @@ var CaricoCtrl= function($scope, $resource, $location, $routeParams, GetInfoFact
 	$scope.modalButtons= CaricoService.modalButtons;
 
 	$scope.closeModal= function(action){
-		$modalInstance.close(action);
+		if(action==='dismiss'){$modalInstance.close(action);}
+		else if(action==='ok'){$modalInstance.close(action);}
 	}
 };
 

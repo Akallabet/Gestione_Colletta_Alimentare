@@ -4,70 +4,176 @@
         <h3>Gestione prodotti - {{supermercato.nome}}, {{supermercato.indirizzo}}</h3>
     </div>
     <div class="container center-container" ng-switch on="feedback.status">
-        <div class="row-fluid">
-            <div class="alert span6 offset3" ng-show="prodottiLength==0">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <strong>Attenzione!</strong> Non hai insetrito nessun carico in questo supermercato!
+        <p class="loader_supermercati" ng-switch-when="1">
+            <span>Attendi... </span>
+            <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        </p>
+        <p class="loader_supermercati" ng-switch-when="3">
+            <span>Errore... prova a ricaricare la pagina </span>
+        </p>
+        <div ng-switch-when="2">
+            <div class="row-fluid">
+                <div class="alert span6 offset3" ng-show="prodottiLength==0">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>Attenzione!</strong> Non hai insetrito nessun carico in questo supermercato!
+                </div>
             </div>
+            <div class="row-fluid">
+                <form class="form-inline pull-left">
+                    <button class="btn btn-primary" ng-click="openNewCarico()">Inserisci un nuovo carico</button>
+                </form>
+                <div ng-switch on="feedbackDialog.status">
+                    <p class="loader_supermercati pull-left" style="margin: 0 0 0 50px;" ng-switch-when="1">
+                        <span>Attendi... </span>
+                        <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                    </p>
+                    <p class="loader_supermercati" ng-switch-when="2">
+                        <span>Modifica effettuata!</span>
+                        <span><i class="fa fa-check"></i></span>
+                    </p>
+                    <p class="loader_supermercati" ng-switch-when="3">
+                        <span>Errore... riprova </span>
+                    </p>
+                </div>
+            </div>
+            <div class="row-fluid" ng-switch-when="1">
+                <p class="loader_supermercati">
+                    <span>Attendi... </span>
+                    <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                </p>
+            </div>
+            <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                <thead>
+                    <tr>
+                        <th class="first"><div class="text-center fsize12">N°</div></th>
+                        <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
+                            <div class="text-center fsize12">{{prod.tipo}}</div>
+                        </th>
+                        <th class="last"><div class="text-center fsize12">TOT</div></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
+                            <span class="pull-left">kg</span>
+                            <span class="pull-right">scat.</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
+                        <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
+                        <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
+                            <span class="pull-left">{{pr.kg}}</span>
+                            <span class="pull-right">{{pr.scatole}}</span>
+                        </td>
+                        <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
+                            <span class="pull-left">{{rowTotal.kg}}</span>
+                            <span class="pull-right">{{rowTotal.scatole}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="total">
+                    <tr>
+                        <td>TOT</td>
+                        <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
+                            <span class="pull-left">{{prod.kg}}</span>
+                            <span class="pull-right">{{prod.scatole}}</span>
+                        </td>
+                        <td class="tipo">
+                            <span class="pull-left">{{Total.kg}}</span>
+                            <span class="pull-right">{{Total.scatole}}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        <div class="row-fluid">
-            <form class="form-inline">
-                <button class="btn btn-primary" ng-click="openNewCarico()">Inserisci un nuovo carico</button>
+    </div>
+    <div ng-show="nuovoCarico">
+        <div class="modal-backdrop" style="z-index: 1040;" ng-click="nuovoCarico=false"></div>
+        <div class="modal" style="z-index: 1050;">
+            <form>
+                <div class="modal-header">
+                    <h3>Nuovo carico</h3>
+                </div>
+                <div class="modal-body new_carico_modal">
+                    <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Kili</th>
+                                <th>Scatole</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto" ng-model="pr">
+                                <td class="">{{pr.prodotto}}</td>
+                                <td>
+                                    <input type="text" class="span1" ng-model="pr.kg" placeholder="0" />
+                                </td>
+                                <td>
+                                    <input type="text" class="span1" ng-model="pr.scatole" placeholder="0" />
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="saveNewCarico()">
+                        ok
+                    </button>
+                    <button class="btn btn-warning" ng-click="nuovoCarico=false">
+                        annulla
+                    </button>
+                </div>
             </form>
         </div>
-        <div class="row-fluid" ng-switch-when="1">
-            <p class="loader_supermercati">
-                <span>Attendi... </span>
-                <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
-            </p>
-        </div>
-        <table class="table table-bordered table-striped table-hover table-container table-condensed"
-            ng-switch-when="2"
-        >
-            <thead>
-                <tr>
-                    <th class="first"><div class="text-center fsize12">N°</div></th>
-                    <th class="other" colspan="2" ng-repeat="prod in prodottiNomi | orderBy:tipo">
-                        <div class="text-center fsize12">{{prod.tipo}}</div>
-                    </th>
-                    <th class="last"><div class="text-center fsize12">TOT</div></th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="fsize10">
-                        <span class="pull-left">kg</span>
-                        <span class="pull-right">scat.</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
-                    <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
-                    <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
-                        <span class="pull-left">{{pr.kg}}</span>
-                        <span class="pull-right">{{pr.scatole}}</span>
-                    </td>
-                    <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
-                        <span class="pull-left">{{rowTotal.kg}}</span>
-                        <span class="pull-right">{{rowTotal.scatole}}</span>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot class="total">
-                <tr>
-                    <td>TOT</td>
-                    <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
-                        <span class="pull-left">{{prod.kg}}</span>
-                        <span class="pull-right">{{prod.scatole}}</span>
-                    </td>
-                    <td class="tipo">
-                        <span class="pull-left">{{Total.kg}}</span>
-                        <span class="pull-right">{{Total.scatole}}</span>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
     </div>
+    <div ng-show="modificaCarico">
+        <div class="modal-backdrop" style="z-index: 1040;" ng-click="modificaCarico=false"></div>
+        <div class="modal" style="z-index: 1050;">
+            <form>
+                <div class="modal-header">
+                    <h3>Modifica carico</h3>
+                </div>
+                <div class="modal-body new_carico_modal">
+                    <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Kili</th>
+                                <th>Scatole</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="" ng-repeat="pr in editCarico.objects | orderBy:prodotto">
+                                <td class="">{{pr.prodotto}}</td>
+                                <td>
+                                    <input type="text" class="span1" ng-model="pr.kg" required/>
+                                </td>
+                                <td>
+                                    <input type="text" class="span1" ng-model="pr.scatole" required/>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="setCarico(editCarico)">
+                        ok
+                    </button>
+                    <button class="btn btn-danger" ng-click="removeCarico(editCarico)">
+                        elimina
+                    </button>
+                    <button class="btn btn-warning" ng-click="modificaCarico=false">
+                        annulla
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!--
     <script type="text/ng-template" id="caricoNewModal.html">
         <form>
             <div class="modal-header">
@@ -86,10 +192,10 @@
                         <tr class="" ng-repeat="pr in caricoTmpl | orderBy:prodotto" ng-model="pr">
                             <td class="">{{pr.prodotto}}</td>
                             <td>
-                                <input type="text" class="span1" ng-model="pr.kg" placeholder="0" required/>
+                                <input type="text" class="span1" ng-model="pr.kg" placeholder="0" />
                             </td>
                             <td>
-                                <input type="text" class="span1" ng-model="pr.scatole" placeholder="0" required/>
+                                <input type="text" class="span1" ng-model="pr.scatole" placeholder="0" />
                             </td>
                         </tr>
                     </tbody>
@@ -97,9 +203,22 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
-                    {{button.label}}
-                </button>
+                <div class="pull-right">
+                    <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                        {{button.label}}
+                    </button>
+                </div>
+                <div ng-switch="feedbackDialog.status" style="margin: 0 25px 0 0" class="pull-right">
+                    <span ng-switch-when="1">
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
+                    <span ng-switch-when="2">
+                        <i class="fa fa-check"></i>
+                    </span>
+                    <span ng-switch-when="3">
+                        Errore nell"'" inserimento
+                    </span>
+                </div>
             </div>
         </form>
     </script>
@@ -132,10 +251,15 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
-                    {{button.label}}
-                </button>
+                <div class="pull-right">
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-{{button.type}}" ng-click="closeModal(button.action)" ng-repeat="button in modalButtons|filter:{active:true}:true">
+                        {{button.label}}
+                    </button>
+                </div>
             </div>
         </form>
     </script>
+    -->
 </div>

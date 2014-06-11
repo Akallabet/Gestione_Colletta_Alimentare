@@ -3,7 +3,7 @@ var catene=[];
 collettaApp.controller('SupermercatiCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CapiEquipeSupermercatiService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'dialogSupermercato','InsertInfoFactory', 'ProvincieService', 'AreeService', 'FilterService', 'UserInfoService', 'FeedbackService',
 function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CapiEquipeSupermercatiService, CaricoService, VersionService, CollettaService, SupermercatoService, dialogSupermercato, InsertInfoFactory, ProvincieService, AreeService, FilterService, UserInfoService, FeedbackService)
 {
-    $scope.feedback= FeedbackService.feedback;
+    $scope.feedback= FeedbackService.feedback();
     $scope.feedback.status=0;
 
     $scope.version= VersionService.version;

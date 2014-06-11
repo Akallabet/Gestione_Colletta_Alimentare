@@ -1,5 +1,5 @@
 'use strict';
-var versionTmpl= '1.1';
+var versionTmpl= '1.4';
 
 var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2']);
 
