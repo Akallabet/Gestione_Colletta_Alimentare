@@ -150,6 +150,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         function(){
             $scope.$emit("refresh");
             $scope.feedback.changeStatus(2);
+            $scope.feedbackDialog.changeStatus(2);
         },
         function(){
             $scope.feedback.changeStatus(3);
@@ -177,6 +178,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         function(){
             $scope.$emit("refresh");
             $scope.feedback.changeStatus(2);
+            $scope.feedbackDialog.changeStatus(2);
         },
         function(){
             $scope.feedback.changeStatus(3);
@@ -208,6 +210,7 @@ function($scope, $resource, $location, $modal, $routeParams, GetInfoFactory, Ins
         function(){
             orderCarichi();
             $scope.feedback.changeStatus(2);
+            $scope.feedbackDialog.changeStatus(2);
             //$scope.$emit("refresh");
         },
         function(){
