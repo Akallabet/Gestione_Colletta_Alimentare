@@ -1,6 +1,7 @@
 collettaApp.service('ServerAddress', function()
 {
-    var s= 'http://localhost/api.gnca/index.php/';
+    //var s= 'http://178.62.59.76/api.gnca/index.php/';
+	var s= 'http://gncasicilia.org/api.gnca/index.php/';
     //var s= 'http://colletta.gncasicilia.org/api/#/';
     // var s= '../api/index.php/';
     return{
