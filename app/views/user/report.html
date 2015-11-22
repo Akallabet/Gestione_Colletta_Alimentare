@@ -6,17 +6,17 @@
     <div class="container center-container">
         <div  ng-show="searchForm" ng-show="!excelMode">
             <div class="row" ng-if="user.privilegi>1" ng-show="!excelMode">
-                <form class="form-inline" ng-submit="getSupermercati(true)">
+                <form class="form-inline">
                     <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.colletta" placeholder="Colletta">
                         <option ng-value=""></option>
                         <option ng-value="coll.id" ng-repeat="coll in colletta">{{coll.nome}} {{coll.anno}}</option>
                     </select>
-                    <button class="btn btn-primary">Aggiorna</button>
+                    <button class="btn btn-primary" ng-click="getSupermercati(true)">Aggiorna</button>
                 </form>
             </div>
         </div>
         <div class="row" ng-if="user.privilegi==1" ng-show="!excelMode">
-            <form class="form-inline" ng-submit="getSupermercati(true)">
+            <form class="form-inline">
                 <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
                     <option ng-value=""></option>
                     <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
@@ -29,7 +29,7 @@
                     <option ng-value=""></option>
                     <option ng-value="coll.id" ng-repeat="coll in colletta">{{coll.nome}} {{coll.anno}}</option>
                 </select>
-                <button class="btn btn-primary" ng-click="getSupermercati()">Genera</button>
+                <button class="btn btn-primary" ng-click="getSupermercati(refresh)">Genera</button>
             </form>
         </div>
         <div class="row" ng-show="!excelMode">
@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <th></th>
-                            <th ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]" class="fsize10" style="width:45px;">
+                            <th ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]" class="fsize10" style="width:45px;">
                                 <span class="pull-left" ng-if="$even">kg</span>
                                 <span class="pull-right" ng-if="$odd">scat.</span>
                             </th>
@@ -73,7 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="comune in reportByComuniArray|filter:{enabled: true}">
+                        <tr ng-repeat="comune in reportByComuniArray|filter:{enabled: true} track by $index">
                             <td>{{comune.nome}}</td>
                             <td class="tipo fsize10">{{comune.totali[0].kg}}</td>
                             <td class="tipo fsize10">{{comune.totali[0].scatole}}</td>
@@ -99,6 +99,8 @@
                             <td class="tipo fsize10">{{comune.totali[10].scatole}}</td>
                             <td class="tipo fsize10">{{comune.totali[11].kg}}</td>
                             <td class="tipo fsize10">{{comune.totali[11].scatole}}</td>
+                            <td class="tipo fsize10">{{comune.totali[12].kg}}</td>
+                            <td class="tipo fsize10">{{comune.totali[12].scatole}}</td>
                             <td class="fsize10">{{comune.complessivo.kg}}</td>
                             <td class="fsize10">{{comune.complessivo.scatole}}</td>
                             <td class="fsize10">
@@ -149,7 +151,7 @@
                             <th style="width:120px; word-break:break-all;"></th>
                             <th style="width:120px; word-break:break-all;"></th>
                             <th style="width:120px; word-break:break-all;"></th>
-                            <th ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]" class="fsize10" style="width:45px;">
+                            <th ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]" class="fsize10" style="width:45px;">
                                 <span class="pull-left" ng-if="$even">kg</span>
                                 <span class="pull-right" ng-if="$odd">scat.</span>
                             </th>
@@ -184,6 +186,8 @@
                             <td>{{object.prodotti[10].scatole}}</td>
                             <td>{{object.prodotti[11].Kg}}</td>
                             <td>{{object.prodotti[11].scatole}}</td>
+                            <td>{{object.prodotti[12].Kg}}</td>
+                            <td>{{object.prodotti[12].scatole}}</td>
                             <td>{{object.totali.kg}}</td>
                             <td>{{object.totali.scatole}}</td>
                         </tr>

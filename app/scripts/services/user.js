@@ -51,6 +51,7 @@ collettaApp.service('UserInfoService', ['$q', '$location',  'GetInfoFactory', '$
                         case 1:
         //                $this.info.pages.push({url: 'gestione_supermercati', label: 'Gestione Supermercati', selected: 0});
                         $this.info.pages.push({url: 'gestione_files', label: 'Upload', selected: 0});
+                        $this.info.pages.push({url: 'grafici', label: 'Grafici', selected: 0});
                         //{url: 'gestione_catene', label: 'Catene'},
                         //{url: 'gestione_magazzini', label: 'Magazzini', selected: 0},
                         //{url: 'gestione_utenti', label: 'Utenti', selected: 0},

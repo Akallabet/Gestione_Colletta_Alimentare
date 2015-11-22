@@ -16,7 +16,8 @@ collettaApp.service('CapiEquipeService', ["$q", 'GetInfoFactory', '$routeParams'
 	            var res= capi_equipeFactory.$save({
 	                token: $routeParams.token,
 	                property: 'capi_equipe'
-	            },function()
+	            },
+	            function(result)
 	            {
 	                for (var i = 0; i < capi_equipeFactory.capi_equipe.length; i++) {
 	                    $this.capi_equipe[capi_equipeFactory.capi_equipe[i].id]= $.extend({supermercati: []},capi_equipeFactory.capi_equipe[i]);

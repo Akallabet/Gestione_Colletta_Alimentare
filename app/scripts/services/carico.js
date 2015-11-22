@@ -19,6 +19,7 @@ collettaApp.service("CaricoService", ["$q",function($q)
             {tipo:"RISO"},
             {tipo:"ZUCCHERO"},
             {tipo:"LATTE"},
+            {tipo:"BISCOTTI"},
             {tipo:"VARIE"}
         ],
         prodottiTmpl: [
@@ -33,6 +34,7 @@ collettaApp.service("CaricoService", ["$q",function($q)
             {prodotto:"RISO", kg: 0, scatole: 0},
             {prodotto:"ZUCCHERO", kg: 0, scatole: 0},
             {prodotto:"LATTE", kg: 0, scatole: 0},
+            {prodotto:"BISCOTTI", kg: 0, scatole: 0},
             {prodotto:"VARIE", kg: 0, scatole: 0}
         ],
         modalOptions: {
@@ -51,6 +53,7 @@ collettaApp.service("CaricoService", ["$q",function($q)
             {prodotto:"RISO", kg: "", scatole: ""},
             {prodotto:"ZUCCHERO", kg: "", scatole: ""},
             {prodotto:"LATTE", kg: "", scatole: ""},
+            {prodotto:"BISCOTTI", kg: "", scatole: ""},
             {prodotto:"VARIE", kg: "", scatole: ""}
         ],
         caricoTmpl: [
@@ -65,6 +68,7 @@ collettaApp.service("CaricoService", ["$q",function($q)
             {prodotto:"RISO", kg: "", scatole: ""},
             {prodotto:"ZUCCHERO", kg: "", scatole: ""},
             {prodotto:"LATTE", kg: "", scatole: ""},
+            {prodotto:"BISCOTTI", kg: "", scatole: ""},
             {prodotto:"VARIE", kg: "", scatole: ""}
         ],
         lastId: null,

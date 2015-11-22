@@ -20,13 +20,19 @@
     "grunt-usemin": "~0.1.10",
     "grunt-regarde": "~0.1.1",
     "grunt-rev": "~0.1.0",
-    "grunt-karma": "~0.3.0",
+    "grunt-karma": "~0.8.3",
     "grunt-open": "~0.2.0",
     "matchdep": "~0.1.1",
     "grunt-google-cdn": "~0.1.1",
-    "grunt-ngmin": "~0.0.2"
+    "grunt-ngmin": "~0.0.2",
+    "karma-jasmine": "~0.1.5",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "karma": "~0.12.16"
   },
   "engines": {
     "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
   }
 }

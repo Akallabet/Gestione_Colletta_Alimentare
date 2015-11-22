@@ -45,11 +45,13 @@ collettaApp.service('SupermercatiService', ['$q', '$routeParams', 'GetInfoFactor
                     }
                 );
                 
-                res= superm.$save({
+                res= superm.$save(
+                {
                     token: $routeParams.token,
-                        property: 'supermercati'
-                    },
-                    function(){
+                    property: 'supermercati'
+                },
+                function()
+                {
                     $this.supermercati.length=0;
                     
                     //Capi equipe

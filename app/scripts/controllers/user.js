@@ -1,7 +1,7 @@
 'use strict';
 
-collettaApp.controller('UserCtrl',['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService', 'CollettaService',
-function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, UserInfoService, UserInfoFactory, LogoutFactory, VersionService, CollettaService)
+collettaApp.controller('UserCtrl',['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'UserInfoFactory', 'LogoutFactory', 'VersionService', 'CollettaService', 'LogoutService',
+function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, UserInfoService, UserInfoFactory, LogoutFactory, VersionService, CollettaService, LogoutService)
 {
     $scope.version= VersionService.version;
     $scope.activePage= $routeParams.page;
@@ -13,11 +13,14 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, SetInfoFact
 
     $scope.logout= function()
     {
-        LogoutFactory.get(function()
-        {
-            $location.path('/');
-        });
+        LogoutService.logout();
     }
+
+    LogoutService.prom.then(function(){
+        window.location.reload();
+    }, function(){
+
+    });
 
     UserInfoService.getInfo();
     CollettaService.getInfo();

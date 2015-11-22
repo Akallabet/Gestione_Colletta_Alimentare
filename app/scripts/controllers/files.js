@@ -58,7 +58,7 @@ function($scope, $resource, $q, $location, $routeParams, ServerAddress, SetInfoF
 
         for(var i=0; i<$scope.colletta.length; i++)
         {
-            $scope.colletta[i].attiva= ($scope.colletta[i].anno==c.anno) ? true : false;
+            $scope.colletta[i].attiva= ($scope.colletta[i].id==c.id) ? true : false;
             values.push($scope.colletta[i]);
             set.push({id: $scope.colletta[i].id});
         }
@@ -82,14 +82,15 @@ function($scope, $resource, $q, $location, $routeParams, ServerAddress, SetInfoF
         });
     }
 
-    $scope.deleteCache= function()
+    $scope.deleteCache= function(all)
     {
     	$scope.feedback.changeStatus(1);
-    	var setCache= $resource(ServerAddress.getServerAddress()+':token/cache/delete',{token: '@token'});
+    	var setCache= $resource(ServerAddress.getServerAddress()+':token/cache/delete/:all',{token: '@token', all: '@all'});
     	
     	var setC= new setCache();
         setC.$get({
-            token: $routeParams.token
+            token: $routeParams.token,
+            all: all
         },
         function(){
         	$scope.feedback.changeStatus(2);

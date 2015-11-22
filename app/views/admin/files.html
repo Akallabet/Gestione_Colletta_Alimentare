@@ -16,7 +16,8 @@
             </div>
         </form>
         <form class="form-inline" ng-switch on="feedback.status">
-            <button class="btn btn-danger" ng-click="deleteCache()">Elimina Cache</button>
+            <button class="btn btn-danger" ng-click="deleteCache(0)">Elimina Cache personale</button>
+            <button class="btn btn-danger" ng-click="deleteCache(1)">Elimina Cache totale</button>
             <span ng-switch-when="1">
                 <i class="fa fa-circle-o-notch fa-spin"></i>
             </span>

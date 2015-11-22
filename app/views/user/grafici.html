@@ -1,0 +1,58 @@
+<div  ng-controller="ReportCtrl" keyboard:interceptor>
+    <div ng-include="'views/common/menu.html?version={{version}}'" ng-show="!excelMode"></div>
+    <div class="hero-unit" ng-show="!excelMode">
+        <h3>Report prodotti</h3>
+    </div>
+    <div class="container center-container">
+        <div  ng-show="searchForm" ng-show="!excelMode">
+            <div class="row" ng-if="user.privilegi>1" ng-show="!excelMode">
+                <form class="form-inline" ng-submit="getSupermercati(true)">
+                    <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.colletta" placeholder="Colletta">
+                        <option ng-value=""></option>
+                        <option ng-value="coll.id" ng-repeat="coll in colletta">{{coll.nome}} {{coll.anno}}</option>
+                    </select>
+                    <button class="btn btn-primary">Aggiorna</button>
+                </form>
+            </div>
+        </div>
+        <div class="row" ng-if="user.privilegi==1" ng-show="!excelMode">
+            <form class="form-inline" ng-submit="getSupermercati(true)">
+                <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.provincia" placeholder="Provincia">
+                    <option ng-value=""></option>
+                    <option ng-value="provincia.id" ng-repeat="provincia in provincie">{{provincia.nome}}</option>
+                </select>
+                <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.comune" placeholder="Comune">
+                    <option ng-value=""></option>
+                    <option ng-value="comune.id" ng-repeat="comune in comuni | filter:{id_provincia: provinciaSearch}">{{comune.nome}}</option>
+                </select>
+                <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.colletta" placeholder="Colletta">
+                    <option ng-value=""></option>
+                    <option ng-value="coll.id" ng-repeat="coll in colletta">{{coll.nome}} {{coll.anno}}</option>
+                </select>
+                <button class="btn btn-primary" ng-click="getSupermercati()">Genera</button>
+            </form>
+        </div>
+        <div class="row" ng-show="!excelMode">
+            <form class="form-inline">
+                <input type="checkbox" class="pull-left" ng-model="tableView" id="view"/>
+                <label for="view" class="pull-left">Visualizza supermercati</label>
+                <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.catena" placeholder="Catena">
+                    <option ng-value=""></option>
+                    <option ng-value="catena.nome" ng-repeat="catena in catene">{{catena.nome}}</option>
+                </select>
+            </form>
+        </div>
+        <div class="row">
+            <linechart data='data' options='options'></linechart>
+        </div>
+        <div ng-switch on="feedback.status">
+            <p class="loader_supermercati" ng-switch-when="1">
+                <span>Attendi... </span>
+                <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+            </p>
+            <div class="row" ng-switch-when="2">
+                
+            </div>
+        </div> 
+    </div>
+</div>

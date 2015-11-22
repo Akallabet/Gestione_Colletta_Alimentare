@@ -14,7 +14,8 @@ collettaApp.service('CateneService', ['$q', 'GetInfoFactory', '$routeParams', fu
 	            cateneFactory.$save({
 	                token: $routeParams.token,
 	                property: 'catene'
-	            },function()
+	            },
+	            function(result)
 	            {
 	                for (var i = 0; i < cateneFactory.catene.length; i++) {
 	                    $this.catene.push(cateneFactory.catene[i]);

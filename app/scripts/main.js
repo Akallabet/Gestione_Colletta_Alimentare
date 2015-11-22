@@ -1,5 +1,5 @@
 'use strict';
-var versionTmpl= '1.4';
+var versionTmpl= '1.9';
 
 var collettaApp= angular.module('collettaApp', ['ngResource','ngRoute','ui.bootstrap','ui.select2']);
 
@@ -28,6 +28,9 @@ collettaApp.config(['$routeProvider', function($routeProvider) {
         })
         .when('/:token/gestione_report', {
             templateUrl:'views/user/report.html?version='+versionTmpl
+        })
+        .when('/:token/grafici', {
+            templateUrl:'views/user/grafici.html?version='+versionTmpl
         })
         .when('/:token/supermercati', {
             templateUrl:'views/user/supermercati.html?version='+versionTmpl

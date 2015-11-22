@@ -16,7 +16,7 @@ collettaApp.service('ComuniService', ["$q", 'GetInfoFactory', 'ProvincieService'
 	                token: $routeParams.token,
 	                property: 'comuni'
 	            },
-	            function()
+	            function(result)
 	            {
 	                for (var i = 0; i < comuniFactory.comuni.length; i++) {
 	                    $this.comuni.push(comuniFactory.comuni[i]);

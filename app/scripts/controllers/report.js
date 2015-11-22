@@ -7,6 +7,14 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     $scope.excelMode= false;
     $scope.route= $routeParams;
     $scope.version= VersionService.version;
+
+    // $scope.viewMode= [
+    //     {value: 0, label:'Tabella per comuni', selected: true},
+    //     {value: 1, label:'Tabella per supermercati',  selected: false},
+    //     {value: 2, label:'Grafico, con totali per comuni',  selected: false}
+    //     {value: 2, label:'Grafico, con totali per comuni',  selected: false}
+    // ];
+
     $scope.tableView= false;
     $scope.report= ReportService.report;
     $scope.reportByComuni= ReportService.reportByComuni;
@@ -35,15 +43,6 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     $scope.prodottiByTipoTotal= [];
     $scope.Total= {kg: 0, scatole: 0};
     $scope.prodottiCarichi={};
-    
-    $scope.pagination={
-        page:1,
-        itemsPerPage:50,
-        currentPage: function()
-        {
-            return $scope.pagination.page*$scope.pagination.itemsPerPage;
-        }
-    }
 
     $scope.limitDecimal= function(num)
     {
@@ -79,6 +78,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     
     $scope.getSupermercati= function(refresh)
     {
+        console.log('ok')
         if(refresh || $scope.report.length===0)
         {
             $scope.feedback.changeStatus(1);
@@ -91,10 +91,11 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             {
                 query.id_provincia= $scope.search.provincia;
             }
-            else if($scope.search.colletta!=null && $scope.search.colletta!='')
+            if($scope.search.colletta!=null && $scope.search.colletta!='')
             {
                 query.id_colletta= $scope.search.colletta;
             }
+
             
             var superm= new GetInfoFactory(
                 query

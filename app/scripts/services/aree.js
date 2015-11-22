@@ -14,7 +14,8 @@ collettaApp.service('AreeService', ["$q", 'GetInfoFactory', '$routeParams', func
 	            areeFactory.$save({
 	                token: $routeParams.token,
 	                property: 'aree'
-	            },function()
+	            },
+	            function(result)
 	            {
 	                for (var i = 0; i < areeFactory.aree.length; i++) {
 	                    $this.aree.push(areeFactory.aree[i]);

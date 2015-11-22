@@ -16,8 +16,9 @@ collettaApp.service('CapiEquipeSupermercatiService', ["$q", 'GetInfoFactory', 'I
 		        res= capi_equipe_supermercatiFactory.$save({
 		            token: $routeParams.token,
 		            property: 'capi_equipe_supermercati'
-		        },function()
-		        {
+		        },
+		        function(result)
+	            {
 		        	$this.capi_equipe_supermercati.length= 0;
 		        	for (var i = 0; i < capi_equipe_supermercatiFactory.capi_equipe_supermercati.length; i++) {
 		        		$this.capi_equipe_supermercati.push(capi_equipe_supermercatiFactory.capi_equipe_supermercati[i]);
