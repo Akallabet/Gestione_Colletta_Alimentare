@@ -1,113 +1,23 @@
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html class="no-js">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Gestione Colletta Almentare</title>
+    <base href="/"></base>
+    <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- htmlbuild:styles -->
+    <!-- endbuild -->
     
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/bootstrap.css">
-    <link rel="stylesheet" href="styles/bootstrap-responsive.css">
-    <link rel="stylesheet" href="styles/bootswatch.css">
-    <link rel="stylesheet" href="styles/select2.css">
-    <link rel="stylesheet" href="styles/login.css">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
+    <!-- htmlbuild:vendor -->
+    <!-- endbuild -->
+
+    <!-- htmlbuild:js -->
     <!-- endbuild -->
   </head>
   <body ng-app="collettaApp" class="index" id="top">
-    <!--[if lt IE 9]>
-      <script src="components/es5-shim/es5-shim.js"></script>
-      <script src="components/json3/lib/json3.min.js"></script>
-    <![endif]-->
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/jquery/jquery.form.min.js"></script>
-    <script src="lib/lodash.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
-
-    <!-- build:js scripts/plugins.js -->
-    <script src="lib/select2.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-ui/common/module.js"></script>
-    <script src="bower_components/angular-ui/modules/directives/if/if.js"></script>
-    <script src="bower_components/select2/select2.js"></script>
-    <script src="bower_components/angular-ui-select2/src/select2.js"></script>
-    <!-- endbuild -->
-
-    <!-- build:js scripts/scripts.js -->
-    <script src="scripts/common.js"></script>
-    <script src="scripts/main.js"></script>
-
-    <!-- controllers -->
-    <script src="scripts/controllers/login_manager.js"></script>
-    <script src="scripts/controllers/admin.js"></script>
-    <script src="scripts/controllers/user.js"></script>
-    <script src="scripts/controllers/home.js"></script>
-    <script src="scripts/controllers/supermercati.js"></script>
-    <script src="scripts/controllers/supermercato.js"></script>
-    <script src="scripts/controllers/prodotti.js"></script>
-    <script src="scripts/controllers/carico.js"></script>
-    <script src="scripts/controllers/catene.js"></script>
-    <script src="scripts/controllers/files.js"></script>
-    <script src="scripts/controllers/report.js"></script>
-
-    <!-- directives -->
-    <script src="scripts/directives/file-upload.js"></script>
-    <script src="scripts/directives/toggleAll.js"></script>
-    <script src="scripts/directives/isNumber.js"></script>
-    <script src="scripts/directives/keyboard_interceptor.js"></script>
-    <!-- factories -->
-    <script src="scripts/factories/filesUpload.js"></script>
-    <script src="scripts/factories/GetInfo.js"></script>
-    <script src="scripts/factories/InsertInfo.js"></script>
-    <script src="scripts/factories/SetInfo.js"></script>
-    <script src="scripts/factories/DeleteInfo.js"></script>
-    <script src="scripts/factories/UserInfo.js"></script>
-    <script src="scripts/factories/Login.js"></script>
-    <script src="scripts/factories/Logout.js"></script>
-    <!-- services -->
-    <script src="scripts/services/colletta.js"></script>
-    <script src="scripts/services/comuni.js"></script>
-    <script src="scripts/services/provincie.js"></script>
-    <script src="scripts/services/aree.js"></script>
-    <script src="scripts/services/catene.js"></script>
-    <script src="scripts/services/capi_equipe.js"></script>
-    <script src="scripts/services/capi_equipe_supermercati.js"></script>
-    <script src="scripts/services/user.js"></script>
-    <script src="scripts/services/carico.js"></script>
-    <script src="scripts/services/supermercato.js"></script>
-    <script src="scripts/services/supermercati.js"></script>
-    <script src="scripts/services/prodotti.js"></script>
-    <script src="scripts/services/serverAddress.js"></script>
-    <script src="scripts/services/version.js"></script>
-    <script src="scripts/services/adminPages.js"></script>
-    <script src="scripts/services/filter.js"></script>
-    <script src="scripts/services/report.js"></script>
-    <script src="scripts/services/feedback.js"></script>
-    <script src="scripts/services/dialogSupermercato.js"></script>
-    <!-- endbuild -->
-    
-    <!-- Add your site or application content here -->
     <div ng-view></div>
-    
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <!--
-    <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
--->
   </body>
 </html>
