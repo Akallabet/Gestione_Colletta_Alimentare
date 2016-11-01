@@ -1,20 +1,10 @@
-collettaApp.service('ServerAddress', ['$location', function($location)
+collettaApp.service('ServerAddress', function()
 {
-    // var s= 'http://localhost/api.gnca/index.php/';
+    //var s= 'http://178.62.59.76/api.gnca/index.php/';
+	var s= location.protocol+'//'+location.host+'/api.gnca/index.php/';
     //var s= 'http://colletta.gncasicilia.org/api/#/';
     // var s= '../api/index.php/';
     return{
-        getServerAddress: function(){
-        	var ret='';
-        	if($location.$$host=='localhost')
-        	{
-        		ret= 'http://localhost/api.gnca/index.php/';
-        	}
-        	else
-        	{
-        		ret= '../api/index.php/';
-        	}
-        	return ret;
-        }
+        getServerAddress: function(){return s;}
     }
-}]);
+});
