@@ -91,10 +91,10 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             {
                 query.id_provincia= $scope.search.provincia;
             }
-            else if($scope.search.colletta!=null && $scope.search.colletta!='')
-            {
+            //else if($scope.search.colletta!=null && $scope.search.colletta!='')
+            //{
                 query.id_colletta= $scope.search.colletta;
-            }
+            //}
             
             var superm= new GetInfoFactory(
                 query
