@@ -42,7 +42,7 @@
                     <span>Attendi... </span>
                     <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
                 </p>
-                <table class="table table-bordered table-striped table-hover table-container table-condensed" 
+                <table class="table table-bordered table-striped table-hover table-container table-condensed"
                     ng-switch-when="2">
                     <thead>
                         <th>Id</th>
@@ -66,7 +66,7 @@
                                 <p>{{supermercato.capo_equipe.nome}}</p>
                             </td>
                             <td>
-                                <button 
+                                <button
                                     class="btn btn-primary"
                                     ng-click="openProducts(supermercato)"
                                     title="Prodotti"
@@ -87,7 +87,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="8">
-                                <button 
+                                <button
                                     ng-show="supermercati.length>pagination.currentPage()"
                                     class="btn btn-primary"
                                     ng-click="incrementPagination()">

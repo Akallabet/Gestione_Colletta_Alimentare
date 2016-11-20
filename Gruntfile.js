@@ -256,8 +256,7 @@ module.exports = function (grunt) {
             'styles/fonts/*',
             'styles/*.gif',
             'styles/*.png',
-            'bower_components/jquery/jquery.min.js',
-            'bower_components/jquery/jquery.form.min.js',
+            'bower_components/jquery/dist/jquery.min.js',
             'lib/lodash.js',
             'bower_components/angular/angular.min.js'
           ]

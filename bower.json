@@ -2,7 +2,7 @@
   "name": "colletta",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "~1.2.0",
+    "angular": "#1.2.1",
     "json3": "~3.2.4",
     "es5-shim": "~2.0.8",
     "angular-resource": "~1.2.0",
@@ -10,6 +10,7 @@
     "angular-cookies": "~1.2.0",
     "angular-sanitize": "~1.2.0",
     "angular-bootstrap": "latest",
+    "angular-ui": "~0.4.0",
     "angular-ui-select2": "latest",
     "d3": "~3.4.8",
     "nvd3": "~1.1.15-beta",
