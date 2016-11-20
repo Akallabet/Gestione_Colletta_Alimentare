@@ -8,7 +8,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, Superme
 
 	$scope.feedback= FeedbackService.feedback();
 	$scope.feedback.status= 0;
-	
+
 	$scope.def= $q.defer();
 	$scope.prom= $scope.def.promise;
 	var tryPromises= [];
@@ -19,7 +19,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, Superme
 	$scope.aree= AreeService.aree;
 	$scope.capi_equipe= CapiEquipeService.capi_equipe_array;
 	$scope.capi_equipe_supermercati= CapiEquipeSupermercatiService.capi_equipe_supermercati;
-	
+
 	$scope.generalFeedback.changeStatus(1);
 	$q.all([CateneService.getInfo(),
 		ComuniService.getInfo(),
@@ -32,8 +32,6 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, Superme
 			$scope.generalFeedback.changeStatus(3);
 		});
 	
-	$scope.modalTitle= dialogSupermercato.modalTitle;
-	$scope.modalButtons= dialogSupermercato.modalButtons;
     $scope.newCapoEquipe= dialogSupermercato.newCapoEquipe;
 
 	$scope.supermercato= SupermercatoService;
@@ -65,7 +63,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, Superme
 	{
 		var prom= null;
     	var f= $scope.capi_equipe_supermercati.filter(function(c){ return c.id_supermercato===$scope.supermercato.info.id});
-    	
+
     	if(f.length>0)
     	{
     		if(f[0].id_capo_equipe!==$scope.supermercato.info.capo_equipe.id)

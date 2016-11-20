@@ -1,7 +1,7 @@
 'use strict';
 var catene=[];
-collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', '$modal', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService', 'FeedbackService',
-function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService, FeedbackService)
+collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService', 'FeedbackService',
+function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService, FeedbackService)
 {
     $scope.feedback= FeedbackService.feedback();
     $scope.excelMode= false;
@@ -35,7 +35,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
     $scope.prodottiByTipoTotal= [];
     $scope.Total= {kg: 0, scatole: 0};
     $scope.prodottiCarichi={};
-    
+
     $scope.pagination={
         page:1,
         itemsPerPage:50,
@@ -55,7 +55,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             return (num % 1 === 0) ? num : num.toFixed(2);
         }
     }
-    
+
     $scope.parseInt= function(num)
     {
         return Math.round(num);
@@ -76,7 +76,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
 
     ComuniService.getInfo(false);
     CateneService.getInfo(false);
-    
+
     $scope.getSupermercati= function(refresh)
     {
         if(refresh || $scope.report.length===0)
@@ -96,11 +96,11 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
                 query.id_colletta= $scope.search.colletta;
             }
 
-            
+
             var superm= new GetInfoFactory(
                 query
             );
-            
+
             $scope.report.length=0;
             $scope.reportByComuni= ReportService.reportByComuni = {};
             $scope.reportByComuniArray.length=0;
@@ -141,7 +141,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
 
                             var prod_tmp= c_tmp.totali.filter(function(t){return t.prodotto==superm.report[i].prodotti[j].prodotto})[0];
                             var tot_tmp= $scope.totaliComplessivi.tipi.filter(function(t){return t.prodotto==superm.report[i].prodotti[j].prodotto})[0];
-                            
+
                             superm.report[i].totali.kg+= superm.report[i].prodotti[j].Kg;
                             superm.report[i].totali.scatole+= superm.report[i].prodotti[j].scatole;
                             prod_tmp.kg+= superm.report[i].prodotti[j].Kg;
@@ -174,7 +174,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
             );
         }
     }
-    
+
     $scope.getAllSupermercatiIds= function(property)
     {
         var ret=[];
@@ -191,7 +191,7 @@ function($scope, $q, $resource, $location, $routeParams, $modal, GetInfoFactory,
                         break;
                     }
                 }
-                
+
                 if(match)
                 {
                     ret.push($scope.report[i].id);
