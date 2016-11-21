@@ -153,7 +153,8 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, InsertInfoF
         });
         $scope.nuovoCarico= false;
         var newCarico= new InsertInfoFactory({
-            values: tmpCarico
+            values: tmpCarico,
+            prodotti: CaricoService.prodottiNomi
         });
         newCarico.$save({
             token: $routeParams.token,
@@ -212,8 +213,7 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, InsertInfoF
         $scope.prodotti.splice(index,1);
 
         var setC= new DeleteInfoFactory({
-            values: values,
-            set: set
+            values: values
         });
         setC.$save({
             token: $routeParams.token,

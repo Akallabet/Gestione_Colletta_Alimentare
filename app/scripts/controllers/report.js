@@ -93,7 +93,6 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
         CaricoService.prom.then(
       		function(){
             $scope.prodottiNomi= CaricoService.prodottiNomi;
-            console.log($scope.prodottiNomi)
             $scope.tipiTotali= {};
             for (var i in $scope.prodottiNomi) {
                 $scope.tipiTotali[$scope.prodottiNomi[i].tipo]= {tipo: $scope.prodottiNomi[i].tipo, kg: 0, scatole: 0};
