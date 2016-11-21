@@ -29,7 +29,7 @@
                     <option ng-value=""></option>
                     <option ng-value="coll.id" ng-repeat="coll in colletta">{{coll.nome}} {{coll.anno}}</option>
                 </select>
-                <button class="btn btn-primary" ng-click="getSupermercati(refresh)">Genera</button>
+                <button class="btn btn-primary" ng-click="getSupermercati()">Genera</button>
             </form>
         </div>
         <div class="row" ng-show="!excelMode">
@@ -42,6 +42,9 @@
                 </select>
             </form>
         </div>
+        <p>
+          {{prodottiNomi}}
+        </p>
         <div ng-switch on="feedback.status">
             <p class="loader_supermercati" ng-switch-when="1">
                 <span>Attendi... </span>
@@ -161,7 +164,7 @@
                         <tr class="fsize10" ng-repeat="object in report|filter:{enabled:true,catena.nome:search.catena}|orderBy:'comune'">
                             <td style="word-break:break-all;">{{object.nome}}</td>
                             <td style="word-break:break-all;">{{object.indirizzo}}</td>
-                            <td style="word-break:break-all;">{{object.comune}}</td> 
+                            <td style="word-break:break-all;">{{object.comune}}</td>
                             <td>{{object.prodotti[0].Kg}}</td>
                             <td>{{object.prodotti[0].scatole}}</td>
                             <td>{{object.prodotti[1].Kg}}</td>
@@ -260,6 +263,6 @@
                 </table>
                 -->
             </div>
-        </div> 
+        </div>
     </div>
 </div>

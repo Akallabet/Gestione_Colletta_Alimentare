@@ -5,7 +5,11 @@ collettaApp.service("CaricoService", ["$q", '$routeParams', 'GetInfoFactory', 'C
     return{
     	def: def,
     	prom: def.promise,
+      prodottiNomi: [],
         prodottiTipi: [],
+        prodottiTmpl: [],
+        newCarico: [],
+        caricoTmpl: [],
         modalButtons:[
             {label: "ok", type: "primary", active: true, action: "ok"},
             {label: "elimina", type: "danger", active: true, action: "del"},
@@ -17,35 +21,32 @@ collettaApp.service("CaricoService", ["$q", '$routeParams', 'GetInfoFactory', 'C
         },
         lastId: null,
         modifyId: "",
-        getInfo: function(refresh)
+        getInfo: function(idColletta)
         {
         	var $this= this;
-        	if(refresh || $this.prodottiTipi.length==0)
-	        {
-	            var prodottiTipiFactory= new GetInfoFactory(
-                  {
-                      id_colletta: CollettaService.colletta.filter(function(c){return c.attiva==1})[0].id
-                  }
-              );
+          var prodottiTipiFactory= new GetInfoFactory(
+              {
+                  id_colletta: idColletta || CollettaService.colletta.filter(function(c){return c.attiva==1})[0].id
+              }
+          );
 
-	            prodottiTipiFactory.$save({
-	                token: $routeParams.token,
-	                property: 'prodotti_tipi'
-	            },
-	            function(result)
-	            {
-	                for (var i = 0; i < prodottiTipiFactory.comuni.length; i++) {
-	                    $this.prodottiTipi.push(prodottiTipiFactory.comuni[i]);
-	                }
-                  $this.prodottiNomi = $this.prodottiTipi.map(function(p){ return {tipo: p}})
-                  $this.prodottiTmpl= $this.prodottiNomi.map(function(p){ return {prodotto: p, kg: 0, scatole: 0}})
-                  $this.newCarico= $this.prodottiNomi.map(function(p){ return {prodotto: p, kg: "", scatole: ""}})
-                  $this.caricoTmpl= $this.prodottiNomi.map(function(p){ return {prodotto: p, kg: "", scatole: ""}})
-	                $this.def.resolve();
-	            });
-	        }
-	        else
-	            $this.def.resolve();
+          prodottiTipiFactory.$save({
+              token: $routeParams.token,
+              property: 'prodotti_tipi'
+          },
+          function(result)
+          {
+              for (var i = 0; i < prodottiTipiFactory.prodotti_tipi.length; i++) {
+                  $this.prodottiTipi = prodottiTipiFactory.prodotti_tipi.sort(function(a,b){return parseInt(a.ordine)-parseInt(b.ordine);}).map(function(p){return p.nome;});
+              }
+              $this.prodottiNomi.length = 0
+              $this.prodottiTmpl.length= 0
+              $this.prodottiTipi.forEach(function(p){ $this.prodottiNomi.push({tipo: p})})
+              $this.prodottiTipi.forEach(function(p){ $this.prodottiTmpl.push({prodotto: p, kg: 0, scatole: 0})})
+              $this.prodottiTipi.forEach(function(p){ $this.newCarico.push({prodotto: p, kg: "", scatole: ""})})
+              $this.prodottiTipi.forEach(function(p){ $this.caricoTmpl.push({prodotto: p, kg: "", scatole: ""})})
+              $this.def.resolve();
+          });
         }
     }
 }]);
