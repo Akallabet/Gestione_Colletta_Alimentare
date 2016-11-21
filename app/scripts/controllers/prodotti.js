@@ -213,7 +213,8 @@ function($scope, $resource, $location, $routeParams, GetInfoFactory, InsertInfoF
         $scope.prodotti.splice(index,1);
 
         var setC= new DeleteInfoFactory({
-            values: values
+            values: values,
+            set: set
         });
         setC.$save({
             token: $routeParams.token,
