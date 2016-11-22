@@ -1,0 +1,66 @@
+<div ng-controller="CapiEquipeCtrl">
+    <div ng-include="'views/common/menu.html?version={{version}}'"></div>
+    <div class="hero-unit">
+         <h3>Gestione capi equipe</h3>
+    </div>
+    <div class="container center-container" ng-switch on="generalFeedback.status">
+        <p class="loader_supermercati" ng-switch-when="1">
+            <span>Attendi... </span>
+            <span><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        </p>
+        <p class="loader_supermercati" ng-switch-when="3">
+            <span>Errore... prova a ricaricare la pagina </span>
+        </p>
+        <form ng-submit="addCapoEquipe()" ng-switch-when="2">
+            <table class="table table-bordered table-striped table-hover table-container table-condensed">
+                <thead>
+                    <tr>
+                        <th>Aggiungi nuovo capo equipe</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Nome*</th>
+                        <td class="">
+                            <input type="text" class="span2" ng-model="capoEquipe.info.nome" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>
+                            <input type="text" class="span2" ng-model="capoEquipe.info.email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Telefono</th>
+                        <td>
+                            <input type="text" class="span2" ng-model="capoEquipe.info.telefono" />
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="width: 300px;">
+                            <button class="btn btn-primary pull-left">ok</button>
+                            <div ng-switch="feedback.status" style="margin: 0 0 0 10px; float: left;">
+                                <span ng-switch-when="1">
+                                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                                </span>
+                                <span ng-switch-when="2">
+                                    <i class="fa fa-check"></i> Capo equipe inserito
+                                </span>
+                                <span ng-switch-when="3">
+                                    {{feedback.message[0]}}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                          * Capi obbligatori
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
