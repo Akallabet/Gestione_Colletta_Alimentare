@@ -6,7 +6,7 @@ collettaApp.service('LogoutService', ['$q', '$resource', '$routeParams', 'Server
         prom: def.promise,
         logout: function(){
             var $this= this;
-            var call = $resource(ServerAddress.getServerAddress()+':token/logout', {token: $routeParams.token});
+            var call = $resource(ServerAddress.getServerAddress()+'/logout', {token: $routeParams.token});
             call.get(function(){
                 $this.def.resolve();
                 // call.resolve();
