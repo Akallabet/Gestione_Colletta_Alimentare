@@ -44,5 +44,8 @@ collettaApp.config(['$routeProvider', function($routeProvider) {
         .when('/:token/supermercato/nuovo', {
             templateUrl:'views/user/supermercato.html?version='+versionTmpl
         })
+        .when('/:token/capi_equipe', {
+            templateUrl:'views/user/capi_equipe.html?version='+versionTmpl
+        })
         .otherwise({redirectTo:'/'});
 }]);

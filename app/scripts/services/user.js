@@ -44,8 +44,9 @@ collettaApp.service('UserInfoService', ['$q', '$location',  'GetInfoFactory', '$
 
                     $this.info.pages.length=0;
                     $this.info.pages.push({url: 'supermercati', label: 'Gestione Carichi', selected: 0});
+										$this.info.pages.push({url: 'capi_equipe', label: 'Capi Equipe', selected: 0});
                     $this.info.pages.push({url: 'gestione_report', label: 'Report', selected: 0});
-                    
+
                     switch(parseInt($this.info.privilegi))
                     {
                         case 1:

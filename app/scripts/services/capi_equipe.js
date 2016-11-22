@@ -1,4 +1,4 @@
-collettaApp.service('CapiEquipeService', ["$q", 'GetInfoFactory', '$routeParams', function($q, GetInfoFactory, $routeParams)
+collettaApp.service('CapiEquipeService', ["$q", 'GetInfoFactory', 'InsertInfoFactory', '$routeParams', function($q, GetInfoFactory, InsertInfoFactory, $routeParams)
 {
 	var def= $q.defer();
     return{
@@ -29,6 +29,14 @@ collettaApp.service('CapiEquipeService', ["$q", 'GetInfoFactory', '$routeParams'
 	        }
 	        else
 	            $this.def.resolve();
-        }
+        },
+				addInfo: function(capoEquipe) {
+					return new InsertInfoFactory({
+							values: [capoEquipe]
+					}).$save({
+							token: $routeParams.token,
+							property: 'capi_equipe'
+					});
+				}
     }
 }]);
