@@ -3,17 +3,11 @@ var catene=[];
 collettaApp.controller('ReportCtrl',['$scope', '$q', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'SetInfoFactory', 'UserInfoService', 'SupermercatiService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'CollettaService', 'SupermercatoService', 'InsertInfoFactory', 'ProvincieService', 'ReportService', 'FeedbackService',
 function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfoFactory, UserInfoService, SupermercatiService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, CollettaService, SupermercatoService, InsertInfoFactory, ProvincieService, ReportService, FeedbackService)
 {
+    $scope.Math=Math
     $scope.feedback= FeedbackService.feedback();
     $scope.excelMode= false;
     $scope.route= $routeParams;
     $scope.version= VersionService.version;
-
-    // $scope.viewMode= [
-    //     {value: 0, label:'Tabella per comuni', selected: true},
-    //     {value: 1, label:'Tabella per supermercati',  selected: false},
-    //     {value: 2, label:'Grafico, con totali per comuni',  selected: false}
-    //     {value: 2, label:'Grafico, con totali per comuni',  selected: false}
-    // ];
 
     $scope.tableView= false;
     $scope.report= ReportService.report;
@@ -39,6 +33,8 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
     $scope.prodottiByTipoTotal= [];
     $scope.Total= {kg: 0, scatole: 0};
     $scope.prodottiCarichi={};
+    $scope.prodottiNomiDouble = []
+    $scope.prodottiNomi= CaricoService.prodottiNomi;
 
     $scope.limitDecimal= function(num)
     {
@@ -90,9 +86,12 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
             query.id_colletta= $scope.search.colletta;
         //}
         CaricoService.getInfo($scope.search.colletta)
-        CaricoService.prom.then(
+        .then(
       		function(){
-            $scope.prodottiNomi= CaricoService.prodottiNomi;
+            $scope.prodottiNomiDouble.length = 0;
+            for(var i=1; i<=($scope.prodottiNomi.length+1)*2;i++) {
+              $scope.prodottiNomiDouble.push(i)
+            }
             $scope.tipiTotali= {};
             for (var i in $scope.prodottiNomi) {
                 $scope.tipiTotali[$scope.prodottiNomi[i].tipo]= {tipo: $scope.prodottiNomi[i].tipo, kg: 0, scatole: 0};
@@ -103,7 +102,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
             $scope.reportByComuniArray.length=0;
             $scope.totaliComplessivi.tipiArray= [];
             $scope.totaliComplessivi.tipi= CaricoService.prodottiTmpl.map(function(p){return p;});
-            $scope.totaliComplessivi.complessivo= {kg: 0, scatole: 0, carichi: 0};
+            $scope.totaliComplessivi.complessivo= {kg: 0, scatole: 0};
             getReport(query)
       		},
       		function(){
@@ -132,7 +131,7 @@ function($scope, $q, $resource, $location, $routeParams, GetInfoFactory, SetInfo
                           $scope.reportByComuni[superm.report[i].id_comune]={
                               nome: $scope.comuni.filter(function(c){return c.id==superm.report[i].id_comune})[0].nome,
                               objects: [],
-                              complessivo:{kg: 0, scatole: 0, carichi: []},
+                              complessivo:{kg: 0, scatole: 0},
                               totali: $.extend(true, [], CaricoService.prodottiTmpl),
                               enabled: false
                           }

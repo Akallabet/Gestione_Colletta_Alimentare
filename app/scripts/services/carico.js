@@ -23,6 +23,8 @@ collettaApp.service("CaricoService", ["$q", '$routeParams', 'GetInfoFactory', 'C
         modifyId: "",
         getInfo: function(idColletta)
         {
+          var infoDefer = $q.defer()
+
         	var $this= this;
           var prodottiTipiFactory= new GetInfoFactory(
               {
@@ -41,12 +43,17 @@ collettaApp.service("CaricoService", ["$q", '$routeParams', 'GetInfoFactory', 'C
               }
               $this.prodottiNomi.length = 0
               $this.prodottiTmpl.length= 0
+              $this.newCarico.length= 0
+              $this.caricoTmpl.length = 0;
               $this.prodottiTipi.forEach(function(p){ $this.prodottiNomi.push({tipo: p})})
               $this.prodottiTipi.forEach(function(p){ $this.prodottiTmpl.push({prodotto: p, kg: 0, scatole: 0})})
               $this.prodottiTipi.forEach(function(p){ $this.newCarico.push({prodotto: p, kg: "", scatole: ""})})
               $this.prodottiTipi.forEach(function(p){ $this.caricoTmpl.push({prodotto: p, kg: "", scatole: ""})})
               $this.def.resolve();
+              infoDefer.resolve();
           });
+
+          return infoDefer.promise;
         }
     }
 }]);
