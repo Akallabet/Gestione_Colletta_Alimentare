@@ -6,6 +6,7 @@ collettaApp.service("CaricoService", ["$q", '$routeParams', 'GetInfoFactory', 'C
     	def: def,
     	prom: def.promise,
       prodottiNomi: [],
+      prodottiNomiWithOrder: [],
         prodottiTipi: [],
         prodottiTmpl: [],
         newCarico: [],
@@ -41,9 +42,10 @@ collettaApp.service("CaricoService", ["$q", '$routeParams', 'GetInfoFactory', 'C
               for (var i = 0; i < prodottiTipiFactory.prodotti_tipi.length; i++) {
                   $this.prodottiTipi = prodottiTipiFactory.prodotti_tipi.sort(function(a,b){return parseInt(a.ordine)-parseInt(b.ordine);}).map(function(p){return p.nome;});
               }
+              $this.prodottiNomiWithOrder = prodottiTipiFactory.prodotti_tipi
               $this.prodottiNomi.length = 0
-              $this.prodottiTmpl.length= 0
-              $this.newCarico.length= 0
+              $this.prodottiTmpl.length = 0
+              $this.newCarico.length = 0
               $this.caricoTmpl.length = 0;
               $this.prodottiTipi.forEach(function(p){ $this.prodottiNomi.push({tipo: p})})
               $this.prodottiTipi.forEach(function(p){ $this.prodottiTmpl.push({prodotto: p, kg: 0, scatole: 0})})

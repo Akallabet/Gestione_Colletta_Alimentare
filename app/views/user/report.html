@@ -36,10 +36,6 @@
             <form class="form-inline">
                 <input type="checkbox" class="pull-left" ng-model="tableView" id="view"/>
                 <label for="view" class="pull-left">Visualizza supermercati</label>
-                <select class="filter" ui-select2="{ allowClear: true}" ng-model="search.catena" placeholder="Catena">
-                    <option ng-value=""></option>
-                    <option ng-value="catena.nome" ng-repeat="catena in catene">{{catena.nome}}</option>
-                </select>
             </form>
         </div>
         <div ng-switch on="feedback.status">
@@ -69,7 +65,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="comune in reportByComuniArray|filter:{enabled: true} track by $index">
+                        <tr ng-repeat="comune in reportByComuniArray track by $index">
                             <td>{{comune.nome}}</td>
                             <td class="tipo fsize10" ng-repeat="ind in prodottiNomiDouble.slice(0, prodottiNomiDouble.length-2)">
                               <span class="pull-left" ng-if="$even">{{comune.totali[Math.floor((ind-1)*0.5)].kg}}</span>
@@ -87,19 +83,19 @@
                         <tr class="fsize11">
                             <th>KILI</th>
                             <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
-                                <span class="pull-left" ng-init="tot.kg=parseInt(tot.kg)">{{tot.kg}}</span>
+                                <span class="pull-left">{{tot.kg}}</span>
                             </th>
                             <th colspan="2">
-                                {{parseInt(totaliComplessivi.complessivo.kg)}}
+                                {{totaliComplessivi.complessivo.kg}}
                             </th>
                         </tr>
                         <tr class="fsize11">
                             <th>SCATOLE</th>
                             <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
-                                <span class="pull-left" ng-init="tot.scatole=parseInt(tot.scatole)">{{tot.scatole}}</span>
+                                <span class="pull-left">{{tot.scatole}}</span>
                             </th>
                             <th colspan="2">
-                                {{parseInt(totaliComplessivi.complessivo.scatole)}}
+                                {{totaliComplessivi.complessivo.scatole}}
                             </th>
                         </tr>
                     </tfoot>
@@ -130,7 +126,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="fsize10" ng-repeat="object in report|filter:{enabled:true,catena.nome:search.catena}|orderBy:'comune'">
+                        <tr class="fsize10" ng-repeat="object in supermercatiTot|orderBy:'comune'">
                             <td style="word-break:break-all;">{{object.nome}}</td>
                             <td style="word-break:break-all;">{{object.indirizzo}}</td>
                             <td style="word-break:break-all;">{{object.comune}}</td>
@@ -139,7 +135,7 @@
                               <span class="pull-right" ng-if="$odd">{{object.prodotti[Math.floor((ind-1)*0.5)].scatole}}</span>
                             </td>
                             <td class="fsize10">
-                              <span class="pull-left" >{{object.totali.kg}}</span>
+                              <span class="pull-left" >{{object.totali.Kg}}</span>
                             </td>
                             <td class="fsize10">
                               <span class="pull-right" >{{object.totali.scatole}}</span>
@@ -152,10 +148,10 @@
                             <th></th>
                             <th></th>
                             <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
-                                <span class="pull-left" ng-init="tot.kg=parseInt(tot.kg)">{{tot.kg}}</span>
+                                <span class="pull-left" >{{tot.kg}}</span>
                             </th>
                             <th colspan="2">
-                                {{parseInt(totaliComplessivi.complessivo.kg)}}
+                                {{totaliComplessivi.complessivo.kg}}
                             </th>
                         </tr>
                         <tr class="fsize11">
@@ -163,10 +159,10 @@
                             <th></th>
                             <th></th>
                             <th colspan="2" class="tipo" ng-repeat="tot in totaliComplessivi.tipi|orderBy:tipo">
-                                <span class="pull-left" ng-init="tot.scatole=parseInt(tot.scatole)">{{tot.scatole}}</span>
+                                <span class="pull-left">{{tot.scatole}}</span>
                             </th>
                             <th colspan="2">
-                                {{parseInt(totaliComplessivi.complessivo.scatole)}}
+                                {{totaliComplessivi.complessivo.scatole}}
                             </th>
                         </tr>
                     </tfoot>
