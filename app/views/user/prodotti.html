@@ -53,35 +53,39 @@
                     </tr>
                     <tr>
                         <th></th>
-                        <th colspan="2" ng-repeat="ind in [1,2,3,4,5,6,7,8,9,10,11,12,13,14]" class="fsize10">
-                            <span class="pull-left">kg</span>
-                            <span class="pull-right">scat.</span>
+                        <th ng-repeat="ind in prodottiNomiDouble" class="fsize10" style="width:45px;">
+                          <span class="pull-left" ng-if="$even">kg</span>
+                          <span class="pull-right" ng-if="$odd">scat.</span>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="cursor-pointer" ng-click="" ng-repeat="carico in prodotti | orderBy: order">
                         <td ng-click="openSetCarico(carico)"><div class="text-center fsize12">{{carico.id}}</div></td>
-                        <td colspan="2" ng-repeat="pr in carico.objects | orderBy:tipo" ng-click="openSetCarico(carico)">
-                            <span class="pull-left">{{pr.kg}}</span>
-                            <span class="pull-right">{{pr.scatole}}</span>
+                        <td ng-repeat="ind in prodottiNomiDouble.slice(0, prodottiNomiDouble.length-2)" ng-click="openSetCarico(carico)">
+                          <span class="pull-left" ng-if="$even">{{carico.objects[Math.floor((ind-1)*0.5)].kg}}</span>
+                          <span class="pull-right" ng-if="$odd">{{carico.objects[Math.floor((ind-1)*0.5)].scatole}}</span>
                         </td>
                         <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
                             <span class="pull-left">{{rowTotal.kg}}</span>
-                            <span class="pull-right">{{rowTotal.scatole}}</span>
+                        </td>
+                        <td class="tipo" ng-init="rowTotal=getCaricoTotal(carico.objects)" ng-model="rowTotal">
+                          <span class="pull-right">{{rowTotal.scatole}}</span>
                         </td>
                     </tr>
                 </tbody>
                 <tfoot class="total">
                     <tr>
                         <td>TOT</td>
-                        <td colspan="2" ng-repeat="prod in prodottiByTipoTotal" class="fsize10">
-                            <span class="pull-left">{{prod.kg}}</span>
-                            <span class="pull-right">{{prod.scatole}}</span>
+                        <td ng-repeat="ind in prodottiNomiDouble.slice(0, prodottiNomiDouble.length-2)" >
+                            <span class="pull-left" ng-if="$even">{{prodottiByTipoTotal[Math.floor((ind-1)*0.5)].kg}}</span>
+                            <span class="pull-right" ng-if="$odd">{{prodottiByTipoTotal[Math.floor((ind-1)*0.5)].scatole}}</span>
                         </td>
                         <td class="tipo">
                             <span class="pull-left">{{Total.kg}}</span>
-                            <span class="pull-right">{{Total.scatole}}</span>
+                        </td>
+                        <td class="tipo">
+                          <span class="pull-right">{{Total.scatole}}</span>
                         </td>
                     </tr>
                 </tfoot>

@@ -4,13 +4,19 @@ var prodotti=[];
 collettaApp.controller('ProdottiCtrl', ['$scope', '$resource', '$location', '$routeParams', 'GetInfoFactory', 'InsertInfoFactory', 'SetInfoFactory', 'DeleteInfoFactory', 'CollettaService', 'ComuniService', 'CateneService', 'CapiEquipeService', 'CaricoService', 'VersionService', 'ProdottiService', 'FeedbackService',
 function($scope, $resource, $location, $routeParams, GetInfoFactory, InsertInfoFactory, SetInfoFactory, DeleteInfoFactory, CollettaService, ComuniService, CateneService, CapiEquipeService, CaricoService, VersionService, ProdottiService, FeedbackService)
 {
+  $scope.Math=Math
   CollettaService.prom.then(function(){
     CaricoService.getInfo()
     CaricoService.prom.then(
   		function(){
-  			$scope.prodottiNomi= CaricoService.prodottiNomi;
+        $scope.prodottiNomiDouble = []
+        $scope.prodottiNomi= CaricoService.prodottiNomi;
         $scope.caricoTmpl= CaricoService.caricoTmpl;
         $scope.modifyId= CaricoService.modifyId;
+
+        for(var i=1; i<=($scope.prodottiNomi.length+1)*2;i++) {
+          $scope.prodottiNomiDouble.push(i)
+        }
   		},
   		function(){
   				$scope.feedback.changeStatus(3);
